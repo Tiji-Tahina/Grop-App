@@ -336,7 +336,7 @@ export default function GlobeAnalysis() {
   );
 
   const tileBaseClass =
-    "rounded-3xl border border-neutral-800 bg-white/[0.04] backdrop-blur-md p-5 h-full";
+    "rounded-3xl border border-neutral-800 bg-neutral-900/90 p-5 h-full";
 
   return (
     <div
@@ -365,7 +365,7 @@ export default function GlobeAnalysis() {
             }
             pointAltitude={0.015}
             pointLabel={(d) =>
-              `<div style="background:rgba(10,10,10,0.85);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:6px 10px;color:#fff;font-size:13px;font-family:DM Sans,sans-serif;backdrop-filter:blur(8px)">${d.name}</div>`
+              `<div style="background:rgba(10,10,10,0.95);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:6px 10px;color:#fff;font-size:13px;font-family:DM Sans,sans-serif;">${d.name}</div>`
             }
             onPointClick={handlePointClick}
             onGlobeReady={handleGlobeReady}

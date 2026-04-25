@@ -18,6 +18,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Code source
 COPY backend/ .
 
+# RAG / FAISS data — embarqué dans l'image pour persistence sur Render free tier
+# (pas de volumes persistants disponibles sur le plan gratuit)
+# Si les données RAG changent, rebuild l'image (git push suffit via CI/CD)
+RUN mkdir -p /app/rag/data
+
 # Collecte des fichiers statiques
 RUN python manage.py collectstatic --noinput || true
 

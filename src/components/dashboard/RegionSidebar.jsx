@@ -14,10 +14,10 @@ const blockVariants = {
 };
 
 const glass = (extra = {}) => ({
-  background: 'rgba(8,8,14,0.75)',
+  background: 'rgba(0, 31, 25, 0.88)',
   backdropFilter: 'blur(28px)',
   WebkitBackdropFilter: 'blur(28px)',
-  border: '1px solid rgba(255,255,255,0.07)',
+  border: '1px solid rgba(77, 255, 145, 0.10)',
   borderRadius: 14,
   ...extra,
 });
@@ -42,7 +42,7 @@ const CLIMATE_LABELS = {
 };
 
 export function RegionSidebar({ node, onClose }) {
-  const accent = node.accent ?? '#10b981';
+  const accent = node.accent ?? '#4DFF91';
   const cropList = node.crops ? node.crops.split(' · ') : [];
   const sparkMax = Math.max(...(node.sparkline || [1]));
   const sparkLast = node.sparkline ? node.sparkline[node.sparkline.length - 1] : 0;
@@ -94,14 +94,14 @@ export function RegionSidebar({ node, onClose }) {
             onClick={onClose}
             style={{
               width: 30, height: 30, borderRadius: 10, flexShrink: 0,
-              background: 'rgba(255,255,255,0.04)',
+              background: 'rgba(0, 49, 42, 0.60)',
               border: '1px solid rgba(255,255,255,0.07)',
               color: 'rgba(255,255,255,0.35)',
               cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
               transition: 'background 0.2s',
               marginLeft: 8,
             }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.09)'}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(0, 61, 51, 0.80)'}
             onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
           >
             <X size={12} />
@@ -120,7 +120,7 @@ export function RegionSidebar({ node, onClose }) {
           <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', lineHeight: 1 }}>{node.pop}</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 5 }}>
             {node.positive
-              ? <TrendingUp  size={10} style={{ color: '#22c55e' }} />
+              ? <TrendingUp  size={10} style={{ color: '#4DFF91' }} />
               : <TrendingDown size={10} style={{ color: '#ef4444' }} />}
             <span style={{ fontSize: 12, fontWeight: 700, color: node.positive ? '#22c55e' : '#ef4444' }}>
               {node.growth}
@@ -136,7 +136,7 @@ export function RegionSidebar({ node, onClose }) {
             <Activity size={9} /> PIB estimé
           </div>
           <div style={{ fontSize: 16, fontWeight: 800, color: accent, lineHeight: 1.2 }}>{node.gdp}</div>
-          <div style={{ marginTop: 8, height: 3, background: 'rgba(255,255,255,0.05)', borderRadius: 99, overflow: 'hidden' }}>
+          <div style={{ marginTop: 8, height: 3, background: 'rgba(77, 255, 145, 0.08)', borderRadius: 99, overflow: 'hidden' }}>
             <div style={{
               height: '100%', borderRadius: 99,
               background: `linear-gradient(90deg,${accent},${accent}55)`,
@@ -232,7 +232,7 @@ export function RegionSidebar({ node, onClose }) {
         <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4, marginBottom: 8 }}>
           <BookOpen size={9} /> Note d'analyse
         </div>
-        <div style={{ fontSize: 10, color: '#22c55e', marginBottom: 6, opacity: 0.65, fontFamily: 'monospace' }}>
+        <div style={{ fontSize: 10, color: '#4DFF91', marginBottom: 6, opacity: 0.65, fontFamily: 'monospace' }}>
           [[{node.label}]] · analyse régionale
         </div>
         <div style={{

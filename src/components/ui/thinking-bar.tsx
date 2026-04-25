@@ -16,7 +16,7 @@ export function ThinkingBar({ text = "Analyse en cours", stopLabel = "Répondre 
     <div
       onClick={onClick}
       className={cn(
-        "flex items-center justify-between rounded-lg border border-[var(--border-subtle)] bg-gradient-to-r from-[var(--ai-500)]/10 to-[var(--cyan-500)]/10 px-4 py-2.5 cursor-pointer",
+        "flex items-center justify-between rounded-lg border border-[var(--border-subtle)] bg-gradient-to-r from-[var(--ai-500)]/10 to-[var(--primary-500)]/10 px-4 py-2.5 cursor-pointer",
         className
       )}
     >

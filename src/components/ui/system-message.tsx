@@ -50,7 +50,7 @@ export function SystemMessage({
     action: {
       color: "var(--text-secondary)",
       borderColor: fill ? "transparent" : "var(--border-subtle)",
-      background: fill ? "var(--bg-elevated, #12121A)" : "transparent",
+      background: fill ? "var(--bg-elevated, #003D33)" : "transparent",
     },
     warning: {
       color: "var(--warning-500)",
@@ -84,7 +84,7 @@ export function SystemMessage({
       {cta && (
         <button
           onClick={cta.onClick}
-          className="rounded-lg bg-[var(--cyan-500)] px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[var(--cyan-600)]"
+          className="rounded-lg bg-[var(--primary-500)] px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[var(--primary-600)]"
         >
           {cta.label}
         </button>

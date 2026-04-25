@@ -60,92 +60,110 @@ export function WelcomeScreen({ suggestions, onSelect }: WelcomeScreenProps) {
 
   return (
     <div style={{
-      display: 'flex', flexDirection: 'column', alignItems: 'center',
-      justifyContent: 'center', textAlign: 'center', padding: '64px 32px',
+      display: 'flex', flexDirection: 'column', alignItems: 'flex-start',
+      justifyContent: 'center', padding: '0 56px', maxWidth: 1040, margin: '0 auto',
+      width: '100%', minHeight: '100%',
     }}>
-      <h1 style={{
-        fontSize: 32, fontWeight: 600, fontFamily: 'var(--font-display)',
-        background: 'linear-gradient(135deg, #ffffff, #22d3ee)',
-        WebkitBackgroundClip: 'text', backgroundClip: 'text',
-        WebkitTextFillColor: 'transparent', color: 'transparent',
-        marginBottom: 36, marginTop: -32,
-        animation: 'fade-in-up 0.6s ease-out',
-      }}>
-        Assistant Agricole IA
-      </h1>
-
-      <h2 style={{
-        fontSize: 18,
-        color: 'var(--text-secondary)',
-        marginBottom: 48,
-        minHeight: 28,
-        fontFamily: 'var(--font-display)',
-      }}>
-        {displayedText}
-        <span style={{
-          color: 'var(--cyan-400)',
-          opacity: showCursor ? 1 : 0,
-          transition: 'opacity 0.1s',
-          marginLeft: 1,
-        }}>
-          |
-        </span>
-      </h2>
-
       <p style={{
-        color: 'var(--text-muted)',
-        fontSize: 14,
-        lineHeight: 1.6,
-        maxWidth: 400,
-        marginBottom: 32,
+        fontSize: 10, fontWeight: 600, letterSpacing: '0.18em',
+        textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+        margin: 0, marginBottom: 14,
       }}>
-        Prêt à vous assister dans vos activités agricoles, de la plantation
-        à la récolte. Commençons ensemble!
+        Assistant agricole · Madagascar
       </p>
 
-      {/* Suggestion Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: 16,
-        maxWidth: 680,
-        width: '100%',
+      <h1 style={{
+        fontSize: 'clamp(36px, 4.5vw, 60px)',
+        fontWeight: 700,
+        fontFamily: 'var(--font-display)',
+        letterSpacing: '-0.04em',
+        lineHeight: 1,
+        color: '#FFFFFF',
+        margin: 0, marginBottom: 18,
+        animation: 'fade-in-up 0.6s ease-out',
       }}>
-        {suggestions.map((s, i) => (
-          <button
-            key={i}
-            onClick={() => onSelect(s.label)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              gap: 8,
-              textAlign: 'left',
-              cursor: 'pointer',
-              border: '1px solid rgba(255,255,255,0.08)',
-              background: 'rgba(255,255,255,0.03)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              borderRadius: 16,
-              padding: 20,
-              color: 'var(--text-secondary)',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              animation: `fade-in-up 0.4s ease-out ${i * 0.1}s both`,
-            }}
-          >
-            <p style={{
-              fontSize: 14, fontWeight: 500, color: 'var(--text-primary)',
-              lineHeight: 1.4,
-            }}>
-              {s.label}
-            </p>
-            {s.subtitle && (
-              <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.4 }}>
-                {s.subtitle}
-              </p>
-            )}
-          </button>
-        ))}
+        {displayedText}<span style={{
+          color: '#4DFF91',
+          opacity: showCursor ? 1 : 0,
+          transition: 'opacity 0.1s',
+          marginLeft: 4, fontWeight: 300,
+        }}>|</span>
+      </h1>
+
+      <p style={{
+        color: 'rgba(255,255,255,0.55)',
+        fontSize: 15,
+        lineHeight: 1.5,
+        maxWidth: 520,
+        margin: 0, marginBottom: 48,
+        fontFamily: 'var(--font-body)',
+      }}>
+        De la plantation à la récolte — commençons ensemble.
+      </p>
+
+      {/* Suggestions — horizontal grid, statskog cards */}
+      <div style={{ width: '100%' }}>
+        <p style={{
+          fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+          textTransform: 'uppercase', color: 'rgba(255,255,255,0.32)',
+          margin: 0, marginBottom: 16,
+        }}>
+          Suggestions
+        </p>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: 12,
+        }}>
+          {suggestions.map((s, i) => (
+            <button
+              key={i}
+              onClick={() => onSelect(s.label)}
+              style={{
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'flex-start', justifyContent: 'space-between',
+                gap: 14,
+                textAlign: 'left', cursor: 'pointer',
+                background: 'transparent',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: 4,
+                padding: '16px 18px',
+                minHeight: 92,
+                color: 'rgba(255,255,255,0.78)',
+                transition: 'border-color 0.18s ease, color 0.18s ease, transform 0.18s ease',
+                animation: `fade-in-up 0.4s ease-out ${i * 0.06}s both`,
+                fontFamily: 'var(--font-body)',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = 'rgba(77, 255, 145, 0.35)';
+                e.currentTarget.style.color = 'rgba(255,255,255,1)';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                e.currentTarget.style.color = 'rgba(255,255,255,0.78)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <span style={{
+                fontSize: 14, fontWeight: 500, color: 'inherit',
+                lineHeight: 1.35, letterSpacing: '-0.005em',
+              }}>
+                {s.label}
+              </span>
+              {s.subtitle && (
+                <span style={{
+                  fontSize: 10, fontWeight: 600,
+                  letterSpacing: '0.14em', textTransform: 'uppercase',
+                  color: 'rgba(255,255,255,0.40)',
+                  lineHeight: 1.2,
+                }}>
+                  {s.subtitle}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

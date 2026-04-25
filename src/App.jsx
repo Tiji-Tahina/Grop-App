@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Home, MessageSquare, Settings, User, Users, TrendingUp, TrendingDown, Sprout, Leaf, CloudRain, Save, Lock, Eye, EyeOff, CheckCircle, AlertCircle, Search, Shield, UserCheck, Brain, Mic, MicOff, Wifi, WifiOff, ChevronDown, ChevronRight, ChevronLeft, Copy, Check, Sparkles, FlaskConical, BookOpen, FileText, RefreshCw, PanelLeftClose, PanelLeftOpen, LogOut, Sun, Moon, MapPin, Activity, X } from 'lucide-react';
+import { Send, MessageSquare, Settings, User, Users, TrendingUp, TrendingDown, Sprout, Leaf, CloudRain, Save, Lock, Eye, EyeOff, CheckCircle, AlertCircle, Search, Shield, UserCheck, Brain, Mic, MicOff, Wifi, WifiOff, ChevronDown, ChevronRight, ChevronLeft, Copy, Check, Sparkles, FlaskConical, BookOpen, FileText, RefreshCw, PanelLeftClose, PanelLeftOpen, LogOut, Sun, Moon, MapPin, Activity, X, Home, Map } from 'lucide-react';
 import { MADAGASCAR_GEOJSON } from './data/madagascarGeoJSON';
 import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
@@ -13,14 +13,16 @@ import GlobeAnalysis from "./composant/GlobeAnalysis";
 import { getAccessToken, clearTokens, authAPI } from "./api/auth";
 import { AgriculturalChat } from './components/chat';
 import { FluidBackground } from './components/ui/FluidBackground';
+import RegionalNavigation from './components/ui/RegionalNavigation';
 import { ForecastPage } from './pages/ForecastPage';
 import { ForceGraphDashboard } from './components/dashboard/ForceGraphDashboard';
+import Madagascar3DMap from './components/madagascar3d/Madagascar3DMap';
 
 function MarkdownMessage({ content }) {
   return (
-    <div className="prose-chat" style={{ 
-      color: '#E2E8F0', 
-      lineHeight: 1.8, 
+    <div className="prose-chat" style={{
+      color: 'rgba(255,255,255,0.82)',
+      lineHeight: 1.8,
       fontSize: 15,
       fontFamily: 'var(--font-body)'
     }}>
@@ -33,80 +35,78 @@ function MarkdownMessage({ content }) {
           }}>{children}</h1>,
           h2: ({children}) => <h2 style={{
             fontSize: '1.15rem', fontWeight: 600, margin: '1rem 0 0.5rem',
-            color: '#F1F5F9', lineHeight: 1.3, fontFamily: 'var(--font-display)'
+            color: 'rgba(255,255,255,0.92)', lineHeight: 1.3, fontFamily: 'var(--font-display)'
           }}>{children}</h2>,
           h3: ({children}) => <h3 style={{
             fontSize: '1.05rem', fontWeight: 600, margin: '0.85rem 0 0.4rem',
-            color: '#E2E8F0', lineHeight: 1.3
+            color: 'rgba(255,255,255,0.85)', lineHeight: 1.3
           }}>{children}</h3>,
           p: ({children}) => <p style={{
-            margin: '0 0 0.85rem', color: '#CBD5E1', lineHeight: 1.8, fontSize: '0.95rem'
+            margin: '0 0 0.85rem', color: 'rgba(255,255,255,0.72)', lineHeight: 1.8, fontSize: '0.95rem'
           }}>{children}</p>,
           ul: ({children}) => <ul style={{
             margin: '0.5rem 0 1rem 1.5rem', paddingLeft: '0.5rem',
-            color: '#CBD5E1', listStyleType: 'disc'
+            color: 'rgba(255,255,255,0.72)', listStyleType: 'disc'
           }}>{children}</ul>,
           ol: ({children}) => <ol style={{
             margin: '0.5rem 0 1rem 1.5rem', paddingLeft: '0.5rem',
-            color: '#CBD5E1', listStyleType: 'decimal'
+            color: 'rgba(255,255,255,0.72)', listStyleType: 'decimal'
           }}>{children}</ol>,
           li: ({children, ...props}) => <li style={{
             margin: '0.4rem 0', lineHeight: 1.75, fontSize: '0.95rem',
-            color: '#CBD5E1', paddingLeft: '0.25rem'
+            color: 'rgba(255,255,255,0.72)', paddingLeft: '0.25rem'
           }} {...props}>{children}</li>,
           strong: ({children}) => <strong style={{
-            fontWeight: 700, color: '#FFFFFF', background: 'rgba(16,185,129,0.15)',
-            padding: '0.1rem 0.4rem', borderRadius: '0.25rem'
+            fontWeight: 700, color: '#FFFFFF',
           }}>{children}</strong>,
           em: ({children}) => <em style={{
-            fontStyle: 'italic', color: '#94A3B8'
+            fontStyle: 'italic', color: 'rgba(255,255,255,0.55)'
           }}>{children}</em>,
           code: ({className, children, ...props}) => {
             const isBlock = className?.startsWith('language-');
             if (isBlock) {
               return <code style={{
-                display: 'block', background: '#0F0F14', color: '#22D3EE',
+                display: 'block', background: '#001A15', color: '#5EE890',
                 padding: '1rem', borderRadius: '0.5rem', overflowX: 'auto',
                 fontSize: '0.8125rem', fontFamily: 'var(--font-mono)', lineHeight: 1.6,
-                border: '1px solid #1E293B', margin: '0.75rem 0'
+                border: '1px solid rgba(77, 255, 145, 0.15)', margin: '0.75rem 0'
               }} {...props}>{children}</code>;
             }
             return <code style={{
-              background: 'rgba(16,185,129,0.15)', color: '#34D399',
+              background: 'rgba(77, 255, 145, 0.12)', color: '#5EE890',
               padding: '0.15rem 0.4rem', borderRadius: '0.25rem',
               fontSize: '0.8125rem', fontFamily: 'var(--font-mono)',
               fontWeight: 500
             }} {...props}>{children}</code>;
           },
           pre: ({children}) => <pre style={{
-            background: '#0F0F14', borderRadius: '0.5rem', overflow: 'hidden',
-            margin: '0.75rem 0', border: '1px solid #1E293B'
+            background: '#001A15', borderRadius: '0.5rem', overflow: 'hidden',
+            margin: '0.75rem 0', border: '1px solid rgba(77, 255, 145, 0.15)'
           }}>{children}</pre>,
           table: ({children}) => (
-            <div style={{overflowX: 'auto', margin: '0.75rem 0', borderRadius: 8, border: '1px solid #1E293B'}}>
+            <div style={{overflowX: 'auto', margin: '0.75rem 0', borderRadius: 8, border: '1px solid rgba(77, 255, 145, 0.15)'}}>
               <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem'}}>{children}</table>
             </div>
           ),
-          thead: ({children}) => <thead style={{background: '#0F0F14'}}>{children}</thead>,
+          thead: ({children}) => <thead style={{background: '#001A15'}}>{children}</thead>,
           th: ({children}) => <th style={{
-            border: '1px solid #1E293B', padding: '0.65rem 0.75rem', textAlign: 'left',
-            fontWeight: 600, color: '#FFFFFF', fontSize: '0.8125rem', background: '#0A0A0F'
+            border: '1px solid rgba(77, 255, 145, 0.12)', padding: '0.65rem 0.75rem', textAlign: 'left',
+            fontWeight: 600, color: '#FFFFFF', fontSize: '0.8125rem', background: '#001F19'
           }}>{children}</th>,
           td: ({children}) => <td style={{
-            border: '1px solid #1E293B', padding: '0.5rem 0.75rem',
-            color: '#CBD5E1', fontSize: '0.875rem'
+            border: '1px solid rgba(77, 255, 145, 0.10)', padding: '0.5rem 0.75rem',
+            color: 'rgba(255,255,255,0.72)', fontSize: '0.875rem'
           }}>{children}</td>,
-          tr: ({children}) => <tr style={{borderBottom: '1px solid #1E293B'}}>{children}</tr>,
+          tr: ({children}) => <tr style={{borderBottom: '1px solid rgba(77, 255, 145, 0.08)'}}>{children}</tr>,
           blockquote: ({children}) => <blockquote style={{
-            borderLeft: '3px solid #8B5CF6', paddingLeft: '1rem', margin: '0.75rem 0',
-            color: '#A78BFA', fontStyle: 'italic', background: 'rgba(139,92,246,0.1)',
-            padding: '12px 16px', borderRadius: '0 8px 8px 0'
+            borderLeft: '2px solid rgba(255,255,255,0.30)', paddingLeft: '1rem', margin: '0.75rem 0',
+            color: 'rgba(255,255,255,0.55)', fontStyle: 'normal',
           }}>{children}</blockquote>,
           a: ({href, children}) => <a href={href} style={{
-            color: '#22D3EE', textDecoration: 'underline', fontWeight: 500
+            color: '#5EE890', textDecoration: 'underline', fontWeight: 500
           }} target="_blank" rel="noopener noreferrer">{children}</a>,
           hr: () => <hr style={{
-            border: 'none', borderTop: '1px solid #1E293B', margin: '1.25rem 0'
+            border: 'none', borderTop: '1px solid rgba(77, 255, 145, 0.12)', margin: '1.25rem 0'
           }} />,
         }}
       >
@@ -373,42 +373,42 @@ useEffect(() => {
   };
 
   return (
-    <div className="flex h-screen relative" style={{ background: 'var(--bg-deep)' }}>
+    <div className="flex h-screen relative" style={{ background: 'var(--bg-deep)', overflow: 'hidden' }}>
       <FluidBackground />
       
       {/* Sidebar wrapper — overflow visible so the edge toggle button isn't clipped */}
       <div style={{ position: 'relative', zIndex: 10, flexShrink: 0 }}>
-      <nav className="sidebar-glass" style={{
-        width: collapsed ? 68 : 220,
+      <nav style={{
+        width: collapsed ? 64 : 200,
         display: 'flex',
         flexDirection: 'column',
-        transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'width 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
         overflow: 'hidden',
         position: 'relative',
         height: '100%',
+        background: 'var(--bg-deep)',
+        borderRadius: 0,
       }}>
         {/* Logo */}
-        <div style={{ padding: collapsed ? 16 : 24, display: 'flex', alignItems: 'center', gap: 12 }}>
-          {messages.length === 0 && (
-            <img
-              src="/logo.png"
-              alt="CropGPT"
-              style={{ width: 40, height: 40, borderRadius: 10, objectFit: 'cover', flexShrink: 0 }}
-            />
-          )}
+        <div style={{ padding: collapsed ? '24px 0' : '28px 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <img
+            src="/logo.png"
+            alt="CropGPT"
+            style={{ width: 28, height: 28, borderRadius: 6, objectFit: 'cover', flexShrink: 0 }}
+          />
           {!collapsed && (
             <div style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
-              <h1 style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>
+              <h1 style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>
                 CropGPT
               </h1>
-              <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>Agriculture Madagascar</p>
             </div>
           )}
         </div>
 
         {/* Nav Items */}
-        <div style={{ flex: 1, padding: collapsed ? 8 : 16, display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div style={{ flex: 1, padding: collapsed ? '0' : '8px 20px', display: 'flex', flexDirection: 'column', gap: 0 }}>
           <SidebarItem icon={<Home size={20} strokeWidth={1.5} />} label="Dashboard" collapsed={collapsed} active={currentPage === 'dashboard'} onClick={() => setCurrentPage('dashboard')} />
+          <SidebarItem icon={<Map size={20} strokeWidth={1.5} />} label="Carte 3D" collapsed={collapsed} active={currentPage === 'map3d'} onClick={() => setCurrentPage('map3d')} />
           <SidebarItem icon={<MessageSquare size={20} strokeWidth={1.5} />} label="Chat" collapsed={collapsed} active={currentPage === 'chat'} onClick={() => setCurrentPage('chat')} />
           <SidebarItem icon={<CloudRain size={20} strokeWidth={1.5} />} label="Prévisions" collapsed={collapsed} active={currentPage === 'forecast'} onClick={() => setCurrentPage('forecast')} />
           <SidebarItem icon={<Settings size={20} strokeWidth={1.5} />} label="Paramètres" collapsed={collapsed} active={currentPage === 'settings'} onClick={() => setCurrentPage('settings')} />
@@ -418,36 +418,27 @@ useEffect(() => {
         </div>
 
         {/* User info */}
-        <div style={{ padding: collapsed ? 8 : 16 }}>
+        <div style={{ padding: collapsed ? '0 0 16px' : '0 20px 20px' }}>
           {/* Theme toggle */}
           {!collapsed && (
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              padding: '8px 12px', marginBottom: 12, borderRadius: 12,
-              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
-            }}>
-              <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>Thème</span>
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  width: 36, height: 20, borderRadius: 10, border: 'none', cursor: 'pointer',
-                  background: darkMode ? 'linear-gradient(135deg, #1E293B, #0F172A)' : 'linear-gradient(135deg, #FCD34D, #F59E0B)',
-                  position: 'relative', transition: 'background 0.3s',
-                }}
-              >
-                <div style={{
-                  width: 16, height: 16, borderRadius: '50%',
-                  background: 'white',
-                  position: 'absolute',
-                  left: darkMode ? 2 : 18,
-                  transition: 'left 0.3s',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  {darkMode ? <Moon size={10} style={{ color: '#6366F1' }} /> : <Sun size={10} style={{ color: '#F59E0B' }} />}
-                </div>
-              </button>
-            </div>
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                width: '100%', padding: '8px 0', marginBottom: 8,
+                background: 'transparent', border: 'none', cursor: 'pointer',
+                color: 'rgba(255,255,255,0.42)',
+                transition: 'color 0.18s ease',
+                fontSize: 11, fontWeight: 500,
+                letterSpacing: '0.14em', textTransform: 'uppercase',
+                fontFamily: 'var(--font-body)',
+              }}
+              onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.85)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.42)'}
+            >
+              <span>Thème</span>
+              {darkMode ? <Moon size={13} strokeWidth={1.5} /> : <Sun size={13} strokeWidth={1.5} />}
+            </button>
           )}
           {collapsed && (
             <button
@@ -465,18 +456,16 @@ useEffect(() => {
             </button>
           )}
           {!collapsed && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 8, marginBottom: 8, borderRadius: 12 }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: '50%',
-                background: 'linear-gradient(135deg, #10B981, #059669)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-              }}>
-                <User size={16} style={{ color: 'white' }} />
-              </div>
-              <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
-                <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{userInfo.name}</p>
-                <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{userInfo.isAdmin ? 'Admin' : 'Connecté'}</p>
-              </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '12px 0 4px', borderTop: '1px solid var(--border-subtle)' }}>
+              <p style={{
+                fontSize: 13.5, fontWeight: 600, color: 'var(--text-primary)',
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                letterSpacing: '-0.01em',
+              }}>{userInfo.name}</p>
+              <p style={{
+                fontSize: 10, color: 'var(--text-muted)',
+                letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500,
+              }}>{userInfo.isAdmin ? 'Admin' : 'Connecté'}</p>
             </div>
           )}
           
@@ -505,21 +494,21 @@ useEffect(() => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         style={{
-          position: 'absolute', right: -12, top: 80,
-          width: 24, height: 24, borderRadius: '50%',
-          background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)',
-          color: 'var(--text-primary)', cursor: 'pointer',
+          position: 'absolute', right: -10, top: 84,
+          width: 20, height: 20, borderRadius: '50%',
+          background: 'var(--bg-deep)',
+          border: '1px solid var(--border-subtle)',
+          color: 'rgba(255,255,255,0.5)', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: 30, backdropFilter: 'blur(8px)',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          zIndex: 30,
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = 'rgba(16,185,129,0.6)';
-          e.currentTarget.style.boxShadow = '0 0 12px rgba(16,185,129,0.3)';
+          e.currentTarget.style.color = 'rgba(255,255,255,1)';
+          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-subtle)';
-          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+          e.currentTarget.style.color = 'rgba(255,255,255,0.5)';
+          e.currentTarget.style.borderColor = 'rgba(77, 255, 145, 0.08)';
         }}
       >
         <motion.span
@@ -533,16 +522,18 @@ useEffect(() => {
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col overflow-hidden" style={{ position: 'relative', zIndex: 1 }}>
+      <main className="flex-1 flex flex-col" style={{ position: 'relative', zIndex: 1, height: '100vh' }}>
         {currentPage === 'chat'
           ? <AgriculturalChat />
           : currentPage === 'dashboard'
             ? <DashboardPage />
-            : currentPage === 'forecast'
-              ? <ForecastPage />
-              : currentPage === 'settings'
-                ? <SettingsPage />
-                : <UsersPage />
+            : currentPage === 'map3d'
+              ? <RegionalNavigation />
+              : currentPage === 'forecast'
+                ? <ForecastPage />
+                : currentPage === 'settings'
+                  ? <SettingsPage />
+                  : <UsersPage />
         }
       </main>
     </div>
@@ -573,8 +564,13 @@ export default function App() {
 // Défini en dehors de SettingsPage pour éviter la perte de focus à chaque frappe
 function PwdField({ label, value, onChange, show, setShow }) {
   return (
-    <div style={{ marginBottom: 16 }}>
-      <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 6 }}>{label}</label>
+    <div style={{ marginBottom: 24 }}>
+      <label style={{
+        display: 'block',
+        fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+        textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+        marginBottom: 8,
+      }}>{label}</label>
       <div style={{ position: 'relative' }}>
         <input
           type={show ? 'text' : 'password'}
@@ -582,14 +578,27 @@ function PwdField({ label, value, onChange, show, setShow }) {
           onChange={e => onChange(e.target.value)}
           required
           style={{
-            width: '100%', padding: '12px 44px 12px 16px', borderRadius: 12,
-            background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-            color: 'var(--text-primary)', outline: 'none',
+            width: '100%', padding: '10px 36px 10px 0',
+            background: 'transparent',
+            border: 'none',
+            borderBottom: '1px solid var(--border-subtle)',
+            borderRadius: 0,
+            color: '#FFFFFF', outline: 'none',
+            fontSize: 15, fontFamily: 'var(--font-body)',
+            letterSpacing: show ? '0' : '0.18em',
           }}
         />
         <button type="button" onClick={() => setShow(!show)}
-          style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
-          {show ? <EyeOff size={18} /> : <Eye size={18} />}
+          style={{
+            position: 'absolute', right: 0, top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'none', border: 'none',
+            color: 'rgba(255,255,255,0.42)', cursor: 'pointer',
+            transition: 'color 0.18s ease',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = '#FFFFFF'}
+          onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.42)'}>
+          {show ? <EyeOff size={16} strokeWidth={1.5} /> : <Eye size={16} strokeWidth={1.5} />}
         </button>
       </div>
     </div>
@@ -598,15 +607,24 @@ function PwdField({ label, value, onChange, show, setShow }) {
 
 function SettingsAlert({ msg }) {
   if (!msg) return null;
+  const isSuccess = msg.type === 'success';
   return (
     <div style={{
-      display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderRadius: 12,
-      fontSize: 13, marginBottom: 16,
-      background: msg.type === 'success' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
-      border: msg.type === 'success' ? '1px solid rgba(16,185,129,0.2)' : '1px solid rgba(239,68,68,0.2)',
-      color: msg.type === 'success' ? '#34D399' : '#F87171',
+      display: 'flex', alignItems: 'center', gap: 10,
+      padding: '10px 0',
+      marginBottom: 20,
+      borderLeft: isSuccess ? '2px solid #4DFF91' : '2px solid #EF4444',
+      paddingLeft: 14,
+      fontSize: 13,
+      color: isSuccess ? 'rgba(255,255,255,0.85)' : '#F87171',
     }}>
-      {msg.type === 'success' ? <CheckCircle size={16} /> : <AlertCircle size={16} />}
+      {isSuccess
+        ? <span style={{
+            width: 5, height: 5, borderRadius: '50%',
+            background: '#4DFF91', flexShrink: 0,
+            animation: 'biolum 2.4s ease-in-out infinite',
+          }} />
+        : <AlertCircle size={14} />}
       {msg.text}
     </div>
   );
@@ -683,36 +701,86 @@ function SettingsPage() {
     }
   };
 
-  return (
-    <div ref={containerRef} className="flex-1 overflow-y-auto" style={{ background: 'transparent', position: 'relative' }}>
-      <FluidBackground />
+  // Solid CTA styling shared between forms
+  const ctaStyle = (loading) => ({
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    width: '100%', maxWidth: 280, padding: '14px 22px',
+    background: loading ? 'rgba(77, 255, 145, 0.30)' : '#4DFF91',
+    color: '#001A10',
+    fontSize: 11, fontWeight: 700,
+    letterSpacing: '0.16em', textTransform: 'uppercase',
+    border: 'none', cursor: loading ? 'wait' : 'pointer',
+    transition: 'transform 0.18s ease',
+    fontFamily: 'var(--font-body)',
+  });
 
-      {/* Header */}
-      <div className="settings-header" style={{ background: 'transparent', padding: '32px 40px 16px', position: 'relative', zIndex: 1 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-display)', letterSpacing: '-0.5px' }}>
-          Paramètres
+  return (
+    <div ref={containerRef} className="flex-1 overflow-y-auto" style={{ background: 'var(--bg-deep)', position: 'relative' }}>
+
+      {/* Hero header */}
+      <div className="settings-header" style={{
+        padding: '40px 56px 28px',
+        borderBottom: '1px solid var(--border-subtle)',
+      }}>
+        <p style={{
+          fontSize: 10, fontWeight: 600, letterSpacing: '0.18em',
+          textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+          margin: 0, marginBottom: 10,
+        }}>
+          Paramètres · Compte
+        </p>
+        <h2 style={{
+          fontSize: 'clamp(40px, 5vw, 64px)',
+          fontWeight: 700,
+          fontFamily: 'var(--font-display)',
+          letterSpacing: '-0.045em',
+          lineHeight: 0.95,
+          color: '#FFFFFF',
+          margin: 0,
+        }}>
+          {name || 'Bonjour'}
         </h2>
-        <p style={{ color: 'var(--text-muted)', marginTop: 4, fontSize: 14 }}>
-          Gérez les informations de votre compte
+        <p style={{
+          color: 'rgba(255,255,255,0.55)',
+          fontSize: 14,
+          margin: 0, marginTop: 12,
+          fontFamily: 'var(--font-body)',
+        }}>
+          {email || 'Gérez les informations de votre compte.'}
         </p>
       </div>
 
-      <div style={{ padding: '0 40px 48px', maxWidth: 640, position: 'relative', zIndex: 1 }}>
+      <div style={{ padding: '32px 56px 64px', maxWidth: 720, margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
 
         {/* ─── Section : Informations du profil ─── */}
-        <div className="settings-section" style={{ marginBottom: 48 }}>
-          <div style={{ marginBottom: 24, paddingBottom: 12, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <h3 style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)' }}>
-              Informations du profil
-            </h3>
-            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2 }}>
-              Modifiez votre nom d'affichage
-            </p>
-          </div>
+        <div className="settings-section" style={{ marginBottom: 56 }}>
+          <p style={{
+            fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+            textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+            margin: 0, marginBottom: 6,
+          }}>
+            Profil
+          </p>
+          <h3 style={{
+            fontSize: 22, fontWeight: 700, color: '#FFFFFF',
+            margin: 0, marginBottom: 4,
+            letterSpacing: '-0.02em',
+            fontFamily: 'var(--font-display)',
+          }}>
+            Informations
+          </h3>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: 0, marginBottom: 28 }}>
+            Modifiez votre nom d'affichage. L'adresse email est définitive.
+          </p>
 
           <form onSubmit={handleNameSubmit}>
-            <div className="settings-field" style={{ marginBottom: 20 }}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 8 }}>
+            <div className="settings-field" style={{ marginBottom: 24 }}>
+              <label style={{
+                display: 'block',
+                fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+                textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+                marginBottom: 8,
+              }}>
                 Adresse email
               </label>
               <input
@@ -720,18 +788,26 @@ function SettingsPage() {
                 value={email}
                 disabled
                 style={{
-                  width: '100%', padding: '12px 16px', borderRadius: 12,
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
-                  color: 'var(--text-muted)', cursor: 'not-allowed', outline: 'none', boxSizing: 'border-box',
+                  width: '100%', padding: '10px 0',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: '1px solid var(--border-subtle)',
+                  borderRadius: 0,
+                  color: 'rgba(255,255,255,0.45)',
+                  cursor: 'not-allowed', outline: 'none',
+                  fontSize: 15, fontFamily: 'var(--font-body)',
+                  boxSizing: 'border-box',
                 }}
               />
-              <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 6 }}>
-                L'adresse email ne peut pas être modifiée.
-              </p>
             </div>
 
-            <div className="settings-field" style={{ marginBottom: 24 }}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 8 }}>
+            <div className="settings-field" style={{ marginBottom: 28 }}>
+              <label style={{
+                display: 'block',
+                fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+                textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+                marginBottom: 8,
+              }}>
                 Nom complet
               </label>
               <input
@@ -741,10 +817,14 @@ function SettingsPage() {
                 required
                 placeholder="Votre nom"
                 style={{
-                  width: '100%', padding: '12px 16px', borderRadius: 12,
-                  background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-                  color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box',
-                  transition: 'border-color 0.2s',
+                  width: '100%', padding: '10px 0',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: '1px solid var(--border-subtle)',
+                  borderRadius: 0,
+                  color: '#FFFFFF', outline: 'none',
+                  fontSize: 15, fontFamily: 'var(--font-body)',
+                  boxSizing: 'border-box',
                 }}
               />
             </div>
@@ -755,33 +835,43 @@ function SettingsPage() {
               <button
                 type="submit"
                 disabled={nameLoading}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px',
-                  background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white',
-                  fontWeight: 500, borderRadius: 12, border: 'none', cursor: 'pointer',
-                  opacity: nameLoading ? 0.6 : 1, transition: 'opacity 0.2s',
-                }}
+                style={ctaStyle(nameLoading)}
+                onMouseEnter={e => { if (!nameLoading) e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
               >
-                <Save size={16} />
-                {nameLoading ? 'Enregistrement...' : 'Enregistrer les modifications'}
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+                  <Save size={14} strokeWidth={2.5} />
+                  {nameLoading ? 'Enregistrement' : 'Enregistrer'}
+                </span>
+                {!nameLoading && <ChevronRight size={14} strokeWidth={2.5} />}
               </button>
             </div>
           </form>
         </div>
 
-        {/* ─── Divider ─── */}
-        <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', marginBottom: 48 }} />
-
         {/* ─── Section : Sécurité ─── */}
-        <div className="settings-section">
-          <div style={{ marginBottom: 24, paddingBottom: 12, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <h3 style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)' }}>
-              Changer le mot de passe
-            </h3>
-            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2 }}>
-              Minimum 8 caractères
-            </p>
-          </div>
+        <div className="settings-section" style={{
+          paddingTop: 48,
+          borderTop: '1px solid var(--border-subtle)',
+        }}>
+          <p style={{
+            fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+            textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+            margin: 0, marginBottom: 6,
+          }}>
+            Sécurité
+          </p>
+          <h3 style={{
+            fontSize: 22, fontWeight: 700, color: '#FFFFFF',
+            margin: 0, marginBottom: 4,
+            letterSpacing: '-0.02em',
+            fontFamily: 'var(--font-display)',
+          }}>
+            Mot de passe
+          </h3>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: 0, marginBottom: 28 }}>
+            Minimum 8 caractères.
+          </p>
 
           <form onSubmit={handlePwdSubmit}>
             <div className="settings-field">
@@ -800,15 +890,15 @@ function SettingsPage() {
               <button
                 type="submit"
                 disabled={pwdLoading}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px',
-                  background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white',
-                  fontWeight: 500, borderRadius: 12, border: 'none', cursor: 'pointer',
-                  opacity: pwdLoading ? 0.6 : 1, transition: 'opacity 0.2s',
-                }}
+                style={ctaStyle(pwdLoading)}
+                onMouseEnter={e => { if (!pwdLoading) e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
               >
-                <Lock size={16} />
-                {pwdLoading ? 'Mise à jour...' : 'Mettre à jour le mot de passe'}
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+                  <Lock size={14} strokeWidth={2.5} />
+                  {pwdLoading ? 'Mise à jour' : 'Mettre à jour'}
+                </span>
+                {!pwdLoading && <ChevronRight size={14} strokeWidth={2.5} />}
               </button>
             </div>
           </form>
@@ -836,31 +926,58 @@ function NavItem({ icon, label, active, onClick }) {
 }
 
 function SidebarItem({ icon, label, collapsed, active, onClick }) {
+  const [hovered, setHovered] = React.useState(false);
+
+  const getColor = () => {
+    if (active) return '#FFFFFF';
+    if (hovered) return 'rgba(255,255,255,0.85)';
+    return 'rgba(255,255,255,0.42)';
+  };
+
   return (
     <button
       onClick={onClick}
-      className={`sidebar-item${active ? ' active' : ''}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
         display: 'flex',
         alignItems: 'center',
+        position: 'relative',
         justifyContent: collapsed ? 'center' : 'flex-start',
         gap: 12,
-        padding: collapsed ? '12px' : '12px 16px',
-        borderRadius: 12,
+        padding: collapsed ? '10px 0' : '9px 0',
+        borderRadius: 0,
         cursor: 'pointer',
-        background: active ? 'rgba(16,185,129,0.15)' : 'transparent',
-        color: active ? '#10B981' : 'var(--text-secondary)',
-        border: active ? '1px solid rgba(16,185,129,0.3)' : '1px solid transparent',
+        background: 'transparent',
+        color: getColor(),
+        border: 'none',
         width: '100%',
-        marginBottom: 4,
-        transition: 'background 0.15s ease, color 0.15s ease, border-color 0.15s ease',
+        marginBottom: 0,
+        fontFamily: 'var(--font-body)',
+        transition: 'color 0.18s ease',
       }}
     >
-      <span style={{ flexShrink: 0, display: 'inline-flex' }}>{icon}</span>
+      <span style={{ flexShrink: 0, display: 'inline-flex', opacity: active ? 1 : 0.7 }}>{icon}</span>
       {!collapsed && (
-        <span style={{ fontSize: 14, fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <span style={{
+          fontSize: 13.5,
+          fontWeight: active ? 600 : 400,
+          letterSpacing: '-0.005em',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        }}>
           {label}
         </span>
+      )}
+      {active && !collapsed && (
+        <span style={{
+          marginLeft: 'auto',
+          width: 5, height: 5, borderRadius: '50%',
+          background: '#4DFF91',
+          animation: 'biolum 2.4s ease-in-out infinite',
+          flexShrink: 0,
+        }} />
       )}
     </button>
   );
@@ -924,56 +1041,63 @@ function UsersPage() {
         <p style={{ color: 'var(--text-secondary)', marginTop: 4, fontSize: 14 }}>{total} utilisateur{total !== 1 ? 's' : ''} inscrit{total !== 1 ? 's' : ''}</p>
       </div>
 
-      <div style={{ padding: '0 32px 32px', position: 'relative', zIndex: 1 }}>
-        {/* Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 24 }}>
+      <div style={{ padding: '0 40px 40px', position: 'relative', zIndex: 1 }}>
+        {/* Stats — typography hero, statskog-style */}
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 0, marginBottom: 56, marginTop: 16,
+          borderTop: '1px solid var(--border-subtle)',
+          borderBottom: '1px solid var(--border-subtle)',
+        }}>
           {[
-            { label: 'Total utilisateurs', value: total,  icon: <Users size={22} style={{ color: 'white' }} />,  color: '#3B82F6'   },
-            { label: 'Administrateurs',    value: admins, icon: <Shield size={22} style={{ color: 'white' }} />, color: '#8B5CF6' },
-            { label: 'Comptes actifs',     value: actifs, icon: <UserCheck size={22} style={{ color: 'white' }} />, color: '#10B981' },
+            { label: 'Total utilisateurs', value: total },
+            { label: 'Administrateurs',    value: admins },
+            { label: 'Comptes actifs',     value: actifs },
           ].map((s, i) => (
             <div key={i} style={{
-              background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 20,
-              display: 'flex', alignItems: 'center', gap: 16, transition: 'all 0.3s',
+              padding: '32px 0',
+              borderRight: i < 2 ? '1px solid var(--border-subtle)' : 'none',
+              paddingLeft: i === 0 ? 0 : 32,
             }}>
-              <div style={{
-                width: 56, height: 56, borderRadius: 14, background: s.color,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: `0 4px 12px ${s.color}40`,
-              }}>
-                {s.icon}
-              </div>
-              <div>
-                <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{s.label}</p>
-                <p style={{ fontSize: 32, fontWeight: 700, color: '#FFFFFF' }}>{s.value}</p>
-              </div>
+              <p style={{
+                fontSize: 10, fontWeight: 600,
+                letterSpacing: '0.16em', textTransform: 'uppercase',
+                color: 'var(--text-muted)', margin: 0, marginBottom: 14,
+              }}>{s.label}</p>
+              <p style={{
+                fontSize: 'clamp(48px, 5vw, 72px)', fontWeight: 700,
+                color: '#FFFFFF', margin: 0, lineHeight: 0.95,
+                letterSpacing: '-0.04em', fontFamily: 'var(--font-display)',
+                fontVariantNumeric: 'tabular-nums',
+              }}>{s.value}</p>
             </div>
           ))}
         </div>
 
-        {/* Table card */}
-        <div style={{
-          background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden',
-        }}>
-          {/* Search bar */}
-          <div style={{ padding: '16px 24px', display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ position: 'relative', flex: 1, maxWidth: 280 }}>
-              <Search size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+        {/* Table — flat, no card frame */}
+        <div style={{ background: 'transparent' }}>
+          {/* Search — flat, just a border-bottom */}
+          <div style={{ padding: '0 0 16px', display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+            <div style={{ position: 'relative', flex: 1, maxWidth: 320 }}>
+              <Search size={14} style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
               <input
                 type="text"
-                placeholder="Rechercher par nom ou email..."
+                placeholder="Rechercher..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 style={{
-                  width: '100%', paddingLeft: 36, paddingRight: 16, paddingTop: 8, paddingBottom: 8,
-                  background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 12, color: 'var(--text-primary)', fontSize: 13, outline: 'none',
+                  width: '100%', paddingLeft: 24, paddingRight: 0, paddingTop: 10, paddingBottom: 10,
+                  background: 'transparent', border: 'none',
+                  borderBottom: '1px solid var(--border-subtle)',
+                  borderRadius: 0, color: 'var(--text-primary)', fontSize: 14, outline: 'none',
+                  fontFamily: 'var(--font-body)',
                 }}
               />
             </div>
-            <span style={{ fontSize: 13, color: 'var(--text-muted)', marginLeft: 'auto' }}>{filtered.length} résultat{filtered.length !== 1 ? 's' : ''}</span>
+            <span style={{
+              fontSize: 10, color: 'var(--text-muted)', marginLeft: 'auto',
+              letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500,
+            }}>{filtered.length} résultat{filtered.length !== 1 ? 's' : ''}</span>
           </div>
 
           {/* Table */}
@@ -985,49 +1109,51 @@ function UsersPage() {
             <div style={{ padding: 64, textAlign: 'center', color: 'var(--text-muted)' }}>Aucun utilisateur trouvé.</div>
           ) : (
             <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                    <th style={{ textAlign: 'left', padding: '12px 24px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Utilisateur</th>
-                    <th style={{ textAlign: 'left', padding: '12px 24px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email</th>
-                    <th style={{ textAlign: 'left', padding: '12px 24px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Rôle</th>
-                    <th style={{ textAlign: 'left', padding: '12px 24px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Statut</th>
-                    <th style={{ textAlign: 'left', padding: '12px 24px', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Inscrit le</th>
+                  <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                    {['Utilisateur','Email','Rôle','Statut','Inscrit le'].map(h => (
+                      <th key={h} style={{
+                        textAlign: 'left', padding: '14px 0 14px 0',
+                        paddingRight: 24, fontSize: 10, fontWeight: 600,
+                        color: 'var(--text-muted)', textTransform: 'uppercase',
+                        letterSpacing: '0.14em',
+                      }}>{h}</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map(user => (
-                    <tr key={user.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'background 0.2s' }}>
-                      <td style={{ padding: '16px 24px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                          <UserAvatar name={user.name} isAdmin={user.is_staff} />
-                          <span style={{ fontWeight: 500, color: '#FFFFFF' }}>{user.name}</span>
-                        </div>
+                    <tr key={user.id} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                      <td style={{ padding: '18px 24px 18px 0' }}>
+                        <span style={{ fontWeight: 500, color: '#FFFFFF', fontSize: 14 }}>{user.name}</span>
                       </td>
-                      <td style={{ padding: '16px 24px', fontSize: 13, color: 'var(--text-secondary)' }}>{user.email}</td>
-                      <td style={{ padding: '16px 24px' }}>
-                        {user.is_staff ? (
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 10px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: 'rgba(139,92,246,0.15)', color: '#A78BFA' }}>
-                            <Shield size={11} /> Admin
-                          </span>
-                        ) : (
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 10px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: 'rgba(16,185,129,0.15)', color: '#34D399' }}>
-                            <User size={11} /> Utilisateur
-                          </span>
-                        )}
+                      <td style={{ padding: '18px 24px 18px 0', fontSize: 13, color: 'var(--text-secondary)' }}>{user.email}</td>
+                      <td style={{ padding: '18px 24px 18px 0' }}>
+                        <span style={{
+                          fontSize: 11, fontWeight: 500, letterSpacing: '0.10em',
+                          textTransform: 'uppercase',
+                          color: user.is_staff ? '#D4944A' : 'rgba(255,255,255,0.6)',
+                        }}>
+                          {user.is_staff ? 'Admin' : 'Utilisateur'}
+                        </span>
                       </td>
-                      <td style={{ padding: '16px 24px' }}>
-                        {user.is_active ? (
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 10px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: 'rgba(16,185,129,0.15)', color: '#34D399' }}>
-                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', display: 'inline-block' }}></span> Actif
-                          </span>
-                        ) : (
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 10px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>
-                            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#6B7280', display: 'inline-block' }}></span> Inactif
-                          </span>
-                        )}
+                      <td style={{ padding: '18px 24px 18px 0' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                          <span style={{
+                            width: 5, height: 5, borderRadius: '50%',
+                            background: user.is_active ? '#4DFF91' : 'rgba(255,255,255,0.25)',
+                            animation: user.is_active ? 'biolum 2.4s ease-in-out infinite' : 'none',
+                            display: 'inline-block',
+                          }}></span>
+                          <span style={{
+                            fontSize: 11, fontWeight: 500, letterSpacing: '0.10em',
+                            textTransform: 'uppercase',
+                            color: user.is_active ? 'rgba(255,255,255,0.85)' : 'var(--text-muted)',
+                          }}>{user.is_active ? 'Actif' : 'Inactif'}</span>
+                        </span>
                       </td>
-                      <td style={{ padding: '16px 24px', fontSize: 13, color: 'var(--text-muted)' }}>{formatDate(user.created_at)}</td>
+                      <td style={{ padding: '18px 24px 18px 0', fontSize: 13, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>{formatDate(user.created_at)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1067,7 +1193,7 @@ function RAGScoreGauge({ score, totalSources }) {
   
   return (
     <div className="score-gauge" style={{ marginBottom: 12 }}>
-      <div style={{ fontSize: 12, fontWeight: 600, color: '#A78BFA', display: 'flex', alignItems: 'center', gap: 6 }}>
+      <div style={{ fontSize: 12, fontWeight: 600, color: '#D4944A', display: 'flex', alignItems: 'center', gap: 6 }}>
         <Brain size={14} />
         <span>RAG</span>
       </div>
@@ -1147,7 +1273,7 @@ function TerminalThinking({ steps }) {
     if (isLast) {
       return <div className="terminal-spinner" />;
     }
-    return <CheckCircle size={12} style={{ color: '#10B981' }} />;
+    return <CheckCircle size={12} style={{ color: '#4DFF91' }} />;
   };
   
   const getStepClass = (step) => {
@@ -1159,7 +1285,7 @@ function TerminalThinking({ steps }) {
   
   return (
     <div className="terminal-thinking" style={{ marginBottom: 12 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, color: '#8B5CF6', fontSize: 12, fontWeight: 600 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, color: '#C17F3A', fontSize: 12, fontWeight: 600 }}>
         <FlaskConical size={14} />
         <span>ANALYSE</span>
       </div>
@@ -1238,7 +1364,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
               width: 80,
               height: 80,
               borderRadius: 24,
-              background: 'linear-gradient(135deg, #10B981, #059669)',
+              background: 'linear-gradient(135deg, #4DFF91, #33C96E)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -1251,12 +1377,12 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                 position: 'absolute',
                 inset: -3,
                 borderRadius: 27,
-                background: 'linear-gradient(135deg, #22D3EE, #A78BFA)',
+                background: 'linear-gradient(135deg, #4DFF91, #D4944A)',
                 zIndex: -1,
                 opacity: 0.6
               }} />
             </div>
-            
+
             <h1 className="welcome-title">Bonjour, Agriculteur</h1>
             <h2 className="welcome-subtitle">Comment puis-je vous aider?</h2>
             <p style={{ color: 'var(--text-secondary)', marginBottom: 32, maxWidth: 400 }}>
@@ -1275,7 +1401,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                     width: 40,
                     height: 40,
                     borderRadius: 12,
-                    background: 'linear-gradient(135deg, #10B981, #059669)',
+                    background: 'linear-gradient(135deg, #4DFF91, #33C96E)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -1331,7 +1457,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                     width:40,
                     height:40,
                     flexShrink:0,
-                    background: 'linear-gradient(135deg, #10B981, #059669)',
+                    background: 'linear-gradient(135deg, #4DFF91, #33C96E)',
                     borderRadius: 12,
                     display:'flex',
                     alignItems:'center',
@@ -1344,7 +1470,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                       position: 'absolute',
                       inset: -2,
                       borderRadius: 14,
-                      background: 'linear-gradient(135deg, #22D3EE, #A78BFA)',
+                      background: 'linear-gradient(135deg, #4DFF91, #D4944A)',
                       zIndex: -1,
                       opacity: 0.5
                     }} />
@@ -1363,7 +1489,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                       <span style={{
                         fontSize: 13,
                         fontWeight: 600,
-                        color: '#10B981',
+                        color: '#4DFF91',
                         letterSpacing: '0.01em'
                       }}>
                         CropGPT
@@ -1526,7 +1652,7 @@ const REGIONS_STATS_UNUSED = {
   "Atsinanana":          { capital:"Toamasina",              pop:"1.3 M",   growth:"+3.6%", positive:true,  surface:"21 934 km²", sparkline:[52,54,56,55,58,60,63], note:"Premier port de Madagascar. Corridor économique vers Antananarivo, hub logistique.", crops:"Girofle · Café · Cacao", accent:"#6366f1" },
   "Vakinankaratra":      { capital:"Antsirabe",              pop:"1.8 M",   growth:"+3.0%", positive:true,  surface:"16 599 km²", sparkline:[56,58,60,59,62,64,67], note:"Deuxième ville, capitale industrielle. Brasseries, textile et tourisme thermal.", crops:"Riz · Pomme de terre · Blé", accent:"#14b8a6" },
   "Amoron'i Mania":      { capital:"Ambositra",              pop:"730 K",   growth:"+2.1%", positive:true,  surface:"16 141 km²", sparkline:[33,34,35,34,36,36,38], note:"Capitale de l'artisanat malgache, notamment la marqueterie en bois précieux.", crops:"Riz · Maïs · Patate douce", accent:"#f59e0b" },
-  "Menabe":              { capital:"Morondava",              pop:"620 K",   growth:"+2.4%", positive:true,  surface:"46 121 km²", sparkline:[28,29,30,30,32,31,33], note:"Allée des baobabs, site touristique majeur. Pêche artisanale et production de sel.", crops:"Maïs · Manioc · Coton", accent:"#22d3ee" },
+  "Menabe":              { capital:"Morondava",              pop:"620 K",   growth:"+2.4%", positive:true,  surface:"46 121 km²", sparkline:[28,29,30,30,32,31,33], note:"Allée des baobabs, site touristique majeur. Pêche artisanale et production de sel.", crops:"Maïs · Manioc · Coton", accent:"#4DFF91" },
   "Haute Matsiatra":     { capital:"Fianarantsoa",           pop:"1.2 M",   growth:"+2.8%", positive:true,  surface:"21 080 km²", sparkline:[45,46,48,47,50,50,52], note:"Capitale culturelle du Sud. Vignobles, enseignement supérieur et patrimoine colonial.", crops:"Riz · Maïs · Vigne", accent:"#7c3aed" },
   "Vatovavy-Fitovinany": { capital:"Manakara",               pop:"1.2 M",   growth:"+1.9%", positive:true,  surface:"19 136 km²", sparkline:[38,39,40,39,41,41,43], note:"Côte est, canal des Pangalanes. Café Robusta et girofle de qualité premium.", crops:"Café · Girofle · Riz", accent:"#e879f9" },
   "Ihorombe":            { capital:"Ihosy",                  pop:"304 K",   growth:"+1.6%", positive:true,  surface:"26 391 km²", sparkline:[16,17,17,18,18,19,20], note:"Porte du sud. Élevage zébu intensif et mines de chromite prometteuses.", crops:"Maïs · Manioc · Élevage", accent:"#fb7185" },

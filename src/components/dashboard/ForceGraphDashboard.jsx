@@ -2,13 +2,12 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { AnimatePresence } from 'framer-motion';
 import { GRAPH_DATA } from '../../data/madagascarGraphData';
-import { FluidBackground } from '../ui/FluidBackground';
 import { RegionSidebar } from './RegionSidebar';
 
 const NODE_COLOR = (node) => {
-  if (node.type === 'region') return node.accent ?? '#22d3ee';
-  if (node.type === 'stat')   return '#a855f7';
-  return '#22c55e';
+  if (node.type === 'region') return node.accent ?? '#4DFF91';
+  if (node.type === 'stat')   return '#C17F3A';
+  return '#7FB069';
 };
 
 export function ForceGraphDashboard() {
@@ -197,7 +196,7 @@ export function ForceGraphDashboard() {
     const s   = typeof link.source === 'object' ? link.source.id : link.source;
     const t   = typeof link.target === 'object' ? link.target.id : link.target;
     if (foc) {
-      if (s === foc.id || t === foc.id) return `${foc.accent || '#22d3ee'}aa`;
+      if (s === foc.id || t === foc.id) return `${foc.accent || '#4DFF91'}aa`;
       return 'rgba(255,255,255,0.01)';
     }
     if (sel) {
@@ -236,42 +235,41 @@ export function ForceGraphDashboard() {
 
   const getParticleColor = useCallback((link) => {
     const tgt = typeof link.target === 'object' ? link.target : null;
-    if (tgt?.type === 'stat') return '#a855f7';
-    if (tgt?.type === 'note') return '#22c55e';
-    return '#22d3ee';
+    if (tgt?.type === 'stat') return '#C17F3A';
+    if (tgt?.type === 'note') return '#7FB069';
+    return '#4DFF91';
   }, []);
 
   // Focused node label (cleaned)
   const focusLabel = focusedNode?.label.replace(/\[\[|\]\]/g, '');
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-      <FluidBackground />
-
-      {/* Background darkener */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'rgba(0,0,0,0.58)', pointerEvents: 'none' }} />
-
-      {/* ── Graph card ── */}
+    <div style={{
+      position: 'relative', width: '100%', height: '100%', overflow: 'hidden',
+      background: 'var(--bg-deep)',
+    }}>
+      {/* Title block — statskog-style large typography */}
       <div style={{
-        position: 'absolute',
-        inset: 18,
-        zIndex: 2,
-        background: 'rgba(4,4,12,0.88)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        borderRadius: 20,
-        overflow: 'hidden',
-        boxShadow: '0 0 0 1px rgba(0,0,0,0.6), 0 12px 80px rgba(0,0,0,0.85), inset 0 1px 0 rgba(255,255,255,0.04)',
+        position: 'absolute', top: 32, left: 40, zIndex: 9,
+        pointerEvents: 'none',
       }}>
-        {/* Neon top border accent */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 1, zIndex: 8,
-          background: 'linear-gradient(90deg, transparent 5%, rgba(34,211,238,0.3) 30%, rgba(168,85,247,0.3) 60%, rgba(34,197,94,0.22) 80%, transparent 95%)',
-          pointerEvents: 'none',
-        }} />
+        <p style={{
+          fontSize: 10, fontWeight: 600, letterSpacing: '0.18em',
+          textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+          margin: 0, marginBottom: 8,
+        }}>
+          Madagascar · Régions
+        </p>
+        <h1 style={{
+          fontSize: 'clamp(36px, 4vw, 56px)', fontWeight: 700,
+          letterSpacing: '-0.03em', lineHeight: 1, color: '#FFFFFF',
+          margin: 0, fontFamily: 'var(--font-display)',
+        }}>
+          22<span style={{ color: 'rgba(255,255,255,0.30)', fontWeight: 400 }}> régions</span>
+        </h1>
+      </div>
 
-        {/* Inner layout: graph + sidebar */}
+        {/* Inner layout: graph + sidebar — fills viewport */}
         <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
 
           {/* Graph canvas */}
@@ -316,83 +314,90 @@ export function ForceGraphDashboard() {
             )}
           </div>
 
-          {/* ── Status chip — bottom-left ── */}
+          {/* Status — bottom-left, pure typography, no chrome */}
           <div style={{
-            position: 'absolute', bottom: 14, left: 14, zIndex: 10,
-            background: 'rgba(0,0,0,0.72)',
-            backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 10, padding: '6px 12px',
-            display: 'flex', alignItems: 'center', gap: 7,
+            position: 'absolute', bottom: 32, left: 40, zIndex: 10,
+            display: 'flex', alignItems: 'center', gap: 10,
             pointerEvents: 'none',
           }}>
             <span style={{
-              width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-              background: focusedNode ? (focusedNode.accent || '#22c55e') : '#22c55e',
-              boxShadow: `0 0 8px ${focusedNode ? (focusedNode.accent || '#22c55e') : '#22c55e'}`,
+              width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
+              background: focusedNode ? (focusedNode.accent || '#4DFF91') : '#4DFF91',
+              animation: 'biolum 2.4s ease-in-out infinite',
               display: 'inline-block',
             }} />
-            <span style={{ fontSize: 10.5, color: 'rgba(255,255,255,0.42)', fontWeight: 500 }}>
+            <span style={{
+              fontSize: 10, fontWeight: 600, letterSpacing: '0.14em',
+              textTransform: 'uppercase', color: 'rgba(255,255,255,0.50)',
+            }}>
               {focusedNode
-                ? `${focusLabel} · ${connectedRef.current ? connectedRef.current.size - 1 : 0} relations`
-                : selectedNode ? selectedNode.label
-                : '22 régions · graphe vivant'}
+                ? `${connectedRef.current ? connectedRef.current.size - 1 : 0} relations`
+                : selectedNode ? 'sélection active'
+                : 'graphe vivant'}
             </span>
           </div>
 
-          {/* ── Legend — bottom-right ── */}
+          {/* Legend — bottom-right, typographic */}
           <div style={{
-            position: 'absolute', bottom: 14, right: sidebarW + 14, zIndex: 10,
-            background: 'rgba(0,0,0,0.72)',
-            backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 10, padding: '6px 12px',
-            display: 'flex', alignItems: 'center', gap: 11,
+            position: 'absolute', bottom: 32, right: sidebarW + 40, zIndex: 10,
+            display: 'flex', alignItems: 'center', gap: 24,
             pointerEvents: 'none',
             transition: 'right 0.32s cubic-bezier(0.4,0,0.2,1)',
           }}>
             {[
-              { color: '#22d3ee', label: 'Région' },
-              { color: '#a855f7', label: 'PIB / Pop' },
-              { color: '#22c55e', label: 'Notes' },
-            ].map(({ color, label }) => (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: color, boxShadow: `0 0 6px ${color}`, display: 'inline-block', flexShrink: 0 }} />
-                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.32)', fontWeight: 500 }}>{label}</span>
+              { color: '#4DFF91', label: 'Région' },
+              { color: '#C17F3A', label: 'PIB / Pop' },
+              { color: '#7FB069', label: 'Notes' },
+            ].map(({ color, label }, i) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                <span style={{
+                  width: 5, height: 5, borderRadius: '50%', background: color,
+                  display: 'inline-block', flexShrink: 0,
+                  animation: `biolum 2.4s ease-in-out ${i * 0.4}s infinite`,
+                }} />
+                <span style={{
+                  fontSize: 10, fontWeight: 500, letterSpacing: '0.10em',
+                  textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+                }}>{label}</span>
               </div>
             ))}
           </div>
 
-          {/* ── Hint — top-left (disappears once user interacts) ── */}
+          {/* Discrete hint — bottom-center */}
           {!focusedNode && !selectedNode && (
             <div style={{
-              position: 'absolute', top: 14, left: 14, zIndex: 10,
-              fontSize: 10, color: 'rgba(255,255,255,0.18)', fontStyle: 'italic',
-              pointerEvents: 'none',
+              position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)',
+              zIndex: 10, fontSize: 10, color: 'rgba(255,255,255,0.22)',
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+              pointerEvents: 'none', whiteSpace: 'nowrap',
             }}>
-              Cliquer un nœud → relations · Glisser → déplacer
+              Cliquer · Glisser · Zoomer
             </div>
           )}
 
-          {/* ── Focus mode escape hint ── */}
+          {/* Focus escape — minimal, no chrome */}
           {focusedNode && (
-            <div style={{
-              position: 'absolute', top: 14, left: 14, zIndex: 10,
-              display: 'flex', alignItems: 'center', gap: 7,
-              background: 'rgba(0,0,0,0.72)',
-              backdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255,255,255,0.07)',
-              borderRadius: 10, padding: '5px 11px',
-              cursor: 'pointer',
-            }}
+            <div
+              style={{
+                position: 'absolute', top: 32, right: sidebarW + 40, zIndex: 10,
+                display: 'flex', alignItems: 'center', gap: 8,
+                background: 'transparent', border: 'none', padding: 0,
+                cursor: 'pointer',
+                transition: 'right 0.32s cubic-bezier(0.4,0,0.2,1)',
+              }}
               onClick={() => { setFocusedNode(null); setSelectedNode(null); graphRef.current?.zoom(1.3, 700); }}
             >
-              <span style={{ fontSize: 11, color: focusedNode.accent || '#22d3ee', fontWeight: 600 }}>
+              <span style={{
+                fontSize: 10, fontWeight: 600,
+                letterSpacing: '0.14em', textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.85)',
+              }}>
                 {focusLabel}
               </span>
-              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>· cliquer pour quitter le focus</span>
+              <span style={{
+                fontSize: 10, color: 'rgba(255,255,255,0.32)',
+                letterSpacing: '0.04em',
+              }}>esc</span>
             </div>
           )}
 
@@ -411,7 +416,6 @@ export function ForceGraphDashboard() {
             )}
           </AnimatePresence>
         </div>
-      </div>
     </div>
   );
 }

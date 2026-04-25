@@ -24,7 +24,7 @@ export const PromptInput = React.forwardRef<HTMLDivElement, PromptInputProps>(
     <div
       ref={ref}
       className={cn(
-        "flex flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-glass)] px-4 py-3 focus-within:border-[var(--cyan-500)] focus-within:shadow-[0_0_20px_rgba(6,182,212,0.2)] transition-all",
+        "flex flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-glass)] px-4 py-3 focus-within:border-[var(--primary-500)] focus-within:shadow-[0_0_20px_rgba(77,255,145,0.15)] transition-all",
         isLoading && "opacity-80",
         className
       )}

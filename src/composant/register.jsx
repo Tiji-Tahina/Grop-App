@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, ArrowRight, Check } from 'lucide-react';
 import { authAPI, saveTokens } from '../api/auth';
 import { ImageMarquee } from '../components/ui/ImageMarquee';
-import { TextScramble } from '../components/ui/TextScramble';
+import img1 from '../assets/marquee/2148761816.webp';
+import img2 from '../assets/marquee/2149711095.webp';
+import img3 from '../assets/marquee/pexels-safari-consoler-3290243-11196645.webp';
+import img4 from '../assets/marquee/pexels-ateeq-photos-2152808415-32409512.webp';
+import img5 from '../assets/marquee/644.webp';
+import img6 from '../assets/marquee/campagne-litchi-madagascar.webp';
+import img7 from '../assets/marquee/BAOBAB-2-1290x540.webp';
 
-export default function AgricultureAISignup() {
+const MARQUEE_IMAGES = [img1, img2, img3, img4, img5, img6, img7];
+
+export default function Register() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -15,51 +24,6 @@ export default function AgricultureAISignup() {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [particles, setParticles] = useState([]);
-  const [scrambleKey, setScrambleKey] = useState(0);
-
-  useEffect(() => {
-    const newParticles = Array.from({ length: 40 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 3 + 1,
-      speedX: (Math.random() - 0.5) * 0.3,
-      speedY: (Math.random() - 0.5) * 0.3,
-      opacity: Math.random() * 0.5 + 0.3,
-    }));
-    setParticles(newParticles);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setParticles((prev) =>
-        prev.map((p) => ({
-          ...p,
-          x: (p.x + p.speedX + 100) % 100,
-          y: (p.y + p.speedY + 100) % 100,
-        }))
-      );
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 30,
-        y: (e.clientY / window.innerHeight - 0.5) * 30,
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => setScrambleKey(k => k + 1), 15000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,205 +61,316 @@ export default function AgricultureAISignup() {
     }
   };
 
-  const EyeIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-    </svg>
-  );
-  const EyeOffIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-    </svg>
-  );
+  // Shared input style
+  const flatInput = {
+    width: '100%',
+    padding: '10px 0',
+    background: 'transparent',
+    border: 'none',
+    borderBottom: '1px solid rgba(77,255,145,0.10)',
+    borderRadius: 0,
+    color: '#FFFFFF',
+    fontSize: 15,
+    outline: 'none',
+    fontFamily: 'var(--font-body)',
+    boxSizing: 'border-box',
+    transition: 'border-color 0.18s ease',
+  };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="relative min-h-screen overflow-hidden" style={{ background: 'var(--bg-deep, #00241F)' }}>
 
-      {/* Layer 0: Marquee background */}
+      {/* ── Marquee bg + forest tint ── */}
       <div className="fixed inset-0" style={{ zIndex: 0 }}>
-        <ImageMarquee speed={30} tileSize={280} />
+        <ImageMarquee speed={30} tileSize={280} imagesTop={MARQUEE_IMAGES} imagesBottom={MARQUEE_IMAGES} />
       </div>
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          zIndex: 1,
+          background: 'radial-gradient(ellipse at 30% 50%, rgba(0,36,31,0.92) 0%, rgba(0,36,31,0.78) 35%, rgba(0,36,31,0.55) 100%)',
+        }}
+      />
 
-      {/* Layer 2: Green ambient */}
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 2, opacity: 0.35 }}>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(34,197,94,0.12)_0%,transparent_50%)] animate-pulse-slow" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(22,163,74,0.08)_0%,transparent_50%)] animate-pulse-slower" />
-      </div>
-
-      {/* Layer 3: Noise */}
-      <div className="fixed inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ zIndex: 3,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-      }} />
-
-      {/* Layer 4: Field pattern */}
-      <div className="fixed inset-0 opacity-5 pointer-events-none" style={{ zIndex: 4,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 Q25,30 50,50 T100,50' stroke='%2322c55e' stroke-width='0.5' fill='none'/%3E%3Cpath d='M0,60 Q25,80 50,60 T100,60' stroke='%2316a34a' stroke-width='0.5' fill='none'/%3E%3C/svg%3E")`,
-        backgroundSize: '100px 100px',
-      }} />
-
-      {/* Layer 5: Particles */}
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 5 }}>
-        {particles.map((p) => (
-          <div key={p.id} className="absolute w-1 h-1 rounded-full bg-green-400/40 blur-[1px]"
-            style={{ left: `${p.x}%`, top: `${p.y}%`, opacity: p.opacity, boxShadow: '0 0 10px rgba(34,197,94,0.5)' }} />
-        ))}
-      </div>
-
-      {/* Main */}
+      {/* ── Main ── */}
       <div className="relative flex min-h-screen" style={{ zIndex: 10 }}>
-        {/* Left panel */}
+
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-[120px] animate-pulse-glow"
-            style={{ transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)` }} />
 
-          <div className="relative w-full max-w-md">
-            <div className="relative bg-[#0d1612]/40 backdrop-blur-2xl border border-green-500/10 rounded-3xl p-8 md:p-12 py-16 md:py-20 shadow-2xl shadow-green-500/5">
+          {/* Card */}
+          <div className="relative w-full" style={{ maxWidth: 448 }}>
+            <div style={{
+              background: 'var(--bg-deep, #00241F)',
+              border: '1px solid var(--border-subtle, rgba(77, 255, 145, 0.10))',
+              borderRadius: 4,
+              padding: 'clamp(40px, 5vw, 56px) clamp(32px, 4vw, 48px)',
+            }}>
 
-              {/* Logo */}
-              <div className="mb-8 animate-fade-in-down">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/30 animate-float-slow overflow-hidden">
-                    <img src="/logo.png" alt="CropGPT" className="w-full h-full object-cover rounded-2xl" />
-                    <div className="absolute inset-0 bg-green-400/20 rounded-2xl animate-ping-slow" />
-                  </div>
-                  <div>
-                    <TextScramble key={`cropgpt-${scrambleKey}`} as="h1"
-                      className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent font-['Syne',serif]"
-                      duration={0.9} speed={0.04}>
-                      CropGPT
-                    </TextScramble>
-                    <TextScramble key={`platform-${scrambleKey}`} as="p"
-                      className="text-xs text-green-400/60 tracking-wider"
-                      duration={1.4} speed={0.04} characterSet="ABCDEFGHIJKLMNOPQRSTUVWXYZ ">
-                      PLATEFORME AGRICOLE IA
-                    </TextScramble>
-                  </div>
+              {/* Logo + brand */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
+                <img src="/logo.png" alt="CropGPT" style={{ width: 28, height: 28, borderRadius: 6, objectFit: 'cover' }} />
+                <div>
+                  <p style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-0.01em', color: '#FFFFFF', fontFamily: 'var(--font-display)', margin: 0 }}>
+                    CropGPT
+                  </p>
+                  <p style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)', margin: 0, marginTop: 2 }}>
+                    Plateforme agricole IA
+                  </p>
                 </div>
               </div>
 
-              {/* Welcome */}
-              <div className="mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                <TextScramble key={`title-${scrambleKey}`} as="h2"
-                  className="text-3xl md:text-4xl font-bold text-white mb-2 font-['Syne',serif]"
-                  duration={1.1} speed={0.045}>
-                  Créer un Compte
-                </TextScramble>
-                <p className="text-green-400/60 text-sm">Rejoignez la révolution de l'agriculture intelligente</p>
-              </div>
+              {/* Hero title */}
+              <h1 style={{
+                fontSize: 'clamp(28px, 3vw, 38px)',
+                fontWeight: 700,
+                fontFamily: 'var(--font-display)',
+                letterSpacing: '-0.04em',
+                lineHeight: 1.05,
+                color: '#FFFFFF',
+                margin: 0, marginBottom: 8,
+              }}>
+                Créer un compte
+              </h1>
+              <p style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.55)', margin: 0, marginBottom: 28 }}>
+                Rejoignez la plateforme agricole intelligente.
+              </p>
 
+              {/* Error banner */}
               {error && (
-                <div className="mb-4 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm whitespace-pre-line">
+                <div style={{
+                  display: 'flex', alignItems: 'flex-start',
+                  padding: '8px 0 8px 12px',
+                  marginBottom: 16,
+                  borderLeft: '2px solid #EF4444',
+                  fontSize: 13, color: '#F87171',
+                  lineHeight: 1.5,
+                  whiteSpace: 'pre-line',
+                }}>
                   {error}
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-5 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              {/* Form */}
+              <form onSubmit={handleSubmit}>
+
                 {/* Name */}
-                <div className="group">
-                  <label className="block text-green-400/80 text-xs font-semibold mb-2 tracking-wide">NOM COMPLET</label>
-                  <div className="relative">
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Jean Dupont" required
-                      className="w-full px-4 py-4 bg-green-950/10 border border-green-500/20 rounded-xl text-white placeholder-green-400/30 text-sm focus:outline-none focus:border-green-500/50 focus:bg-green-950/20 transition-all duration-300 backdrop-blur-sm group-hover:border-green-500/30" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 via-green-500/5 to-green-500/0 rounded-xl opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
-                  </div>
+                <div style={{ marginBottom: 18 }}>
+                  <label style={{
+                    display: 'block', fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+                    textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)', marginBottom: 8,
+                  }}>
+                    Nom complet
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Jean Dupont"
+                    required
+                    autoComplete="name"
+                    style={flatInput}
+                    onFocus={(e) => e.currentTarget.style.borderBottomColor = 'rgba(77,255,145,0.45)'}
+                    onBlur={(e) => e.currentTarget.style.borderBottomColor = 'rgba(77,255,145,0.10)'}
+                  />
                 </div>
 
                 {/* Email */}
-                <div className="group">
-                  <label className="block text-green-400/80 text-xs font-semibold mb-2 tracking-wide">ADRESSE EMAIL</label>
-                  <div className="relative">
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="votre@email.com" required
-                      className="w-full px-4 py-4 bg-green-950/10 border border-green-500/20 rounded-xl text-white placeholder-green-400/30 text-sm focus:outline-none focus:border-green-500/50 focus:bg-green-950/20 transition-all duration-300 backdrop-blur-sm group-hover:border-green-500/30" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 via-green-500/5 to-green-500/0 rounded-xl opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
-                  </div>
+                <div style={{ marginBottom: 18 }}>
+                  <label style={{
+                    display: 'block', fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+                    textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)', marginBottom: 8,
+                  }}>
+                    Adresse email
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="vous@domaine.com"
+                    required
+                    autoComplete="email"
+                    style={flatInput}
+                    onFocus={(e) => e.currentTarget.style.borderBottomColor = 'rgba(77,255,145,0.45)'}
+                    onBlur={(e) => e.currentTarget.style.borderBottomColor = 'rgba(77,255,145,0.10)'}
+                  />
                 </div>
 
                 {/* Password */}
-                <div className="group">
-                  <label className="block text-green-400/80 text-xs font-semibold mb-2 tracking-wide">MOT DE PASSE</label>
-                  <div className="relative">
-                    <input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" required
-                      className="w-full px-4 py-4 pr-12 bg-green-950/10 border border-green-500/20 rounded-xl text-white placeholder-green-400/30 text-sm focus:outline-none focus:border-green-500/50 focus:bg-green-950/20 transition-all duration-300 backdrop-blur-sm group-hover:border-green-500/30" />
-                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-green-400/40 hover:text-green-400 transition-colors">
-                      {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Confirm Password */}
-                <div className="group">
-                  <label className="block text-green-400/80 text-xs font-semibold mb-2 tracking-wide">CONFIRMER LE MOT DE PASSE</label>
-                  <div className="relative">
-                    <input type={showConfirmPassword ? 'text' : 'password'} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••••" required
-                      className="w-full px-4 py-4 pr-12 bg-green-950/10 border border-green-500/20 rounded-xl text-white placeholder-green-400/30 text-sm focus:outline-none focus:border-green-500/50 focus:bg-green-950/20 transition-all duration-300 backdrop-blur-sm group-hover:border-green-500/30" />
-                    <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-green-400/40 hover:text-green-400 transition-colors">
-                      {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Terms */}
-                <div className="flex items-start gap-3 pt-1">
-                  <input type="checkbox" id="terms" checked={agreedToTerms} onChange={(e) => setAgreedToTerms(e.target.checked)} required
-                    className="mt-0.5 w-4 h-4 rounded border-green-500/30 bg-green-950/20 text-green-500 focus:ring-green-500/50 focus:ring-offset-0 cursor-pointer" />
-                  <label htmlFor="terms" className="text-xs text-green-400/60 leading-relaxed">
-                    J'accepte les{' '}
-                    <a href="#" className="text-green-400 hover:text-green-300 font-semibold transition-colors">Conditions</a>{' '}
-                    et la{' '}
-                    <a href="#" className="text-green-400 hover:text-green-300 font-semibold transition-colors">Politique de confidentialité</a>
+                <div style={{ marginBottom: 18 }}>
+                  <label style={{
+                    display: 'block', fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+                    textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)', marginBottom: 8,
+                  }}>
+                    Mot de passe
                   </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      autoComplete="new-password"
+                      style={{
+                        ...flatInput,
+                        padding: '10px 36px 10px 0',
+                        letterSpacing: showPassword ? '0' : '0.18em',
+                      }}
+                      onFocus={(e) => e.currentTarget.style.borderBottomColor = 'rgba(77,255,145,0.45)'}
+                      onBlur={(e) => e.currentTarget.style.borderBottomColor = 'rgba(77,255,145,0.10)'}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={{
+                        position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)',
+                        background: 'none', border: 'none', color: 'rgba(255,255,255,0.42)', cursor: 'pointer',
+                      }}
+                    >
+                      {showPassword ? <EyeOff size={16} strokeWidth={1.5} /> : <Eye size={16} strokeWidth={1.5} />}
+                    </button>
+                  </div>
                 </div>
 
-                {/* Submit */}
-                <button type="submit" disabled={loading}
-                  className="relative w-full py-4 mt-6 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-xl overflow-hidden group shadow-lg shadow-green-500/20 hover:shadow-green-500/40 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed">
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    {loading ? "Création du compte..." : "Créer mon compte"}
-                    {!loading && (
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
-                    )}
+                {/* Confirm password */}
+                <div style={{ marginBottom: 22 }}>
+                  <label style={{
+                    display: 'block', fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
+                    textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)', marginBottom: 8,
+                  }}>
+                    Confirmer le mot de passe
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      autoComplete="new-password"
+                      style={{
+                        ...flatInput,
+                        padding: '10px 36px 10px 0',
+                        letterSpacing: showConfirmPassword ? '0' : '0.18em',
+                      }}
+                      onFocus={(e) => e.currentTarget.style.borderBottomColor = 'rgba(77,255,145,0.45)'}
+                      onBlur={(e) => e.currentTarget.style.borderBottomColor = 'rgba(77,255,145,0.10)'}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      style={{
+                        position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)',
+                        background: 'none', border: 'none', color: 'rgba(255,255,255,0.42)', cursor: 'pointer',
+                      }}
+                    >
+                      {showConfirmPassword ? <EyeOff size={16} strokeWidth={1.5} /> : <Eye size={16} strokeWidth={1.5} />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Terms checkbox — biolum dot style */}
+                <label
+                  style={{ display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer', marginBottom: 24 }}
+                  onClick={(e) => { e.preventDefault(); setAgreedToTerms(!agreedToTerms); }}
+                >
+                  <span
+                    style={{
+                      width: 14, height: 14, flexShrink: 0,
+                      borderRadius: '50%',
+                      background: agreedToTerms ? '#4DFF91' : 'transparent',
+                      border: agreedToTerms ? '1px solid #4DFF91' : '1px solid rgba(255,255,255,0.20)',
+                      boxShadow: agreedToTerms ? '0 0 10px rgba(77,255,145,0.45)' : 'none',
+                      animation: agreedToTerms ? 'biolum 2.4s ease-in-out infinite' : 'none',
+                      marginTop: 3,
+                      transition: 'all 0.18s ease',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >
+                    {agreedToTerms && <Check size={9} color="#001A10" strokeWidth={3} />}
                   </span>
-                  <div className="absolute inset-0 border-2 border-green-400/50 rounded-xl animate-pulse-border" />
+                  <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.72)', lineHeight: 1.5, userSelect: 'none' }}>
+                    J'accepte les{' '}
+                    <a href="#" style={{ color: '#FFFFFF', textDecoration: 'underline', textDecorationColor: 'rgba(77,255,145,0.5)', textUnderlineOffset: 3 }}>
+                      conditions d'utilisation
+                    </a>
+                    {' '}et la{' '}
+                    <a href="#" style={{ color: '#FFFFFF', textDecoration: 'underline', textDecorationColor: 'rgba(77,255,145,0.5)', textUnderlineOffset: 3 }}>
+                      politique de confidentialité
+                    </a>.
+                  </span>
+                </label>
+
+                {/* CTA */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    width: '100%', padding: '14px 20px',
+                    background: loading ? 'rgba(77, 255, 145, 0.30)' : '#4DFF91',
+                    color: '#001A10',
+                    border: 'none',
+                    fontSize: 11, fontWeight: 700,
+                    letterSpacing: '0.16em', textTransform: 'uppercase',
+                    cursor: loading ? 'wait' : 'pointer',
+                    transition: 'transform 0.18s ease, opacity 0.18s ease',
+                    fontFamily: 'var(--font-body)',
+                  }}
+                  onMouseEnter={(e) => { if (!loading) e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                >
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+                    {loading ? (
+                      <>
+                        <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#001A10', animation: 'biolum 1s ease-in-out infinite' }} />
+                        Création
+                      </>
+                    ) : 'Créer mon compte'}
+                  </span>
+                  {!loading && <ArrowRight size={14} strokeWidth={2.5} />}
                 </button>
               </form>
 
-              <p className="text-center mt-8 text-green-400/50 text-sm">
-                Vous avez déjà un compte?{' '}
-                <button type="button" onClick={() => navigate('/login')} className="text-green-400 hover:text-green-300 font-semibold transition-colors">
+              {/* Sign-in link */}
+              <p style={{
+                marginTop: 24, marginBottom: 0,
+                fontSize: 13, color: 'rgba(255,255,255,0.55)',
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                Déjà un compte ?
+                <button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  style={{
+                    background: 'none', border: 'none', color: '#FFFFFF',
+                    fontSize: 13, fontWeight: 500, cursor: 'pointer', padding: 0,
+                    textDecoration: 'underline',
+                    textDecorationColor: 'rgba(77,255,145,0.5)',
+                    textUnderlineOffset: 3,
+                  }}
+                >
                   Se connecter
                 </button>
               </p>
+
             </div>
           </div>
+
         </div>
 
-        {/* Right half — marquee is the global fixed background */}
         <div className="hidden lg:block lg:w-1/2" />
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap');
-        @keyframes pulse-slow { 0%,100%{opacity:.6} 50%{opacity:.8} }
-        @keyframes pulse-slower { 0%,100%{opacity:.4} 50%{opacity:.7} }
-        @keyframes pulse-glow { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:.8;transform:scale(1.1)} }
-        @keyframes pulse-border { 0%,100%{opacity:0;transform:scale(1)} 50%{opacity:.3;transform:scale(1.05)} }
-        @keyframes float-slow { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-10px) rotate(5deg)} }
-        @keyframes fade-in-down { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes fade-in-up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes ping-slow { 0%{transform:scale(1);opacity:1} 75%,100%{transform:scale(1.5);opacity:0} }
-        .animate-pulse-slow{animation:pulse-slow 4s ease-in-out infinite}
-        .animate-pulse-slower{animation:pulse-slower 6s ease-in-out infinite}
-        .animate-pulse-glow{animation:pulse-glow 3s ease-in-out infinite}
-        .animate-pulse-border{animation:pulse-border 2s ease-in-out infinite}
-        .animate-float-slow{animation:float-slow 6s ease-in-out infinite}
-        .animate-fade-in-down{animation:fade-in-down 0.8s ease-out}
-        .animate-fade-in-up{animation:fade-in-up 0.8s ease-out}
-        .animate-ping-slow{animation:ping-slow 3s cubic-bezier(0,0,.2,1) infinite}
+        input::placeholder { color: rgba(255,255,255,0.30) !important; }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+          -webkit-text-fill-color: #FFFFFF !important;
+          -webkit-box-shadow: 0 0 0 1000px var(--bg-deep, #00241F) inset !important;
+          transition: background-color 5000s ease-in-out 0s;
+        }
       `}</style>
     </div>
   );

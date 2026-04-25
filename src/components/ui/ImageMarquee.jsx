@@ -1,5 +1,14 @@
 import React from 'react';
 
+// ── Images locales (assets/marquee) ──────────────────────────────────────────
+import img_2148761816   from '../../assets/marquee/2148761816.webp';
+import img_2149711095   from '../../assets/marquee/2149711095.webp';
+import img_644          from '../../assets/marquee/644.webp';
+import img_baobab       from '../../assets/marquee/BAOBAB-2-1290x540.webp';
+import img_litchi       from '../../assets/marquee/campagne-litchi-madagascar.webp';
+import img_ateeq        from '../../assets/marquee/pexels-ateeq-photos-2152808415-32409512.webp';
+import img_safari       from '../../assets/marquee/pexels-safari-consoler-3290243-11196645.webp';
+
 /**
  * Dual-row image marquee (top row scrolls right→left, bottom row left→right).
  *
@@ -13,7 +22,7 @@ export function ImageMarquee({
   tileSize = 256,
   className = '',
 }) {
-  const top = imagesTop && imagesTop.length ? imagesTop : DEFAULT_TOP;
+  const top    = imagesTop    && imagesTop.length    ? imagesTop    : DEFAULT_TOP;
   const bottom = imagesBottom && imagesBottom.length ? imagesBottom : DEFAULT_BOTTOM;
 
   return (
@@ -21,11 +30,11 @@ export function ImageMarquee({
       className={`relative w-full h-full flex items-center justify-center overflow-hidden ${className}`}
     >
       <div className="flex flex-col gap-0 w-full">
-        <MarqueeRow images={top} speed={speed} reverse tileSize={tileSize} />
-        <MarqueeRow images={bottom} speed={speed} tileSize={tileSize} />
+        <MarqueeRow images={top}    speed={speed} reverse tileSize={tileSize} />
+        <MarqueeRow images={bottom} speed={speed}         tileSize={tileSize} />
       </div>
 
-      {/* Vignette edges — pure black to fully blend with page background (no seam) */}
+      {/* Vignette edges */}
       <div
         className="pointer-events-none absolute inset-y-0 left-0 w-40 z-10"
         style={{ background: 'linear-gradient(to right, #000 0%, rgba(0,0,0,0.85) 40%, transparent 100%)' }}
@@ -91,20 +100,21 @@ function MarqueeRow({ images, speed, reverse = false, tileSize }) {
   );
 }
 
-// Fallbacks — replace these by dropping images into src/assets/marquee/ and
-// importing them at the top of login.jsx, then passing them as props.
+// ── Répartition des 7 images locales sur 2 rangées ───────────────────────────
+// Rangée du haut (4 images) — défile droite→gauche
 const DEFAULT_TOP = [
-  'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=700&h=700&fit=crop',
-  'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=700&h=700&fit=crop',
-  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=700&h=700&fit=crop',
-  'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=700&h=700&fit=crop',
+  img_2148761816,
+  img_baobab,
+  img_ateeq,
+  img_litchi,
 ];
 
+// Rangée du bas (4 images) — défile gauche→droite
 const DEFAULT_BOTTOM = [
-  'https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=700&h=700&fit=crop',
-  'https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?w=700&h=700&fit=crop',
-  'https://images.unsplash.com/photo-1620121692029-d088224ddc74?w=700&h=700&fit=crop',
-  'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=700&h=700&fit=crop',
+  img_safari,
+  img_2149711095,
+  img_644,
+  img_litchi,   // réutilisée pour équilibrer les rangées
 ];
 
 export default ImageMarquee;

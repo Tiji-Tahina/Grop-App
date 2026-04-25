@@ -75,7 +75,7 @@ export function FluidBackground() {
 
   // Color tokens — dark vs light
   const bgGradient = isDark
-    ? 'linear-gradient(to bottom right, #0a1f14, #050508, #0a1520)'
+    ? 'linear-gradient(to bottom right, #0a1f14, #00241F, #0a1520)'
     : 'linear-gradient(to bottom right, #f0fdf4, #f8fafc, #e0f2fe)';
   const sphere1Color = isDark ? 'rgba(34,197,94,0.08)' : 'rgba(16,185,129,0.10)';
   const sphere2Color = isDark ? 'rgba(6,182,212,0.08)' : 'rgba(6,182,212,0.07)';

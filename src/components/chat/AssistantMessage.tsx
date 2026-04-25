@@ -48,7 +48,7 @@ function getStepIcon(category: 'research' | 'analysis' | 'solution', isComplete:
   }
   switch (category) {
     case 'research':
-      return <Search size={14} style={{ color: 'var(--cyan-400)' }} />;
+      return <Search size={14} style={{ color: 'var(--primary-400)' }} />;
     case 'analysis':
       return <Lightbulb size={14} style={{ color: 'var(--earth-400, #D4A64B)' }} />;
     case 'solution':
@@ -163,7 +163,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
                     leftIcon={getStepIcon('research', researchComplete)}
                   >
                     <span style={{
-                      color: researchComplete ? 'var(--text-secondary)' : researchActive ? 'var(--cyan-400)' : 'var(--text-muted)',
+                      color: researchComplete ? 'var(--text-secondary)' : researchActive ? 'var(--primary-400)' : 'var(--text-muted)',
                       fontWeight: researchActive ? 500 : 400,
                     }}>
                       Recherche : Compréhension de la question agricole
