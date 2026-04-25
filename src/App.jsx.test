@@ -1,0 +1,9 @@
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.remove("light-mode");
+    } else {
+      document.body.classList.add("light-mode");
+    }
+  }, [darkMode]);
+

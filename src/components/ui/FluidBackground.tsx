@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Particle {
   id: number;
@@ -14,6 +14,18 @@ export function FluidBackground() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [particles, setParticles] = useState<Particle[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDark, setIsDark] = useState(
+    !document.documentElement.classList.contains('light-mode')
+  );
+
+  // Observe .light-mode class changes on <html>
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(!document.documentElement.classList.contains('light-mode'));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -61,23 +73,33 @@ export function FluidBackground() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [isMobile]);
 
+  // Color tokens — dark vs light
+  const bgGradient = isDark
+    ? 'linear-gradient(to bottom right, #0a1f14, #00241F, #0a1520)'
+    : 'linear-gradient(to bottom right, #f0fdf4, #f8fafc, #e0f2fe)';
+  const sphere1Color = isDark ? 'rgba(34,197,94,0.08)' : 'rgba(16,185,129,0.10)';
+  const sphere2Color = isDark ? 'rgba(6,182,212,0.08)' : 'rgba(6,182,212,0.07)';
+  const sphere3Color = isDark ? 'rgba(139,92,246,0.06)' : 'rgba(99,102,241,0.05)';
+  const particleColor = 'rgba(34, 197, 94, 0.4)';
+
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
       {/* Animated Gradient Background */}
-      <div style={{ position: 'absolute', inset: 0, opacity: 0.6 }}>
+      <div style={{ position: 'absolute', inset: 0, opacity: isDark ? 0.6 : 1 }}>
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom right, #0a1f14, #050508, #0a1520)',
+          background: bgGradient,
           animation: 'gradient-shift 15s ease-in-out infinite',
+          transition: 'background 0.6s ease',
         }} />
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'radial-gradient(circle at 20% 50%, rgba(34,197,94,0.08) 0%, transparent 50%)',
+          background: `radial-gradient(circle at 20% 50%, ${sphere1Color} 0%, transparent 50%)`,
           animation: 'pulse-slow 4s ease-in-out infinite',
         }} />
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'radial-gradient(circle at 80% 20%, rgba(16,185,129,0.06) 0%, transparent 50%)',
+          background: `radial-gradient(circle at 80% 20%, ${sphere2Color} 0%, transparent 50%)`,
           animation: 'pulse-slower 6s ease-in-out infinite',
         }} />
       </div>
@@ -86,7 +108,7 @@ export function FluidBackground() {
       <div style={{
         position: 'absolute', top: '10%', left: '15%',
         width: 500, height: 500, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%)',
+        background: `radial-gradient(circle, ${isDark ? 'rgba(16,185,129,0.12)' : 'rgba(16,185,129,0.09)'} 0%, transparent 70%)`,
         transform: `translate(${mousePosition.x * 0.3}px, ${mousePosition.y * 0.3}px)`,
         filter: 'blur(80px)',
         transition: 'transform 0.3s ease-out',
@@ -97,7 +119,7 @@ export function FluidBackground() {
       <div style={{
         position: 'absolute', bottom: '5%', right: '10%',
         width: 400, height: 400, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)',
+        background: `radial-gradient(circle, ${isDark ? 'rgba(6,182,212,0.08)' : 'rgba(6,182,212,0.07)'} 0%, transparent 70%)`,
         transform: `translate(${mousePosition.x * -0.2}px, ${mousePosition.y * -0.2}px)`,
         filter: 'blur(60px)',
         transition: 'transform 0.3s ease-out',
@@ -108,14 +130,14 @@ export function FluidBackground() {
       <div style={{
         position: 'absolute', top: '40%', left: '45%',
         width: 350, height: 350, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)',
+        background: `radial-gradient(circle, ${sphere3Color} 0%, transparent 70%)`,
         transform: `translate(${mousePosition.x * 0.15}px, ${mousePosition.y * 0.15}px)`,
         filter: 'blur(70px)',
         transition: 'transform 0.3s ease-out',
         animation: 'pulse-glow 5s ease-in-out infinite',
       }} />
 
-      {/* Floating Particles */}
+      {/* Floating Particles — green dots, visible in both modes */}
       {!isMobile && particles.map(p => (
         <div
           key={p.id}
@@ -126,10 +148,10 @@ export function FluidBackground() {
             width: p.size,
             height: p.size,
             borderRadius: '50%',
-            background: 'rgba(34, 197, 94, 0.4)',
+            background: particleColor,
             boxShadow: '0 0 10px rgba(34, 197, 94, 0.5)',
             filter: 'blur(1px)',
-            opacity: p.opacity,
+            opacity: isDark ? p.opacity : p.opacity * 0.6,
           }}
         />
       ))}

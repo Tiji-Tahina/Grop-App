@@ -7,38 +7,45 @@ import { PromptInputAction } from '@/components/ui/prompt-input';
 import { WelcomeScreen } from './WelcomeScreen';
 import { UserMessage } from './UserMessage';
 import { AssistantMessage } from './AssistantMessage';
-import { FluidBackground } from '@/components/ui/FluidBackground';
 import { useChatStream } from './useChatStream';
 
 function ModeToggle({ mode, setMode }: { mode: string; setMode: (m: string) => void }) {
+  const tabs = [
+    { key: 'paysan', label: 'Paysan' },
+    { key: 'expert', label: 'Expert' },
+  ];
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: 4, background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', borderRadius: 9999 }}>
-      <button
-        onClick={() => setMode('paysan')}
-        style={{
-          display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 9999,
-          fontSize: 13, fontWeight: 500, cursor: 'pointer', border: 'none',
-          background: mode === 'paysan' ? 'linear-gradient(135deg, var(--cyan-500), var(--ai-500))' : 'transparent',
-          color: mode === 'paysan' ? 'white' : 'var(--text-muted)',
-          boxShadow: mode === 'paysan' ? '0 2px 12px rgba(6, 182, 212, 0.4)' : 'none',
-          transition: 'all 0.2s',
-        }}
-      >
-        Paysan
-      </button>
-      <button
-        onClick={() => setMode('expert')}
-        style={{
-          display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 9999,
-          fontSize: 13, fontWeight: 500, cursor: 'pointer', border: 'none',
-          background: mode === 'expert' ? 'linear-gradient(135deg, var(--cyan-500), var(--ai-500))' : 'transparent',
-          color: mode === 'expert' ? 'white' : 'var(--text-muted)',
-          boxShadow: mode === 'expert' ? '0 2px 12px rgba(6, 182, 212, 0.4)' : 'none',
-          transition: 'all 0.2s',
-        }}
-      >
-        Expert
-      </button>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+      {tabs.map(t => {
+        const active = mode === t.key;
+        return (
+          <button
+            key={t.key}
+            onClick={() => setMode(t.key)}
+            style={{
+              position: 'relative',
+              padding: '10px 0',
+              marginLeft: t.key === 'expert' ? 28 : 0,
+              fontSize: 11, fontWeight: 600,
+              letterSpacing: '0.16em', textTransform: 'uppercase',
+              cursor: 'pointer', border: 'none', background: 'transparent',
+              color: active ? '#FFFFFF' : 'rgba(255,255,255,0.40)',
+              transition: 'color 0.18s ease',
+              fontFamily: 'var(--font-body)',
+            }}
+            onMouseEnter={e => { if (!active) e.currentTarget.style.color = 'rgba(255,255,255,0.75)'; }}
+            onMouseLeave={e => { if (!active) e.currentTarget.style.color = 'rgba(255,255,255,0.40)'; }}
+          >
+            {t.label}
+            {active && (
+              <span style={{
+                position: 'absolute', left: 0, right: 0, bottom: 0, height: 1,
+                background: '#4DFF91',
+              }} />
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -82,36 +89,59 @@ export function AgriculturalChat() {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', background: 'transparent', position: 'relative' }}>
-      <FluidBackground />
-      {/* Header */}
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'transparent',
-        padding: '16px 32px',
-      }}>
-        <div>
-          <h2 style={{ fontSize: 22, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>
-            Assistant Agricole IA
-          </h2>
-          <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>
-            Votre guide pour l'agriculture à Madagascar
-          </p>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', background: 'var(--bg-deep)', position: 'relative' }}>
+      {/* Header — only shown when no messages yet (welcome state) */}
+      {messages.length === 0 && (
+        <div style={{
+          display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
+          padding: '32px 56px 0', borderBottom: '1px solid var(--border-subtle)',
+        }}>
+          <div>
+            <p style={{
+              fontSize: 10, fontWeight: 600, letterSpacing: '0.18em',
+              textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+              margin: 0, marginBottom: 6,
+            }}>
+              Chat · Assistant agricole IA
+            </p>
+          </div>
+          <ModeToggle mode={userMode} setMode={setUserMode} />
         </div>
-        <ModeToggle mode={userMode} setMode={setUserMode} />
-      </div>
+      )}
+      {/* Compact bar when chatting */}
+      {messages.length > 0 && (
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '20px 56px', borderBottom: '1px solid var(--border-subtle)',
+        }}>
+          <p style={{
+            fontSize: 10, fontWeight: 600, letterSpacing: '0.18em',
+            textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
+            margin: 0,
+          }}>
+            Conversation en cours
+          </p>
+          <ModeToggle mode={userMode} setMode={setUserMode} />
+        </div>
+      )}
 
       {/* Chat Messages */}
       <div
         ref={scrollRef}
         onScroll={handleScroll}
         data-chat-container
-        style={{ flex: 1, overflowY: 'auto', padding: '24px 32px', position: 'relative' }}
+        style={{
+          flex: 1, overflowY: 'auto',
+          padding: messages.length === 0 ? '0' : '32px 56px',
+          position: 'relative',
+        }}
       >
         {messages.length === 0 ? (
-          <WelcomeScreen suggestions={agriculturalSuggestions} onSelect={sendMessage} />
+          <div style={{ minHeight: '100%', display: 'flex', alignItems: 'center' }}>
+            <WelcomeScreen suggestions={agriculturalSuggestions} onSelect={sendMessage} />
+          </div>
         ) : (
-          <div style={{ maxWidth: 780, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
             {messages.map(msg =>
               msg.sender === 'user' ? (
                 <UserMessage key={msg.id} text={msg.text} />
@@ -129,39 +159,42 @@ export function AgriculturalChat() {
         )}
       </div>
 
-      {/* Scroll to bottom */}
+      {/* Scroll to bottom — flat circular */}
       {showScrollBtn && (
-        <div style={{ position: 'absolute', bottom: 120, right: 48, zIndex: 10 }}>
+        <div style={{ position: 'absolute', bottom: 132, right: 56, zIndex: 10 }}>
           <button
             onClick={scrollToBottom}
             style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              width: 36, height: 36, borderRadius: '50%',
-              background: 'var(--bg-glass)', border: '1px solid rgba(255,255,255,0.08)',
-              color: 'var(--text-muted)', cursor: 'pointer', backdropFilter: 'blur(12px)',
+              width: 32, height: 32, borderRadius: '50%',
+              background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)',
+              color: 'rgba(255,255,255,0.65)', cursor: 'pointer',
+              transition: 'color 0.18s ease',
             }}
+            onMouseEnter={e => e.currentTarget.style.color = '#FFFFFF'}
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.65)'}
           >
-            <ArrowDown size={16} />
+            <ArrowDown size={14} />
           </button>
         </div>
       )}
 
-      {/* Prompt Input */}
+      {/* Prompt Input — clean, prominent CTA */}
       <div style={{
-        background: 'transparent',
-        padding: '16px 32px',
+        padding: '20px 56px 28px',
+        borderTop: '1px solid var(--border-subtle)',
       }}>
-        <div style={{ maxWidth: 780, margin: '0 auto' }}>
+        <div style={{ maxWidth: 720, margin: '0 auto' }}>
           <form
             onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-            style={{ display: 'flex', flexDirection: 'column' }}
+            style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
           >
-            <PromptInput isLoading={isStreaming} className="border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
+            <PromptInput isLoading={isStreaming} className="border-[var(--border-subtle)] bg-transparent">
               <PromptInputTextarea
                 value={inputValue}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputValue(e.target.value)}
-                placeholder="Posez votre question agricole..."
-                className="text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
+                placeholder="Posez votre question agricole…"
+                className="text-[var(--text-primary)] placeholder:text-[rgba(255,255,255,0.40)] text-[15px]"
               />
               <PromptInputActions>
                 <PromptInputAction tooltip="Dictée vocale">
@@ -169,33 +202,62 @@ export function AgriculturalChat() {
                     type="button"
                     style={{
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      width: 36, height: 36, borderRadius: 10,
+                      width: 36, height: 36, borderRadius: '50%',
                       background: 'transparent', border: 'none',
-                      color: 'var(--text-muted)', cursor: 'pointer',
+                      color: 'rgba(255,255,255,0.55)', cursor: 'pointer',
+                      transition: 'color 0.18s ease',
                     }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#FFFFFF'}
+                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}
                   >
                     <Mic size={16} />
                   </button>
                 </PromptInputAction>
-                <PromptInputAction tooltip="Envoyer">
+                <PromptInputAction tooltip="Envoyer · Entrée">
                   <button
                     type="submit"
                     disabled={!inputValue.trim() || isStreaming}
                     style={{
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      width: 40, height: 40, borderRadius: 12,
-                      background: 'linear-gradient(135deg, var(--cyan-500), var(--agri-500))',
-                      color: 'white', border: 'none', cursor: 'pointer',
-                      boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)',
-                      opacity: !inputValue.trim() || isStreaming ? 0.5 : 1,
-                      transition: 'all 0.2s',
+                      width: 36, height: 36, borderRadius: '50%',
+                      background: !inputValue.trim() || isStreaming ? 'rgba(77, 255, 145, 0.20)' : '#4DFF91',
+                      color: '#001A10', border: 'none',
+                      cursor: !inputValue.trim() || isStreaming ? 'not-allowed' : 'pointer',
+                      transition: 'background 0.18s ease, transform 0.15s ease',
                     }}
+                    onMouseEnter={e => { if (inputValue.trim() && !isStreaming) e.currentTarget.style.transform = 'scale(1.05)'; }}
+                    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
                   >
-                    <Send size={16} />
+                    <Send size={15} strokeWidth={2.5} />
                   </button>
                 </PromptInputAction>
               </PromptInputActions>
             </PromptInput>
+            {/* Keyboard hint */}
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              fontSize: 10, color: 'rgba(255,255,255,0.32)',
+              letterSpacing: '0.10em', textTransform: 'uppercase', fontWeight: 500,
+            }}>
+              <span>
+                <kbd style={{
+                  fontFamily: 'var(--font-mono)', fontSize: 10,
+                  padding: '2px 6px', borderRadius: 3,
+                  background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.55)',
+                  letterSpacing: '0.02em', textTransform: 'none', marginRight: 6,
+                }}>↵</kbd>
+                envoyer
+                <span style={{ margin: '0 10px', opacity: 0.4 }}>·</span>
+                <kbd style={{
+                  fontFamily: 'var(--font-mono)', fontSize: 10,
+                  padding: '2px 6px', borderRadius: 3,
+                  background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.55)',
+                  letterSpacing: '0.02em', textTransform: 'none', marginRight: 6,
+                }}>⇧↵</kbd>
+                nouvelle ligne
+              </span>
+              <span>{userMode === 'expert' ? 'Mode expert' : 'Mode paysan'}</span>
+            </div>
           </form>
         </div>
       </div>

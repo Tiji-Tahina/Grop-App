@@ -88,7 +88,7 @@ services:
     name: grop-app-frontend
     runtime: static
     buildCommand: npm ci && npm run build
-    staticPublishPath: ./dist
+    staticPublishPath: ./build
     branch: main
     plan: free
     routes:

@@ -9,4 +9,11 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: 'build',
+    emptyOutDir: true,
+  },
+  optimizeDeps: {
+    include: ['react-globe.gl', 'globe.gl', 'three'],
+  },
 })

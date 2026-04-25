@@ -48,7 +48,7 @@ function getStepIcon(category: 'research' | 'analysis' | 'solution', isComplete:
   }
   switch (category) {
     case 'research':
-      return <Search size={14} style={{ color: 'var(--cyan-400)' }} />;
+      return <Search size={14} style={{ color: 'var(--primary-400)' }} />;
     case 'analysis':
       return <Lightbulb size={14} style={{ color: 'var(--earth-400, #D4A64B)' }} />;
     case 'solution':
@@ -126,22 +126,6 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
       padding: '16px 0',
       animation: 'fade-in-up 0.3s ease-out',
     }}>
-      {/* Avatar */}
-      <div style={{
-        width: 40, height: 40, flexShrink: 0,
-        background: 'linear-gradient(135deg, var(--agri-500), var(--agri-600))',
-        borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center',
-        boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)',
-        position: 'relative',
-      }}>
-        <Sprout size={18} style={{ color: 'white' }} />
-        <div style={{
-          position: 'absolute', inset: -2, borderRadius: 14,
-          background: 'linear-gradient(135deg, var(--cyan-400), var(--ai-400))',
-          zIndex: -1, opacity: 0.5,
-        }} />
-      </div>
-
       {/* Content */}
       <div style={{ flex: 1, minWidth: 0 }}>
         {/* Header */}
@@ -179,7 +163,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
                     leftIcon={getStepIcon('research', researchComplete)}
                   >
                     <span style={{
-                      color: researchComplete ? 'var(--text-secondary)' : researchActive ? 'var(--cyan-400)' : 'var(--text-muted)',
+                      color: researchComplete ? 'var(--text-secondary)' : researchActive ? 'var(--primary-400)' : 'var(--text-muted)',
                       fontWeight: researchActive ? 500 : 400,
                     }}>
                       Recherche : Compréhension de la question agricole

@@ -1,0 +1,67 @@
+# ═══════════════════════════════════════════════════════════════
+# Grop-App — Netlify configuration
+# Frontend SPA · React 19 + Vite · publish dir = build/
+# Backend (Django + LLM Colab) is deployed on Render separately
+# ═══════════════════════════════════════════════════════════════
+
+[build]
+  command  = "npm ci && npm run build"
+  publish  = "build"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS    = "--legacy-peer-deps"
+
+# ─── SPA fallback ─────────────────────────────────────────────
+# React Router needs every unknown path to serve index.html.
+# public/_redirects also covers this; this is a defense in depth.
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# ─── Headers ──────────────────────────────────────────────────
+# Security defaults + cache long for hashed assets
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options             = "DENY"
+    X-Content-Type-Options      = "nosniff"
+    Referrer-Policy             = "strict-origin-when-cross-origin"
+    Permissions-Policy          = "camera=(), microphone=(self), geolocation=(self)"
+
+# Hashed assets (Vite output) — immutable, cache 1 year
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# .glb 3D map — large but immutable, cache long
+[[headers]]
+  for = "/*.glb"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# index.html — always revalidate (so deploys propagate immediately)
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# ─── Deploy contexts ──────────────────────────────────────────
+# Each PR gets its own preview URL automatically.
+# Production deploys come from main branch.
+
+[context.production.environment]
+  # Pointed at Render production backend.
+  # Override in Netlify dashboard if your backend URL differs.
+  VITE_API_BASE_URL = "https://grop-app-backend.onrender.com"
+
+[context.deploy-preview.environment]
+  VITE_API_BASE_URL = "https://grop-app-backend-staging.onrender.com"
+
+[context.branch-deploy.environment]
+  VITE_API_BASE_URL = "https://grop-app-backend-staging.onrender.com"
+
+# ─── Functions/Edge — not used (backend is on Render) ─────────
+# Keep this section empty intentionally.

@@ -5,7 +5,7 @@ import type { ChatSource } from './useChatStream';
 
 function getSourceIcon(name: string) {
   if (name.includes('ontology')) return <BookOpen size={12} style={{ color: 'var(--ai-400)' }} />;
-  if (name.includes('fofifa') || name.includes('FOFIFA')) return <Database size={12} style={{ color: 'var(--cyan-400)' }} />;
+  if (name.includes('fofifa') || name.includes('FOFIFA')) return <Database size={12} style={{ color: 'var(--primary-400)' }} />;
   return <FileText size={12} style={{ color: 'var(--agri-400)' }} />;
 }
 

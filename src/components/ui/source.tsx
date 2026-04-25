@@ -47,7 +47,7 @@ export type SourceContentProps = {
 }
 
 export const SourceContent = ({ title, description, className }: SourceContentProps) => (
-  <div className={cn("rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated,#12121A)] p-3 shadow-lg", className)}>
+  <div className={cn("rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated,#003D33)] p-3 shadow-lg", className)}>
     {title && <p className="text-sm font-medium text-[var(--text-primary)]">{title}</p>}
     {description && <p className="mt-1 text-xs text-[var(--text-muted)]">{description}</p>}
   </div>

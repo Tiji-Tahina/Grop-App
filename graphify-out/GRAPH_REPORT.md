@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Graph Report - .  (2026-04-17)
 
 ## Corpus Check
@@ -7,6 +8,17 @@
 ## Summary
 - 562 nodes · 765 edges · 90 communities detected
 - Extraction: 70% EXTRACTED · 30% INFERRED · 0% AMBIGUOUS · INFERRED: 231 edges (avg confidence: 0.67)
+=======
+# Graph Report - .  (2026-04-25)
+
+## Corpus Check
+- 140 files · ~264,082 words
+- Verdict: corpus is large enough that graph structure adds value.
+
+## Summary
+- 654 nodes · 892 edges · 101 communities detected
+- Extraction: 72% EXTRACTED · 28% INFERRED · 0% AMBIGUOUS · INFERRED: 248 edges (avg confidence: 0.68)
+>>>>>>> zafini
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -100,6 +112,20 @@
 - [[_COMMUNITY_Community 87|Community 87]]
 - [[_COMMUNITY_Community 88|Community 88]]
 - [[_COMMUNITY_Community 89|Community 89]]
+<<<<<<< HEAD
+=======
+- [[_COMMUNITY_Community 90|Community 90]]
+- [[_COMMUNITY_Community 91|Community 91]]
+- [[_COMMUNITY_Community 92|Community 92]]
+- [[_COMMUNITY_Community 93|Community 93]]
+- [[_COMMUNITY_Community 94|Community 94]]
+- [[_COMMUNITY_Community 95|Community 95]]
+- [[_COMMUNITY_Community 96|Community 96]]
+- [[_COMMUNITY_Community 97|Community 97]]
+- [[_COMMUNITY_Community 98|Community 98]]
+- [[_COMMUNITY_Community 99|Community 99]]
+- [[_COMMUNITY_Community 100|Community 100]]
+>>>>>>> zafini
 
 ## God Nodes (most connected - your core abstractions)
 1. `retrieve()` - 20 edges
@@ -114,6 +140,11 @@
 10. `predict()` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
+<<<<<<< HEAD
+=======
+- `chat()` --calls--> `normalize()`  [INFERRED]
+  backend/chat/views.py → blender_scripts/organize_madagascar_drilldown.py
+>>>>>>> zafini
 - `predict()` --calls--> `predict_yield()`  [INFERRED]
   backend/predictions/views.py → backend/predictions/ml/yield_model.py
 - `Meta` --uses--> `Conversation`  [INFERRED]
@@ -122,18 +153,30 @@
   backend/users/serializers.py → backend/chat/models.py
 - `Meta` --uses--> `User`  [INFERRED]
   backend/users/serializers.py → backend/users/models.py
+<<<<<<< HEAD
 - `chat()` --calls--> `normalize()`  [INFERRED]
   backend/chat/views.py → backend/chat/pipeline/normalizer.py
+=======
+>>>>>>> zafini
 
 ## Communities
 
 ### Community 0 - "Community 0"
+<<<<<<< HEAD
 Cohesion: 0.05
 Nodes (37): getConversation(), getConversations(), getCrops(), getFarm(), getFarms(), getSoilData(), get_model_info(), Retourne les infos sur le modèle Colab (appel GET /info si disponible). (+29 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.12
 Nodes (23): Crop, Farm, Meta, MLModelVersion, Prediction, Données d'analyse de sol associées à une parcelle., Résultat d'une prédiction ML pour une culture donnée., Registre des versions de modèles ML déployés. (+15 more)
+=======
+Cohesion: 0.04
+Nodes (47): handleSend(), apply_modifiers(), duplicate_object(), find_col(), get_or_create_col(), get_or_create_material(), link_to_scene_if_needed(), main() (+39 more)
+
+### Community 1 - "Community 1"
+Cohesion: 0.08
+Nodes (28): BaseUserManager, Crop, Farm, Meta, MLModelVersion, Prediction, Données d'analyse de sol associées à une parcelle., Résultat d'une prédiction ML pour une culture donnée. (+20 more)
+>>>>>>> zafini
 
 ### Community 2 - "Community 2"
 Cohesion: 0.08
@@ -144,6 +187,7 @@ Cohesion: 0.07
 Nodes (29): _build_result(), _distance_to_score(), _empty_result(), _expand_query(), _fallback_static(), _format_context(), _load_vector_store(), _no_data_result() (+21 more)
 
 ### Community 4 - "Community 4"
+<<<<<<< HEAD
 Cohesion: 0.09
 Nodes (30): build_prompt(), _call_colab_blocking(), clear_cache(), generate(), _parse_sse_line(), _post_process(), Étape 4 du pipeline : appel au LLM hébergé sur Google Colab via HTTP (FastAPI +, Parse une ligne SSE du Colab au format pipe-délimité.     Formats possibles : (+22 more)
 
@@ -253,15 +297,134 @@ Nodes (2): glass(), RegionSidebar()
 
 ### Community 31 - "Community 31"
 Cohesion: 0.67
+=======
+Cohesion: 0.08
+Nodes (26): build_prompt(), _call_colab_blocking(), clear_cache(), generate(), get_model_info(), _parse_sse_line(), _post_process(), Étape 4 du pipeline : appel au LLM hébergé sur Google Colab via HTTP (FastAPI + (+18 more)
+
+### Community 5 - "Community 5"
+Cohesion: 0.07
+Nodes (4): PrivateRoute(), getAccessToken(), handleNameSubmit(), handlePwdSubmit()
+
+### Community 6 - "Community 6"
+Cohesion: 0.21
+Nodes (12): AbstractBaseUser, APIView, User, PermissionsMixin, LoginSerializer, RegisterSerializer, UserSerializer, LoginView (+4 more)
+
+### Community 7 - "Community 7"
+Cohesion: 0.14
+Nodes (9): _generate_recommendations(), predict(), Modèle de prédiction de rendement pour la riziculture malgache.  Features d'entr, Retourne une prédiction de rendement riz basée sur des règles expertes.     À re, TestRiceModel, TestYieldModelDispatch, predict_yield(), Interface générique pour les modèles de prédiction de rendement. Dispatch vers l (+1 more)
+
+### Community 8 - "Community 8"
+Cohesion: 0.2
+Nodes (12): Conversation, Message, ChatRequestSerializer, ConversationSerializer, MessageSerializer, chat(), ConversationViewSet, POST /api/chat/     Execute le pipeline complet : normalizer -> ontologie -> RAG (+4 more)
+
+### Community 9 - "Community 9"
+Cohesion: 0.18
+Nodes (13): detect_language(), normalize(), Étape 1 du pipeline : nettoyage et normalisation du prompt utilisateur.  Input, bbox_overlap_area(), get_col(), get_or_create_col(), link_to(), main() (+5 more)
+
+### Community 10 - "Community 10"
+Cohesion: 0.16
+Nodes (12): _detect_tags_from_ontology(), _get_ontology_facts(), _get_ontology_keywords(), Étape 2 du pipeline : validation ontologique et enrichissement du contexte.  - V, Verifie que `keyword` apparait comme mot entier dans `text_lower`.     Evite les, Retourne les keywords du graphe rdflib, avec fallback sur le dict local., Détecte les context_tags en deux passes :     1. Via les classes OWL des entités, Récupère les faits ontologiques pour les entités nommées trouvées dans le texte. (+4 more)
+
+### Community 11 - "Community 11"
+Cohesion: 0.17
+Nodes (16): get_view(), handle_dice(), handle_reset(), handle_rollup(), handle_slice(), on_annee(), on_culture(), on_metrique() (+8 more)
+
+### Community 12 - "Community 12"
+Cohesion: 0.23
+Nodes (15): build_bvh(), centroid_world(), find_col(), geo_region(), get_or_create(), identify_objects(), link_obj(), main() (+7 more)
+
+### Community 13 - "Community 13"
+Cohesion: 0.21
+Nodes (14): extract_html(), extract_pdf(), load_sources(), Module de scraping pour alimenter le vector store RAG.  Supporte : HTML (sites w, Scrape une seule source (HTML ou PDF selon son type).     Retourne le document o, Scrape toutes les sources du fichier sources.json., Scrape une seule source par son id., Scrape seulement les N premières sources — pour tester rapidement     sans atten (+6 more)
+
+### Community 14 - "Community 14"
+Cohesion: 0.29
+Nodes (9): get_current_view(), handle_dice(), handle_drill(), handle_reset(), handle_rollup(), handle_slice(), SLICE : Isole une tranche unique sur l'axe sélectionné., DICE : Filtre strictement selon toutes les cases cochées. (+1 more)
+
+### Community 15 - "Community 15"
+Cohesion: 0.2
+Nodes (2): ADM1Model(), useTerrainTextures()
+
+### Community 16 - "Community 16"
+Cohesion: 0.22
+Nodes (5): AppConfig, ChatConfig, CropsConfig, PredictionsConfig, UsersConfig
+
+### Community 17 - "Community 17"
+Cohesion: 0.32
+Nodes (7): extract_text_from_pdf(), extract_text_from_txt(), import_file(), Importe un fichier PDF ou TXT local dans la knowledge base RAG. Utile pour les d, Extrait le texte d'un PDF local avec pdfplumber., Lit un fichier texte brut., Importe un fichier local dans la knowledge base.     Retourne True si succès.
+
+### Community 18 - "Community 18"
+Cohesion: 0.25
+Nodes (0): 
+
+### Community 19 - "Community 19"
+Cohesion: 0.32
+Nodes (3): MetricTile(), SecurityTile(), useCounter()
+
+### Community 20 - "Community 20"
+Cohesion: 0.33
+Nodes (2): formatPop(), TilePopulation()
+
+### Community 21 - "Community 21"
+Cohesion: 0.33
+Nodes (3): get_memory_usage(), Test CropGPT - Qwen2 Local Model Lancer: python test_cropgpt.py  Affiche: memoir, Retourne l'utilisation memoire en MB.
+
+### Community 22 - "Community 22"
+Cohesion: 0.33
+Nodes (3): Base settings — partagées entre tous les environnements., Settings de développement — DEBUG activé, SQLite, CORS large., Settings de production — DEBUG=False, PostgreSQL, HTTPS. Toutes les valeurs sens
+
+### Community 23 - "Community 23"
+Cohesion: 0.4
+Nodes (5): build_index(), chunk_text(), Génération des embeddings et construction du vector store FAISS.  Usage CLI :, Découpe un texte en chunks avec chevauchement., Construit le vector store FAISS à partir des documents.      Args:         docum
+
+### Community 24 - "Community 24"
+Cohesion: 0.33
+Nodes (0): 
+
+### Community 25 - "Community 25"
+Cohesion: 0.33
+Nodes (0): 
+
+### Community 26 - "Community 26"
+Cohesion: 0.47
+Nodes (4): create_topo_material(), hex_to_rgba(), Convertit un code hex en RGBA linéaire pour Blender.     Pour les couleurs très, setup_scene()
+
+### Community 27 - "Community 27"
+Cohesion: 0.4
+Nodes (1): Migration
+
+### Community 28 - "Community 28"
+Cohesion: 0.5
+Nodes (2): fmt(), RegionalNavigation()
+
+### Community 29 - "Community 29"
+Cohesion: 0.5
+Nodes (0): 
+
+### Community 30 - "Community 30"
+Cohesion: 0.5
+Nodes (0): 
+
+### Community 31 - "Community 31"
+Cohesion: 0.5
+>>>>>>> zafini
 Nodes (0): 
 
 ### Community 32 - "Community 32"
 Cohesion: 0.67
+<<<<<<< HEAD
 Nodes (0): 
 
 ### Community 33 - "Community 33"
 Cohesion: 0.67
 Nodes (0): 
+=======
+Nodes (1): Test du chargeur d'ontologie CropGPT. Lancer depuis backend/ :     python test_o
+
+### Community 33 - "Community 33"
+Cohesion: 0.67
+Nodes (2): main(), Run administrative tasks.
+>>>>>>> zafini
 
 ### Community 34 - "Community 34"
 Cohesion: 0.67
@@ -272,6 +435,7 @@ Cohesion: 0.67
 Nodes (0): 
 
 ### Community 36 - "Community 36"
+<<<<<<< HEAD
 Cohesion: 1.0
 Nodes (1): Quick test Qwen2 - sans details memoire
 
@@ -334,6 +498,70 @@ Nodes (0):
 ### Community 51 - "Community 51"
 Cohesion: 1.0
 Nodes (0): 
+=======
+Cohesion: 0.67
+Nodes (0): 
+
+### Community 37 - "Community 37"
+Cohesion: 1.0
+Nodes (2): glass(), RegionSidebar()
+
+### Community 38 - "Community 38"
+Cohesion: 0.67
+Nodes (0): 
+
+### Community 39 - "Community 39"
+Cohesion: 0.67
+Nodes (0): 
+
+### Community 40 - "Community 40"
+Cohesion: 0.67
+Nodes (0): 
+
+### Community 41 - "Community 41"
+Cohesion: 0.67
+Nodes (0): 
+
+### Community 42 - "Community 42"
+Cohesion: 0.67
+Nodes (0): 
+
+### Community 43 - "Community 43"
+Cohesion: 0.67
+Nodes (0): 
+
+### Community 44 - "Community 44"
+Cohesion: 0.67
+Nodes (0): 
+
+### Community 45 - "Community 45"
+Cohesion: 0.67
+Nodes (1): Script de diagnostic : liste toutes les collections et objets de la scène.
+
+### Community 46 - "Community 46"
+Cohesion: 1.0
+Nodes (1): Quick test Qwen2 - sans details memoire
+
+### Community 47 - "Community 47"
+Cohesion: 1.0
+Nodes (1): Minimal test Qwen2 -tres rapide
+
+### Community 48 - "Community 48"
+Cohesion: 1.0
+Nodes (1): Export Qwen2 to ONNX using optimum.
+
+### Community 49 - "Community 49"
+Cohesion: 1.0
+Nodes (1): Django settings for config project.  Generated by 'django-admin startproject' us
+
+### Community 50 - "Community 50"
+Cohesion: 1.0
+Nodes (1): WSGI config for config project.  It exposes the WSGI callable as a module-level
+
+### Community 51 - "Community 51"
+Cohesion: 1.0
+Nodes (1): ASGI config for config project.  It exposes the ASGI callable as a module-level
+>>>>>>> zafini
 
 ### Community 52 - "Community 52"
 Cohesion: 1.0
@@ -377,11 +605,19 @@ Nodes (0):
 
 ### Community 62 - "Community 62"
 Cohesion: 1.0
+<<<<<<< HEAD
 Nodes (1): Des mots agricoles fondamentaux doivent apparaître dans les keywords FR.
 
 ### Community 63 - "Community 63"
 Cohesion: 1.0
 Nodes (1): Les classes variétales doivent être mappées au tag 'varieties'.
+=======
+Nodes (0): 
+
+### Community 63 - "Community 63"
+Cohesion: 1.0
+Nodes (0): 
+>>>>>>> zafini
 
 ### Community 64 - "Community 64"
 Cohesion: 1.0
@@ -421,11 +657,19 @@ Nodes (0):
 
 ### Community 73 - "Community 73"
 Cohesion: 1.0
+<<<<<<< HEAD
 Nodes (0): 
 
 ### Community 74 - "Community 74"
 Cohesion: 1.0
 Nodes (0): 
+=======
+Nodes (1): Des mots agricoles fondamentaux doivent apparaître dans les keywords FR.
+
+### Community 74 - "Community 74"
+Cohesion: 1.0
+Nodes (1): Les classes variétales doivent être mappées au tag 'varieties'.
+>>>>>>> zafini
 
 ### Community 75 - "Community 75"
 Cohesion: 1.0
@@ -487,6 +731,7 @@ Nodes (0):
 Cohesion: 1.0
 Nodes (0): 
 
+<<<<<<< HEAD
 ## Knowledge Gaps
 - **114 isolated node(s):** `Test du chargeur d'ontologie CropGPT. Lancer depuis backend/ :     python test_o`, `Run administrative tasks.`, `Test CropGPT - Qwen2 Local Model Lancer: python test_cropgpt.py  Affiche: memoir`, `Retourne l'utilisation memoire en MB.`, `Quick test Qwen2 - sans details memoire` (+109 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -551,27 +796,130 @@ Nodes (0):
 - **Thin community `Community 65`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 66`** (1 nodes): `__init__.py`
+=======
+### Community 90 - "Community 90"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 91 - "Community 91"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 92 - "Community 92"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 93 - "Community 93"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 94 - "Community 94"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 95 - "Community 95"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 96 - "Community 96"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 97 - "Community 97"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 98 - "Community 98"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 99 - "Community 99"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 100 - "Community 100"
+Cohesion: 1.0
+Nodes (0): 
+
+## Knowledge Gaps
+- **125 isolated node(s):** `Test du chargeur d'ontologie CropGPT. Lancer depuis backend/ :     python test_o`, `Run administrative tasks.`, `Test CropGPT - Qwen2 Local Model Lancer: python test_cropgpt.py  Affiche: memoir`, `Retourne l'utilisation memoire en MB.`, `Quick test Qwen2 - sans details memoire` (+120 more)
+  These have ≤1 connection - possible missing edges or undocumented components.
+- **Thin community `Community 46`** (2 nodes): `quick_test.py`, `Quick test Qwen2 - sans details memoire`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 47`** (2 nodes): `minimal_test.py`, `Minimal test Qwen2 -tres rapide`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 48`** (2 nodes): `convert_to_onnx.py`, `Export Qwen2 to ONNX using optimum.`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 49`** (2 nodes): `settings.py`, `Django settings for config project.  Generated by 'django-admin startproject' us`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 50`** (2 nodes): `wsgi.py`, `WSGI config for config project.  It exposes the WSGI callable as a module-level`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 51`** (2 nodes): `ASGI config for config project.  It exposes the ASGI callable as a module-level`, `asgi.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 52`** (2 nodes): `test.jsx`, `Dashboard()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 53`** (2 nodes): `RAGConfidenceBadge()`, `RAGConfidenceBadge.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 54`** (2 nodes): `useChatStream.ts`, `useChatStream()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 55`** (2 nodes): `ScrollButton()`, `scroll-button.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 56`** (2 nodes): `ChainOfThoughtItem()`, `chain-of-thought.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 57`** (2 nodes): `system-message.tsx`, `SystemMessage()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 58`** (2 nodes): `utils.ts`, `cn()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 59`** (2 nodes): `useTheme.ts`, `useTheme()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 60`** (2 nodes): `Login()`, `login.jsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 61`** (2 nodes): `theme-provider.tsx`, `ThemeProvider()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 62`** (2 nodes): `Register()`, `register.jsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 63`** (2 nodes): `getAllFiles()`, `auto-webp.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 64`** (1 nodes): `eslint.config.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 65`** (1 nodes): `vite.config.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 66`** (1 nodes): `postcss.config.js`
+>>>>>>> zafini
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 67`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 68`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+<<<<<<< HEAD
 - **Thin community `Community 69`** (1 nodes): `urls.py`
+=======
+- **Thin community `Community 69`** (1 nodes): `__init__.py`
+>>>>>>> zafini
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 70`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 71`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+<<<<<<< HEAD
 - **Thin community `Community 72`** (1 nodes): `tests.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 73`** (1 nodes): `admin.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 74`** (1 nodes): `__init__.py`
+=======
+- **Thin community `Community 72`** (1 nodes): `__init__.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 73`** (1 nodes): `Des mots agricoles fondamentaux doivent apparaître dans les keywords FR.`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 74`** (1 nodes): `Les classes variétales doivent être mappées au tag 'varieties'.`
+>>>>>>> zafini
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 75`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 76`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+<<<<<<< HEAD
 - **Thin community `Community 77`** (1 nodes): `main.jsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 78`** (1 nodes): `MarkdownMessage.tsx`
@@ -597,17 +945,75 @@ Nodes (0):
 - **Thin community `Community 88`** (1 nodes): `madagascarGraphData.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 89`** (1 nodes): `madagascarGeoJSON.js`
+=======
+- **Thin community `Community 77`** (1 nodes): `__init__.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 78`** (1 nodes): `__init__.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 79`** (1 nodes): `__init__.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 80`** (1 nodes): `urls.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 81`** (1 nodes): `__init__.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 82`** (1 nodes): `__init__.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 83`** (1 nodes): `tests.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 84`** (1 nodes): `admin.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 85`** (1 nodes): `__init__.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 86`** (1 nodes): `__init__.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 87`** (1 nodes): `__init__.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 88`** (1 nodes): `main.jsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 89`** (1 nodes): `MarkdownMessage.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 90`** (1 nodes): `UserMessage.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 91`** (1 nodes): `index.ts`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 92`** (1 nodes): `regionData.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 93`** (1 nodes): `prompt-suggestion.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 94`** (1 nodes): `collapsible.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 95`** (1 nodes): `tooltip.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 96`** (1 nodes): `avatar.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 97`** (1 nodes): `thinking-bar.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 98`** (1 nodes): `Accordion.jsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 99`** (1 nodes): `madagascarGraphData.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 100`** (1 nodes): `madagascarGeoJSON.js`
+>>>>>>> zafini
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+<<<<<<< HEAD
 - **Why does `retrieve()` connect `Community 3` to `Community 0`, `Community 4`?**
   _High betweenness centrality (0.073) - this node is a cross-community bridge._
 - **Why does `chat()` connect `Community 4` to `Community 0`, `Community 3`, `Community 10`, `Community 11`, `Community 12`?**
   _High betweenness centrality (0.056) - this node is a cross-community bridge._
 - **Why does `predict()` connect `Community 1` to `Community 0`, `Community 8`, `Community 11`?**
   _High betweenness centrality (0.051) - this node is a cross-community bridge._
+=======
+- **Why does `retrieve()` connect `Community 3` to `Community 8`, `Community 0`?**
+  _High betweenness centrality (0.062) - this node is a cross-community bridge._
+- **Why does `chat()` connect `Community 8` to `Community 0`, `Community 1`, `Community 3`, `Community 4`, `Community 9`, `Community 10`?**
+  _High betweenness centrality (0.046) - this node is a cross-community bridge._
+- **Why does `predict()` connect `Community 1` to `Community 0`, `Community 7`?**
+  _High betweenness centrality (0.046) - this node is a cross-community bridge._
+>>>>>>> zafini
 - **Are the 12 inferred relationships involving `retrieve()` (e.g. with `chat()` and `.test_returns_empty_for_invalid_domain()`) actually correct?**
   _`retrieve()` has 12 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 16 inferred relationships involving `Crop` (e.g. with `PredictionViewSet` and `POST /api/predictions/predict/     Lance une prédiction de rendement pour une cu`) actually correct?**
