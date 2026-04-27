@@ -9,7 +9,7 @@
       "source_file": "eslint.config.js",
       "source_location": "L1",
       "id": "eslint_config_js",
-      "community": 68,
+      "community": 67,
       "norm_label": "eslint.config.js"
     },
     {
@@ -18,7 +18,7 @@
       "source_file": "vite.config.js",
       "source_location": "L1",
       "id": "vite_config_js",
-      "community": 47,
+      "community": 46,
       "norm_label": "vite.config.js"
     },
     {
@@ -27,7 +27,7 @@
       "source_file": "vite.config.js",
       "source_location": "L17",
       "id": "vite_config_manualchunks",
-      "community": 47,
+      "community": 46,
       "norm_label": "manualchunks()"
     },
     {
@@ -36,7 +36,7 @@
       "source_file": "postcss.config.js",
       "source_location": "L1",
       "id": "postcss_config_js",
-      "community": 69,
+      "community": 68,
       "norm_label": "postcss.config.js"
     },
     {
@@ -45,7 +45,7 @@
       "source_file": "backend/test_ontology.py",
       "source_location": "L1",
       "id": "backend_test_ontology_py",
-      "community": 33,
+      "community": 32,
       "norm_label": "test_ontology.py"
     },
     {
@@ -54,7 +54,7 @@
       "source_file": "backend/test_ontology.py",
       "source_location": "L26",
       "id": "test_ontology_test",
-      "community": 33,
+      "community": 32,
       "norm_label": "test()"
     },
     {
@@ -62,7 +62,7 @@
       "file_type": "rationale",
       "source_file": "backend/test_ontology.py",
       "source_location": "L1",
-      "community": 33,
+      "community": 32,
       "norm_label": "test du chargeur d'ontologie cropgpt. lancer depuis backend/ :     python test_o",
       "id": "test_ontology_rationale_1"
     },
@@ -72,7 +72,7 @@
       "source_file": "backend/manage.py",
       "source_location": "L1",
       "id": "backend_manage_py",
-      "community": 34,
+      "community": 33,
       "norm_label": "manage.py"
     },
     {
@@ -81,7 +81,7 @@
       "source_file": "backend/manage.py",
       "source_location": "L8",
       "id": "manage_main",
-      "community": 34,
+      "community": 33,
       "norm_label": "main()"
     },
     {
@@ -89,7 +89,7 @@
       "file_type": "rationale",
       "source_file": "backend/manage.py",
       "source_location": "L9",
-      "community": 34,
+      "community": 33,
       "norm_label": "run administrative tasks.",
       "id": "manage_rationale_9"
     },
@@ -153,7 +153,7 @@
       "source_file": "backend/quick_test.py",
       "source_location": "L1",
       "id": "backend_quick_test_py",
-      "community": 48,
+      "community": 47,
       "norm_label": "quick_test.py"
     },
     {
@@ -161,7 +161,7 @@
       "file_type": "rationale",
       "source_file": "backend/quick_test.py",
       "source_location": "L1",
-      "community": 48,
+      "community": 47,
       "norm_label": "quick test qwen2 - sans details memoire",
       "id": "quick_test_rationale_1"
     },
@@ -171,7 +171,7 @@
       "source_file": "backend/minimal_test.py",
       "source_location": "L1",
       "id": "backend_minimal_test_py",
-      "community": 49,
+      "community": 48,
       "norm_label": "minimal_test.py"
     },
     {
@@ -179,7 +179,7 @@
       "file_type": "rationale",
       "source_file": "backend/minimal_test.py",
       "source_location": "L1",
-      "community": 49,
+      "community": 48,
       "norm_label": "minimal test qwen2 -tres rapide",
       "id": "minimal_test_rationale_1"
     },
@@ -189,7 +189,7 @@
       "source_file": "backend/convert_to_onnx.py",
       "source_location": "L1",
       "id": "backend_convert_to_onnx_py",
-      "community": 50,
+      "community": 49,
       "norm_label": "convert_to_onnx.py"
     },
     {
@@ -197,7 +197,7 @@
       "file_type": "rationale",
       "source_file": "backend/convert_to_onnx.py",
       "source_location": "L1",
-      "community": 50,
+      "community": 49,
       "norm_label": "export qwen2 to onnx using optimum.",
       "id": "convert_to_onnx_rationale_1"
     },
@@ -234,7 +234,7 @@
       "source_file": "backend/predictions/admin.py",
       "source_location": "L1",
       "id": "backend_predictions_admin_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "admin.py"
     },
     {
@@ -243,7 +243,7 @@
       "source_file": "backend/predictions/urls.py",
       "source_location": "L1",
       "id": "backend_predictions_urls_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "urls.py"
     },
     {
@@ -252,7 +252,7 @@
       "source_file": "backend/predictions/__init__.py",
       "source_location": "L1",
       "id": "backend_predictions_init_py",
-      "community": 70,
+      "community": 69,
       "norm_label": "__init__.py"
     },
     {
@@ -261,7 +261,7 @@
       "source_file": "backend/predictions/views.py",
       "source_location": "L1",
       "id": "backend_predictions_views_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "views.py"
     },
     {
@@ -270,7 +270,7 @@
       "source_file": "backend/predictions/views.py",
       "source_location": "L14",
       "id": "views_predict",
-      "community": 0,
+      "community": 1,
       "norm_label": "predict()"
     },
     {
@@ -279,7 +279,7 @@
       "source_file": "backend/predictions/views.py",
       "source_location": "L71",
       "id": "views_predictionviewset",
-      "community": 0,
+      "community": 1,
       "norm_label": "predictionviewset"
     },
     {
@@ -288,7 +288,7 @@
       "source_file": "backend/predictions/views.py",
       "source_location": "L75",
       "id": "views_predictionviewset_get_queryset",
-      "community": 0,
+      "community": 1,
       "norm_label": ".get_queryset()"
     },
     {
@@ -296,7 +296,7 @@
       "file_type": "rationale",
       "source_file": "backend/predictions/views.py",
       "source_location": "L15",
-      "community": 0,
+      "community": 1,
       "norm_label": "post /api/predictions/predict/     lance une prediction de rendement pour une cu",
       "id": "views_rationale_15"
     },
@@ -306,7 +306,7 @@
       "source_file": "backend/predictions/models.py",
       "source_location": "L1",
       "id": "backend_predictions_models_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "models.py"
     },
     {
@@ -315,7 +315,7 @@
       "source_file": "backend/predictions/models.py",
       "source_location": "L5",
       "id": "models_mlmodelversion",
-      "community": 0,
+      "community": 1,
       "norm_label": "mlmodelversion"
     },
     {
@@ -324,7 +324,7 @@
       "source_file": "backend/crops/models.py",
       "source_location": "L67",
       "id": "models_meta",
-      "community": 0,
+      "community": 1,
       "norm_label": "meta"
     },
     {
@@ -333,7 +333,7 @@
       "source_file": "backend/predictions/models.py",
       "source_location": "L20",
       "id": "models_mlmodelversion_str",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__str__()"
     },
     {
@@ -342,7 +342,7 @@
       "source_file": "backend/predictions/models.py",
       "source_location": "L24",
       "id": "models_prediction",
-      "community": 0,
+      "community": 1,
       "norm_label": "prediction"
     },
     {
@@ -351,7 +351,7 @@
       "source_file": "backend/predictions/models.py",
       "source_location": "L47",
       "id": "models_prediction_str",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__str__()"
     },
     {
@@ -359,7 +359,7 @@
       "file_type": "rationale",
       "source_file": "backend/predictions/models.py",
       "source_location": "L6",
-      "community": 0,
+      "community": 1,
       "norm_label": "registre des versions de modeles ml deployes.",
       "id": "models_rationale_6"
     },
@@ -368,7 +368,7 @@
       "file_type": "rationale",
       "source_file": "backend/predictions/models.py",
       "source_location": "L25",
-      "community": 0,
+      "community": 1,
       "norm_label": "resultat d'une prediction ml pour une culture donnee.",
       "id": "models_rationale_25"
     },
@@ -378,7 +378,7 @@
       "source_file": "backend/predictions/serializers.py",
       "source_location": "L1",
       "id": "backend_predictions_serializers_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "serializers.py"
     },
     {
@@ -387,7 +387,7 @@
       "source_file": "backend/predictions/serializers.py",
       "source_location": "L5",
       "id": "serializers_mlmodelversionserializer",
-      "community": 0,
+      "community": 1,
       "norm_label": "mlmodelversionserializer"
     },
     {
@@ -396,7 +396,7 @@
       "source_file": "backend/users/serializers.py",
       "source_location": "L10",
       "id": "serializers_meta",
-      "community": 0,
+      "community": 1,
       "norm_label": "meta"
     },
     {
@@ -405,7 +405,7 @@
       "source_file": "backend/predictions/serializers.py",
       "source_location": "L11",
       "id": "serializers_predictionserializer",
-      "community": 0,
+      "community": 1,
       "norm_label": "predictionserializer"
     },
     {
@@ -414,7 +414,7 @@
       "source_file": "backend/predictions/serializers.py",
       "source_location": "L26",
       "id": "serializers_predictrequestserializer",
-      "community": 0,
+      "community": 1,
       "norm_label": "predictrequestserializer"
     },
     {
@@ -423,7 +423,7 @@
       "source_file": "backend/predictions/migrations/0001_initial.py",
       "source_location": "L1",
       "id": "backend_predictions_migrations_0001_initial_py",
-      "community": 27,
+      "community": 26,
       "norm_label": "0001_initial.py"
     },
     {
@@ -432,7 +432,7 @@
       "source_file": "backend/users/migrations/0001_initial.py",
       "source_location": "L6",
       "id": "0001_initial_migration",
-      "community": 27,
+      "community": 26,
       "norm_label": "migration"
     },
     {
@@ -441,7 +441,7 @@
       "source_file": "backend/predictions/migrations/__init__.py",
       "source_location": "L1",
       "id": "backend_predictions_migrations_init_py",
-      "community": 71,
+      "community": 70,
       "norm_label": "__init__.py"
     },
     {
@@ -450,7 +450,7 @@
       "source_file": "backend/predictions/tests/__init__.py",
       "source_location": "L1",
       "id": "backend_predictions_tests_init_py",
-      "community": 72,
+      "community": 71,
       "norm_label": "__init__.py"
     },
     {
@@ -639,7 +639,7 @@
       "source_file": "backend/predictions/ml/__init__.py",
       "source_location": "L1",
       "id": "backend_predictions_ml_init_py",
-      "community": 73,
+      "community": 72,
       "norm_label": "__init__.py"
     },
     {
@@ -675,7 +675,7 @@
       "source_file": "backend/chat/__init__.py",
       "source_location": "L1",
       "id": "backend_chat_init_py",
-      "community": 74,
+      "community": 73,
       "norm_label": "__init__.py"
     },
     {
@@ -864,7 +864,7 @@
       "source_file": "backend/chat/migrations/0001_initial.py",
       "source_location": "L1",
       "id": "backend_chat_migrations_0001_initial_py",
-      "community": 27,
+      "community": 26,
       "norm_label": "0001_initial.py"
     },
     {
@@ -873,7 +873,7 @@
       "source_file": "backend/chat/migrations/__init__.py",
       "source_location": "L1",
       "id": "backend_chat_migrations_init_py",
-      "community": 75,
+      "community": 74,
       "norm_label": "__init__.py"
     },
     {
@@ -1116,7 +1116,7 @@
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L1",
       "id": "backend_chat_tests_test_llm_colab_py",
-      "community": 1,
+      "community": 0,
       "norm_label": "test_llm_colab.py"
     },
     {
@@ -1125,7 +1125,7 @@
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L18",
       "id": "test_llm_colab_testcolabllmhealth",
-      "community": 1,
+      "community": 0,
       "norm_label": "testcolabllmhealth"
     },
     {
@@ -1134,7 +1134,7 @@
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L19",
       "id": "test_llm_colab_testcolabllmhealth_test_health_endpoint_returns_ok",
-      "community": 1,
+      "community": 0,
       "norm_label": ".test_health_endpoint_returns_ok()"
     },
     {
@@ -1143,7 +1143,7 @@
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L28",
       "id": "test_llm_colab_testcolabllmhealth_test_health_response_has_model_info",
-      "community": 1,
+      "community": 0,
       "norm_label": ".test_health_response_has_model_info()"
     },
     {
@@ -1152,7 +1152,7 @@
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L38",
       "id": "test_llm_colab_testcolabllmgenerate",
-      "community": 1,
+      "community": 0,
       "norm_label": "testcolabllmgenerate"
     },
     {
@@ -1161,7 +1161,7 @@
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L39",
       "id": "test_llm_colab_testcolabllmgenerate_test_blocking_generate_returns_text",
-      "community": 1,
+      "community": 0,
       "norm_label": ".test_blocking_generate_returns_text()"
     },
     {
@@ -1170,7 +1170,7 @@
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L50",
       "id": "test_llm_colab_testcolabllmgenerate_test_stream_yields_at_least_one_token",
-      "community": 1,
+      "community": 0,
       "norm_label": ".test_stream_yields_at_least_one_token()"
     },
     {
@@ -1179,7 +1179,7 @@
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L65",
       "id": "test_llm_colab_testcolabllmgenerate_test_generate_full_pipeline",
-      "community": 1,
+      "community": 0,
       "norm_label": ".test_generate_full_pipeline()"
     },
     {
@@ -1188,7 +1188,7 @@
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L82",
       "id": "test_llm_colab_testcolabllmgenerate_test_generate_rejects_without_colab_url",
-      "community": 1,
+      "community": 0,
       "norm_label": ".test_generate_rejects_without_colab_url()"
     },
     {
@@ -1196,7 +1196,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L1",
-      "community": 1,
+      "community": 0,
       "norm_label": "tests du llm heberge sur google colab.  ces tests sont skipes automatiquement si",
       "id": "test_llm_colab_rationale_1"
     },
@@ -1205,7 +1205,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L20",
-      "community": 1,
+      "community": 0,
       "norm_label": "get /health doit retourner status=ok et le device cuda.",
       "id": "test_llm_colab_rationale_20"
     },
@@ -1214,7 +1214,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L29",
-      "community": 1,
+      "community": 0,
       "norm_label": "le health check doit indiquer le chemin du modele.",
       "id": "test_llm_colab_rationale_29"
     },
@@ -1223,7 +1223,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L40",
-      "community": 1,
+      "community": 0,
       "norm_label": "_call_colab_blocking doit retourner du texte non vide.",
       "id": "test_llm_colab_rationale_40"
     },
@@ -1232,7 +1232,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L51",
-      "community": 1,
+      "community": 0,
       "norm_label": "stream_generate doit yielder au moins un token avant done=true.",
       "id": "test_llm_colab_rationale_51"
     },
@@ -1241,7 +1241,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L66",
-      "community": 1,
+      "community": 0,
       "norm_label": "generate() doit retourner un dict complet avec reply non vide.",
       "id": "test_llm_colab_rationale_66"
     },
@@ -1250,7 +1250,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_llm_colab.py",
       "source_location": "L83",
-      "community": 1,
+      "community": 0,
       "norm_label": "sans colab_llm_url, generate() doit retourner un message d'erreur propre.",
       "id": "test_llm_colab_rationale_83"
     },
@@ -1430,7 +1430,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_ontology_ci.py",
       "source_location": "L40",
-      "community": 76,
+      "community": 75,
       "norm_label": "des mots agricoles fondamentaux doivent apparaitre dans les keywords fr.",
       "id": "test_ontology_ci_rationale_40"
     },
@@ -1439,7 +1439,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_ontology_ci.py",
       "source_location": "L52",
-      "community": 77,
+      "community": 76,
       "norm_label": "les classes varietales doivent etre mappees au tag 'varieties'.",
       "id": "test_ontology_ci_rationale_52"
     },
@@ -1512,7 +1512,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L6",
       "id": "test_pipeline_testnormalizer",
-      "community": 13,
+      "community": 12,
       "norm_label": "testnormalizer"
     },
     {
@@ -1521,7 +1521,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L7",
       "id": "test_pipeline_testnormalizer_test_removes_extra_spaces",
-      "community": 13,
+      "community": 12,
       "norm_label": ".test_removes_extra_spaces()"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L11",
       "id": "test_pipeline_testnormalizer_test_detects_french",
-      "community": 13,
+      "community": 12,
       "norm_label": ".test_detects_french()"
     },
     {
@@ -1539,7 +1539,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L15",
       "id": "test_pipeline_testnormalizer_test_detects_malagasy",
-      "community": 13,
+      "community": 12,
       "norm_label": ".test_detects_malagasy()"
     },
     {
@@ -1548,7 +1548,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L19",
       "id": "test_pipeline_testnormalizer_test_estimates_tokens",
-      "community": 13,
+      "community": 12,
       "norm_label": ".test_estimates_tokens()"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_file": "backend/chat/tests/__init__.py",
       "source_location": "L1",
       "id": "backend_chat_tests_init_py",
-      "community": 78,
+      "community": 77,
       "norm_label": "__init__.py"
     },
     {
@@ -1926,7 +1926,7 @@
       "source_file": "backend/chat/pipeline/normalizer.py",
       "source_location": "L1",
       "id": "backend_chat_pipeline_normalizer_py",
-      "community": 29,
+      "community": 28,
       "norm_label": "normalizer.py"
     },
     {
@@ -1935,7 +1935,7 @@
       "source_file": "backend/chat/pipeline/normalizer.py",
       "source_location": "L18",
       "id": "normalizer_detect_language",
-      "community": 29,
+      "community": 28,
       "norm_label": "detect_language()"
     },
     {
@@ -1944,7 +1944,7 @@
       "source_file": "backend/chat/pipeline/normalizer.py",
       "source_location": "L23",
       "id": "normalizer_normalize",
-      "community": 29,
+      "community": 28,
       "norm_label": "normalize()"
     },
     {
@@ -1952,7 +1952,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/normalizer.py",
       "source_location": "L1",
-      "community": 29,
+      "community": 28,
       "norm_label": "etape 1 du pipeline : nettoyage et normalisation du prompt utilisateur.  input",
       "id": "normalizer_rationale_1"
     },
@@ -1962,7 +1962,7 @@
       "source_file": "backend/chat/pipeline/__init__.py",
       "source_location": "L1",
       "id": "backend_chat_pipeline_init_py",
-      "community": 79,
+      "community": 78,
       "norm_label": "__init__.py"
     },
     {
@@ -2005,7 +2005,7 @@
       "label": "_expand_query()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L120",
+      "source_location": "L117",
       "id": "rag_expand_query",
       "community": 4,
       "norm_label": "_expand_query()"
@@ -2014,7 +2014,7 @@
       "label": "_build_result()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L147",
+      "source_location": "L144",
       "id": "rag_build_result",
       "community": 4,
       "norm_label": "_build_result()"
@@ -2023,7 +2023,7 @@
       "label": "_no_data_result()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L188",
+      "source_location": "L185",
       "id": "rag_no_data_result",
       "community": 4,
       "norm_label": "_no_data_result()"
@@ -2032,7 +2032,7 @@
       "label": "_empty_result()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L225",
+      "source_location": "L222",
       "id": "rag_empty_result",
       "community": 4,
       "norm_label": "_empty_result()"
@@ -2041,7 +2041,7 @@
       "label": "_format_context()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L235",
+      "source_location": "L232",
       "id": "rag_format_context",
       "community": 4,
       "norm_label": "_format_context()"
@@ -2050,7 +2050,7 @@
       "label": "_fallback_static()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L253",
+      "source_location": "L250",
       "id": "rag_fallback_static",
       "community": 4,
       "norm_label": "_fallback_static()"
@@ -2095,46 +2095,46 @@
       "label": "Enrichit la requ\u00eate FAISS avec les concepts li\u00e9s trouv\u00e9s dans l'ontologie.     E",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L121",
+      "source_location": "L118",
+      "id": "rag_rationale_118",
       "community": 4,
-      "norm_label": "enrichit la requete faiss avec les concepts lies trouves dans l'ontologie.     e",
-      "id": "rag_rationale_121"
+      "norm_label": "enrichit la requete faiss avec les concepts lies trouves dans l'ontologie.     e"
     },
     {
       "label": "\u00c9value la qualit\u00e9 des r\u00e9sultats et construit la r\u00e9ponse appropri\u00e9e.     C'est ic",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L148",
+      "source_location": "L145",
+      "id": "rag_rationale_145",
       "community": 4,
-      "norm_label": "evalue la qualite des resultats et construit la reponse appropriee.     c'est ic",
-      "id": "rag_rationale_148"
+      "norm_label": "evalue la qualite des resultats et construit la reponse appropriee.     c'est ic"
     },
     {
       "label": "G\u00e8re le cas o\u00f9 le RAG ne trouve rien d'utile.     Tente le fallback sur la knowl",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L189",
+      "source_location": "L186",
+      "id": "rag_rationale_186",
       "community": 4,
-      "norm_label": "gere le cas ou le rag ne trouve rien d'utile.     tente le fallback sur la knowl",
-      "id": "rag_rationale_189"
+      "norm_label": "gere le cas ou le rag ne trouve rien d'utile.     tente le fallback sur la knowl"
     },
     {
       "label": "Formate les documents r\u00e9cup\u00e9r\u00e9s + les faits ontologiques pour le LLM.",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L236",
+      "source_location": "L233",
+      "id": "rag_rationale_233",
       "community": 4,
-      "norm_label": "formate les documents recuperes + les faits ontologiques pour le llm.",
-      "id": "rag_rationale_236"
+      "norm_label": "formate les documents recuperes + les faits ontologiques pour le llm."
     },
     {
       "label": "Contexte statique de secours bas\u00e9 sur les tags ontologiques.     Utilis\u00e9 quand F",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L254",
+      "source_location": "L251",
+      "id": "rag_rationale_251",
       "community": 4,
-      "norm_label": "contexte statique de secours base sur les tags ontologiques.     utilise quand f",
-      "id": "rag_rationale_254"
+      "norm_label": "contexte statique de secours base sur les tags ontologiques.     utilise quand f"
     },
     {
       "label": "apps.py",
@@ -2160,7 +2160,7 @@
       "source_file": "backend/crops/admin.py",
       "source_location": "L1",
       "id": "backend_crops_admin_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "admin.py"
     },
     {
@@ -2169,7 +2169,7 @@
       "source_file": "backend/crops/urls.py",
       "source_location": "L1",
       "id": "backend_crops_urls_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "urls.py"
     },
     {
@@ -2178,7 +2178,7 @@
       "source_file": "backend/crops/__init__.py",
       "source_location": "L1",
       "id": "backend_crops_init_py",
-      "community": 80,
+      "community": 79,
       "norm_label": "__init__.py"
     },
     {
@@ -2187,7 +2187,7 @@
       "source_file": "backend/crops/views.py",
       "source_location": "L1",
       "id": "backend_crops_views_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "views.py"
     },
     {
@@ -2196,7 +2196,7 @@
       "source_file": "backend/crops/views.py",
       "source_location": "L6",
       "id": "views_farmviewset",
-      "community": 0,
+      "community": 1,
       "norm_label": "farmviewset"
     },
     {
@@ -2205,7 +2205,7 @@
       "source_file": "backend/crops/views.py",
       "source_location": "L10",
       "id": "views_farmviewset_get_queryset",
-      "community": 0,
+      "community": 1,
       "norm_label": ".get_queryset()"
     },
     {
@@ -2214,7 +2214,7 @@
       "source_file": "backend/crops/views.py",
       "source_location": "L14",
       "id": "views_cropviewset",
-      "community": 0,
+      "community": 1,
       "norm_label": "cropviewset"
     },
     {
@@ -2223,7 +2223,7 @@
       "source_file": "backend/crops/views.py",
       "source_location": "L18",
       "id": "views_cropviewset_get_queryset",
-      "community": 0,
+      "community": 1,
       "norm_label": ".get_queryset()"
     },
     {
@@ -2232,7 +2232,7 @@
       "source_file": "backend/crops/views.py",
       "source_location": "L22",
       "id": "views_soildataviewset",
-      "community": 0,
+      "community": 1,
       "norm_label": "soildataviewset"
     },
     {
@@ -2241,7 +2241,7 @@
       "source_file": "backend/crops/views.py",
       "source_location": "L26",
       "id": "views_soildataviewset_get_queryset",
-      "community": 0,
+      "community": 1,
       "norm_label": ".get_queryset()"
     },
     {
@@ -2250,7 +2250,7 @@
       "source_file": "backend/crops/models.py",
       "source_location": "L1",
       "id": "backend_crops_models_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "models.py"
     },
     {
@@ -2259,7 +2259,7 @@
       "source_file": "backend/crops/models.py",
       "source_location": "L51",
       "id": "models_farm",
-      "community": 0,
+      "community": 1,
       "norm_label": "farm"
     },
     {
@@ -2268,7 +2268,7 @@
       "source_file": "backend/crops/models.py",
       "source_location": "L70",
       "id": "models_farm_str",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__str__()"
     },
     {
@@ -2277,7 +2277,7 @@
       "source_file": "backend/crops/models.py",
       "source_location": "L74",
       "id": "models_crop",
-      "community": 0,
+      "community": 1,
       "norm_label": "crop"
     },
     {
@@ -2286,7 +2286,7 @@
       "source_file": "backend/crops/models.py",
       "source_location": "L97",
       "id": "models_crop_str",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__str__()"
     },
     {
@@ -2295,7 +2295,7 @@
       "source_file": "backend/crops/models.py",
       "source_location": "L101",
       "id": "models_soildata",
-      "community": 0,
+      "community": 1,
       "norm_label": "soildata"
     },
     {
@@ -2304,7 +2304,7 @@
       "source_file": "backend/crops/models.py",
       "source_location": "L116",
       "id": "models_soildata_str",
-      "community": 0,
+      "community": 1,
       "norm_label": ".__str__()"
     },
     {
@@ -2312,7 +2312,7 @@
       "file_type": "rationale",
       "source_file": "backend/crops/models.py",
       "source_location": "L102",
-      "community": 0,
+      "community": 1,
       "norm_label": "donnees d'analyse de sol associees a une parcelle.",
       "id": "models_rationale_102"
     },
@@ -2322,7 +2322,7 @@
       "source_file": "backend/crops/serializers.py",
       "source_location": "L1",
       "id": "backend_crops_serializers_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "serializers.py"
     },
     {
@@ -2331,7 +2331,7 @@
       "source_file": "backend/crops/serializers.py",
       "source_location": "L5",
       "id": "serializers_soildataserializer",
-      "community": 0,
+      "community": 1,
       "norm_label": "soildataserializer"
     },
     {
@@ -2340,7 +2340,7 @@
       "source_file": "backend/crops/serializers.py",
       "source_location": "L12",
       "id": "serializers_cropserializer",
-      "community": 0,
+      "community": 1,
       "norm_label": "cropserializer"
     },
     {
@@ -2349,7 +2349,7 @@
       "source_file": "backend/crops/serializers.py",
       "source_location": "L22",
       "id": "serializers_farmserializer",
-      "community": 0,
+      "community": 1,
       "norm_label": "farmserializer"
     },
     {
@@ -2358,7 +2358,7 @@
       "source_file": "backend/crops/serializers.py",
       "source_location": "L32",
       "id": "serializers_farmserializer_create",
-      "community": 0,
+      "community": 1,
       "norm_label": ".create()"
     },
     {
@@ -2367,7 +2367,7 @@
       "source_file": "backend/crops/migrations/0001_initial.py",
       "source_location": "L1",
       "id": "backend_crops_migrations_0001_initial_py",
-      "community": 27,
+      "community": 26,
       "norm_label": "0001_initial.py"
     },
     {
@@ -2376,7 +2376,7 @@
       "source_file": "backend/crops/migrations/__init__.py",
       "source_location": "L1",
       "id": "backend_crops_migrations_init_py",
-      "community": 81,
+      "community": 80,
       "norm_label": "__init__.py"
     },
     {
@@ -2385,7 +2385,7 @@
       "source_file": "backend/crops/tests/test_models.py",
       "source_location": "L1",
       "id": "backend_crops_tests_test_models_py",
-      "community": 0,
+      "community": 1,
       "norm_label": "test_models.py"
     },
     {
@@ -2394,7 +2394,7 @@
       "source_file": "backend/crops/tests/test_models.py",
       "source_location": "L8",
       "id": "test_models_user",
-      "community": 0,
+      "community": 1,
       "norm_label": "user()"
     },
     {
@@ -2403,7 +2403,7 @@
       "source_file": "backend/crops/tests/test_models.py",
       "source_location": "L13",
       "id": "test_models_testfarmmodel",
-      "community": 0,
+      "community": 1,
       "norm_label": "testfarmmodel"
     },
     {
@@ -2412,7 +2412,7 @@
       "source_file": "backend/crops/tests/test_models.py",
       "source_location": "L14",
       "id": "test_models_testfarmmodel_test_create_farm",
-      "community": 0,
+      "community": 1,
       "norm_label": ".test_create_farm()"
     },
     {
@@ -2421,7 +2421,7 @@
       "source_file": "backend/crops/tests/test_models.py",
       "source_location": "L25",
       "id": "test_models_testfarmmodel_test_farm_belongs_to_owner",
-      "community": 0,
+      "community": 1,
       "norm_label": ".test_farm_belongs_to_owner()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_file": "backend/crops/tests/test_models.py",
       "source_location": "L32",
       "id": "test_models_testcropmodel",
-      "community": 0,
+      "community": 1,
       "norm_label": "testcropmodel"
     },
     {
@@ -2439,7 +2439,7 @@
       "source_file": "backend/crops/tests/test_models.py",
       "source_location": "L33",
       "id": "test_models_testcropmodel_test_create_rice_crop",
-      "community": 0,
+      "community": 1,
       "norm_label": ".test_create_rice_crop()"
     },
     {
@@ -2448,7 +2448,7 @@
       "source_file": "backend/crops/tests/__init__.py",
       "source_location": "L1",
       "id": "backend_crops_tests_init_py",
-      "community": 82,
+      "community": 81,
       "norm_label": "__init__.py"
     },
     {
@@ -2457,7 +2457,7 @@
       "source_file": "backend/config/settings.py",
       "source_location": "L1",
       "id": "backend_config_settings_py",
-      "community": 51,
+      "community": 50,
       "norm_label": "settings.py"
     },
     {
@@ -2465,7 +2465,7 @@
       "file_type": "rationale",
       "source_file": "backend/config/settings.py",
       "source_location": "L1",
-      "community": 51,
+      "community": 50,
       "norm_label": "django settings for config project.  generated by 'django-admin startproject' us",
       "id": "settings_rationale_1"
     },
@@ -2475,7 +2475,7 @@
       "source_file": "backend/config/wsgi.py",
       "source_location": "L1",
       "id": "backend_config_wsgi_py",
-      "community": 52,
+      "community": 51,
       "norm_label": "wsgi.py"
     },
     {
@@ -2483,7 +2483,7 @@
       "file_type": "rationale",
       "source_file": "backend/config/wsgi.py",
       "source_location": "L1",
-      "community": 52,
+      "community": 51,
       "norm_label": "wsgi config for config project.  it exposes the wsgi callable as a module-level",
       "id": "wsgi_rationale_1"
     },
@@ -2493,7 +2493,7 @@
       "source_file": "backend/config/urls.py",
       "source_location": "L1",
       "id": "backend_config_urls_py",
-      "community": 53,
+      "community": 52,
       "norm_label": "urls.py"
     },
     {
@@ -2502,7 +2502,7 @@
       "source_file": "backend/config/urls.py",
       "source_location": "L7",
       "id": "urls_health",
-      "community": 53,
+      "community": 52,
       "norm_label": "health()"
     },
     {
@@ -2511,7 +2511,7 @@
       "source_file": "backend/config/__init__.py",
       "source_location": "L1",
       "id": "backend_config_init_py",
-      "community": 83,
+      "community": 82,
       "norm_label": "__init__.py"
     },
     {
@@ -2520,7 +2520,7 @@
       "source_file": "backend/config/asgi.py",
       "source_location": "L1",
       "id": "backend_config_asgi_py",
-      "community": 54,
+      "community": 53,
       "norm_label": "asgi.py"
     },
     {
@@ -2528,7 +2528,7 @@
       "file_type": "rationale",
       "source_file": "backend/config/asgi.py",
       "source_location": "L1",
-      "community": 54,
+      "community": 53,
       "norm_label": "asgi config for config project.  it exposes the asgi callable as a module-level",
       "id": "asgi_rationale_1"
     },
@@ -2556,7 +2556,7 @@
       "source_file": "backend/config/settings/__init__.py",
       "source_location": "L1",
       "id": "backend_config_settings_init_py",
-      "community": 84,
+      "community": 83,
       "norm_label": "__init__.py"
     },
     {
@@ -2880,7 +2880,7 @@
       "source_file": "backend/users/tests.py",
       "source_location": "L1",
       "id": "backend_users_tests_py",
-      "community": 85,
+      "community": 84,
       "norm_label": "tests.py"
     },
     {
@@ -2889,7 +2889,7 @@
       "source_file": "backend/users/admin.py",
       "source_location": "L1",
       "id": "backend_users_admin_py",
-      "community": 86,
+      "community": 85,
       "norm_label": "admin.py"
     },
     {
@@ -2907,7 +2907,7 @@
       "source_file": "backend/users/__init__.py",
       "source_location": "L1",
       "id": "backend_users_init_py",
-      "community": 87,
+      "community": 86,
       "norm_label": "__init__.py"
     },
     {
@@ -2997,7 +2997,7 @@
       "source_file": "backend/users/views.py",
       "source_location": "L55",
       "id": "views_userlistview_get",
-      "community": 1,
+      "community": 0,
       "norm_label": ".get()"
     },
     {
@@ -3132,7 +3132,7 @@
       "source_file": "backend/users/serializers.py",
       "source_location": "L19",
       "id": "serializers_registerserializer_create",
-      "community": 0,
+      "community": 1,
       "norm_label": ".create()"
     },
     {
@@ -3168,7 +3168,7 @@
       "source_file": "backend/users/migrations/0001_initial.py",
       "source_location": "L1",
       "id": "backend_users_migrations_0001_initial_py",
-      "community": 27,
+      "community": 26,
       "norm_label": "0001_initial.py"
     },
     {
@@ -3177,7 +3177,7 @@
       "source_file": "backend/users/migrations/__init__.py",
       "source_location": "L1",
       "id": "backend_users_migrations_init_py",
-      "community": 88,
+      "community": 87,
       "norm_label": "__init__.py"
     },
     {
@@ -3186,25 +3186,52 @@
       "source_file": "backend/rag/embeddings.py",
       "source_location": "L1",
       "id": "backend_rag_embeddings_py",
-      "community": 23,
+      "community": 13,
       "norm_label": "embeddings.py"
+    },
+    {
+      "label": "_get_model()",
+      "file_type": "code",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L32",
+      "id": "embeddings_get_model",
+      "community": 13,
+      "norm_label": "_get_model()"
+    },
+    {
+      "label": "embed_documents()",
+      "file_type": "code",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L39",
+      "id": "embeddings_embed_documents",
+      "community": 13,
+      "norm_label": "embed_documents()"
+    },
+    {
+      "label": "embed_query()",
+      "file_type": "code",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L45",
+      "id": "embeddings_embed_query",
+      "community": 13,
+      "norm_label": "embed_query()"
     },
     {
       "label": "chunk_text()",
       "file_type": "code",
       "source_file": "backend/rag/embeddings.py",
-      "source_location": "L27",
+      "source_location": "L51",
       "id": "embeddings_chunk_text",
-      "community": 23,
+      "community": 13,
       "norm_label": "chunk_text()"
     },
     {
       "label": "build_index()",
       "file_type": "code",
       "source_file": "backend/rag/embeddings.py",
-      "source_location": "L40",
+      "source_location": "L63",
       "id": "embeddings_build_index",
-      "community": 23,
+      "community": 13,
       "norm_label": "build_index()"
     },
     {
@@ -3212,27 +3239,54 @@
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
       "source_location": "L1",
-      "community": 23,
+      "community": 13,
       "norm_label": "generation des embeddings et construction du vector store faiss.  usage cli :",
       "id": "embeddings_rationale_1"
+    },
+    {
+      "label": "Charge le mod\u00e8le ONNX une seule fois par worker (cache process-level).",
+      "file_type": "rationale",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L33",
+      "id": "embeddings_rationale_33",
+      "community": 13,
+      "norm_label": "charge le modele onnx une seule fois par worker (cache process-level)."
+    },
+    {
+      "label": "Encode une liste de textes (utilis\u00e9 \u00e0 l'indexation).",
+      "file_type": "rationale",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L40",
+      "id": "embeddings_rationale_40",
+      "community": 13,
+      "norm_label": "encode une liste de textes (utilise a l'indexation)."
+    },
+    {
+      "label": "Encode une requ\u00eate utilisateur (utilis\u00e9 au runtime).",
+      "file_type": "rationale",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L46",
+      "id": "embeddings_rationale_46",
+      "community": 13,
+      "norm_label": "encode une requete utilisateur (utilise au runtime)."
     },
     {
       "label": "D\u00e9coupe un texte en chunks avec chevauchement.",
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
-      "source_location": "L28",
-      "community": 23,
-      "norm_label": "decoupe un texte en chunks avec chevauchement.",
-      "id": "embeddings_rationale_28"
+      "source_location": "L52",
+      "id": "embeddings_rationale_52",
+      "community": 13,
+      "norm_label": "decoupe un texte en chunks avec chevauchement."
     },
     {
       "label": "Construit le vector store FAISS \u00e0 partir des documents.      Args:         docum",
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
-      "source_location": "L41",
-      "community": 23,
-      "norm_label": "construit le vector store faiss a partir des documents.      args:         docum",
-      "id": "embeddings_rationale_41"
+      "source_location": "L64",
+      "id": "embeddings_rationale_64",
+      "community": 13,
+      "norm_label": "construit le vector store faiss a partir des documents.      args:         docum"
     },
     {
       "label": "ontology_graph.py",
@@ -3393,7 +3447,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L1",
       "id": "backend_rag_scraper_py",
-      "community": 12,
+      "community": 0,
       "norm_label": "scraper.py"
     },
     {
@@ -3402,7 +3456,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L25",
       "id": "scraper_load_sources",
-      "community": 12,
+      "community": 0,
       "norm_label": "load_sources()"
     },
     {
@@ -3411,7 +3465,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L32",
       "id": "scraper_extract_html",
-      "community": 12,
+      "community": 0,
       "norm_label": "extract_html()"
     },
     {
@@ -3420,7 +3474,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L62",
       "id": "scraper_extract_pdf",
-      "community": 12,
+      "community": 0,
       "norm_label": "extract_pdf()"
     },
     {
@@ -3429,7 +3483,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L104",
       "id": "scraper_scrape_one",
-      "community": 12,
+      "community": 0,
       "norm_label": "scrape_one()"
     },
     {
@@ -3438,7 +3492,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L149",
       "id": "scraper_scrape_all",
-      "community": 12,
+      "community": 0,
       "norm_label": "scrape_all()"
     },
     {
@@ -3447,7 +3501,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L164",
       "id": "scraper_scrape_by_id",
-      "community": 12,
+      "community": 0,
       "norm_label": "scrape_by_id()"
     },
     {
@@ -3456,7 +3510,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L174",
       "id": "scraper_scrape_test",
-      "community": 12,
+      "community": 0,
       "norm_label": "scrape_test()"
     },
     {
@@ -3464,7 +3518,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L1",
-      "community": 12,
+      "community": 0,
       "norm_label": "module de scraping pour alimenter le vector store rag.  supporte : html (sites w",
       "id": "scraper_rationale_1"
     },
@@ -3473,7 +3527,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L33",
-      "community": 12,
+      "community": 0,
       "norm_label": "telecharge une page web et extrait le texte visible.",
       "id": "scraper_rationale_33"
     },
@@ -3482,7 +3536,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L63",
-      "community": 12,
+      "community": 0,
       "norm_label": "telecharge un pdf et extrait son texte.     utilise pdfplumber (plus precis que",
       "id": "scraper_rationale_63"
     },
@@ -3491,7 +3545,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L105",
-      "community": 12,
+      "community": 0,
       "norm_label": "scrape une seule source (html ou pdf selon son type).     retourne le document o",
       "id": "scraper_rationale_105"
     },
@@ -3500,7 +3554,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L150",
-      "community": 12,
+      "community": 0,
       "norm_label": "scrape toutes les sources du fichier sources.json.",
       "id": "scraper_rationale_150"
     },
@@ -3509,7 +3563,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L165",
-      "community": 12,
+      "community": 0,
       "norm_label": "scrape une seule source par son id.",
       "id": "scraper_rationale_165"
     },
@@ -3518,7 +3572,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L175",
-      "community": 12,
+      "community": 0,
       "norm_label": "scrape seulement les n premieres sources \u2014 pour tester rapidement     sans atten",
       "id": "scraper_rationale_175"
     },
@@ -3528,7 +3582,7 @@
       "source_file": "backend/rag/__init__.py",
       "source_location": "L1",
       "id": "backend_rag_init_py",
-      "community": 89,
+      "community": 88,
       "norm_label": "__init__.py"
     },
     {
@@ -3627,7 +3681,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L47",
       "id": "smoke_tests_teststaginghealth",
-      "community": 1,
+      "community": 0,
       "norm_label": "teststaginghealth"
     },
     {
@@ -3636,7 +3690,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L48",
       "id": "smoke_tests_teststaginghealth_test_health_endpoint_returns_200",
-      "community": 1,
+      "community": 0,
       "norm_label": ".test_health_endpoint_returns_200()"
     },
     {
@@ -3645,7 +3699,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L53",
       "id": "smoke_tests_teststaginghealth_test_health_response_structure",
-      "community": 1,
+      "community": 0,
       "norm_label": ".test_health_response_structure()"
     },
     {
@@ -3734,7 +3788,7 @@
       "file_type": "rationale",
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L49",
-      "community": 1,
+      "community": 0,
       "norm_label": "get /api/health/ doit retourner 200 \u2014 service up.",
       "id": "smoke_tests_rationale_49"
     },
@@ -3743,7 +3797,7 @@
       "file_type": "rationale",
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L54",
-      "community": 1,
+      "community": 0,
       "norm_label": "la reponse health doit contenir un champ status.",
       "id": "smoke_tests_rationale_54"
     },
@@ -3798,7 +3852,7 @@
       "source_file": "src/test.jsx",
       "source_location": "L1",
       "id": "src_test_jsx",
-      "community": 55,
+      "community": 54,
       "norm_label": "test.jsx"
     },
     {
@@ -3807,7 +3861,7 @@
       "source_file": "src/test.jsx",
       "source_location": "L8",
       "id": "test_dashboard",
-      "community": 55,
+      "community": 54,
       "norm_label": "dashboard()"
     },
     {
@@ -4005,7 +4059,7 @@
       "source_file": "src/main.jsx",
       "source_location": "L1",
       "id": "src_main_jsx",
-      "community": 90,
+      "community": 89,
       "norm_label": "main.jsx"
     },
     {
@@ -4050,7 +4104,7 @@
       "source_file": "src/api/predictions.js",
       "source_location": "L1",
       "id": "src_api_predictions_js",
-      "community": 1,
+      "community": 0,
       "norm_label": "predictions.js"
     },
     {
@@ -4059,7 +4113,7 @@
       "source_file": "src/api/predictions.js",
       "source_location": "L26",
       "id": "predictions_predictyield",
-      "community": 1,
+      "community": 0,
       "norm_label": "predictyield()"
     },
     {
@@ -4068,7 +4122,7 @@
       "source_file": "src/api/predictions.js",
       "source_location": "L34",
       "id": "predictions_getpredictions",
-      "community": 1,
+      "community": 0,
       "norm_label": "getpredictions()"
     },
     {
@@ -4077,7 +4131,7 @@
       "source_file": "src/api/predictions.js",
       "source_location": "L43",
       "id": "predictions_getprediction",
-      "community": 1,
+      "community": 0,
       "norm_label": "getprediction()"
     },
     {
@@ -4086,7 +4140,7 @@
       "source_file": "src/api/chat.js",
       "source_location": "L1",
       "id": "src_api_chat_js",
-      "community": 1,
+      "community": 0,
       "norm_label": "chat.js"
     },
     {
@@ -4104,7 +4158,7 @@
       "source_file": "src/api/chat.js",
       "source_location": "L28",
       "id": "chat_getconversations",
-      "community": 1,
+      "community": 0,
       "norm_label": "getconversations()"
     },
     {
@@ -4113,7 +4167,7 @@
       "source_file": "src/api/chat.js",
       "source_location": "L37",
       "id": "chat_getconversation",
-      "community": 1,
+      "community": 0,
       "norm_label": "getconversation()"
     },
     {
@@ -4221,7 +4275,7 @@
       "source_file": "src/components/chat/RAGConfidenceBadge.tsx",
       "source_location": "L1",
       "id": "src_components_chat_ragconfidencebadge_tsx",
-      "community": 56,
+      "community": 55,
       "norm_label": "ragconfidencebadge.tsx"
     },
     {
@@ -4230,7 +4284,7 @@
       "source_file": "src/components/chat/RAGConfidenceBadge.tsx",
       "source_location": "L8",
       "id": "ragconfidencebadge_ragconfidencebadge",
-      "community": 56,
+      "community": 55,
       "norm_label": "ragconfidencebadge()"
     },
     {
@@ -4239,7 +4293,7 @@
       "source_file": "src/components/chat/WelcomeScreen.tsx",
       "source_location": "L1",
       "id": "src_components_chat_welcomescreen_tsx",
-      "community": 35,
+      "community": 34,
       "norm_label": "welcomescreen.tsx"
     },
     {
@@ -4248,7 +4302,7 @@
       "source_file": "src/components/chat/WelcomeScreen.tsx",
       "source_location": "L24",
       "id": "welcomescreen_typein",
-      "community": 35,
+      "community": 34,
       "norm_label": "typein()"
     },
     {
@@ -4257,7 +4311,7 @@
       "source_file": "src/components/chat/WelcomeScreen.tsx",
       "source_location": "L34",
       "id": "welcomescreen_typeout",
-      "community": 35,
+      "community": 34,
       "norm_label": "typeout()"
     },
     {
@@ -4266,7 +4320,7 @@
       "source_file": "src/components/chat/MarkdownMessage.tsx",
       "source_location": "L1",
       "id": "src_components_chat_markdownmessage_tsx",
-      "community": 91,
+      "community": 90,
       "norm_label": "markdownmessage.tsx"
     },
     {
@@ -4275,7 +4329,7 @@
       "source_file": "src/components/chat/AssistantMessage.tsx",
       "source_location": "L1",
       "id": "src_components_chat_assistantmessage_tsx",
-      "community": 24,
+      "community": 23,
       "norm_label": "assistantmessage.tsx"
     },
     {
@@ -4284,7 +4338,7 @@
       "source_file": "src/components/chat/AssistantMessage.tsx",
       "source_location": "L34",
       "id": "assistantmessage_getstepcategory",
-      "community": 24,
+      "community": 23,
       "norm_label": "getstepcategory()"
     },
     {
@@ -4293,7 +4347,7 @@
       "source_file": "src/components/chat/AssistantMessage.tsx",
       "source_location": "L45",
       "id": "assistantmessage_getstepicon",
-      "community": 24,
+      "community": 23,
       "norm_label": "getstepicon()"
     },
     {
@@ -4302,7 +4356,7 @@
       "source_file": "src/components/chat/AssistantMessage.tsx",
       "source_location": "L59",
       "id": "assistantmessage_getsteplabel",
-      "community": 24,
+      "community": 23,
       "norm_label": "getsteplabel()"
     },
     {
@@ -4311,7 +4365,7 @@
       "source_file": "src/components/chat/AssistantMessage.tsx",
       "source_location": "L67",
       "id": "assistantmessage_getstepdescription",
-      "community": 24,
+      "community": 23,
       "norm_label": "getstepdescription()"
     },
     {
@@ -4320,7 +4374,7 @@
       "source_file": "src/components/chat/AssistantMessage.tsx",
       "source_location": "L103",
       "id": "assistantmessage_handlecopy",
-      "community": 24,
+      "community": 23,
       "norm_label": "handlecopy()"
     },
     {
@@ -4329,7 +4383,7 @@
       "source_file": "src/components/chat/UserMessage.tsx",
       "source_location": "L1",
       "id": "src_components_chat_usermessage_tsx",
-      "community": 92,
+      "community": 91,
       "norm_label": "usermessage.tsx"
     },
     {
@@ -4338,7 +4392,7 @@
       "source_file": "src/components/chat/AgriSources.tsx",
       "source_location": "L1",
       "id": "src_components_chat_agrisources_tsx",
-      "community": 36,
+      "community": 35,
       "norm_label": "agrisources.tsx"
     },
     {
@@ -4347,7 +4401,7 @@
       "source_file": "src/components/chat/AgriSources.tsx",
       "source_location": "L12",
       "id": "agrisources_getsourcetype",
-      "community": 36,
+      "community": 35,
       "norm_label": "getsourcetype()"
     },
     {
@@ -4356,7 +4410,7 @@
       "source_file": "src/components/chat/AgriSources.tsx",
       "source_location": "L19",
       "id": "agrisources_confidencedot",
-      "community": 36,
+      "community": 35,
       "norm_label": "confidencedot()"
     },
     {
@@ -4365,7 +4419,7 @@
       "source_file": "src/components/chat/PrevisionPage.tsx",
       "source_location": "L1",
       "id": "src_components_chat_previsionpage_tsx",
-      "community": 37,
+      "community": 36,
       "norm_label": "previsionpage.tsx"
     },
     {
@@ -4374,7 +4428,7 @@
       "source_file": "src/components/chat/PrevisionPage.tsx",
       "source_location": "L298",
       "id": "previsionpage_toggleculture",
-      "community": 37,
+      "community": 36,
       "norm_label": "toggleculture()"
     },
     {
@@ -4383,7 +4437,7 @@
       "source_file": "src/components/chat/PrevisionPage.tsx",
       "source_location": "L305",
       "id": "previsionpage_toggleregion",
-      "community": 37,
+      "community": 36,
       "norm_label": "toggleregion()"
     },
     {
@@ -4392,7 +4446,7 @@
       "source_file": "src/components/chat/useChatStream.ts",
       "source_location": "L1",
       "id": "src_components_chat_usechatstream_ts",
-      "community": 57,
+      "community": 56,
       "norm_label": "usechatstream.ts"
     },
     {
@@ -4401,7 +4455,7 @@
       "source_file": "src/components/chat/useChatStream.ts",
       "source_location": "L22",
       "id": "usechatstream_usechatstream",
-      "community": 57,
+      "community": 56,
       "norm_label": "usechatstream()"
     },
     {
@@ -4473,7 +4527,7 @@
       "source_file": "src/components/chat/index.ts",
       "source_location": "L1",
       "id": "src_components_chat_index_ts",
-      "community": 93,
+      "community": 92,
       "norm_label": "index.ts"
     },
     {
@@ -4482,7 +4536,7 @@
       "source_file": "src/components/dashboard/RegionSidebar.jsx",
       "source_location": "L1",
       "id": "src_components_dashboard_regionsidebar_jsx",
-      "community": 38,
+      "community": 37,
       "norm_label": "regionsidebar.jsx"
     },
     {
@@ -4491,7 +4545,7 @@
       "source_file": "src/components/dashboard/RegionSidebar.jsx",
       "source_location": "L16",
       "id": "regionsidebar_glass",
-      "community": 38,
+      "community": 37,
       "norm_label": "glass()"
     },
     {
@@ -4500,7 +4554,7 @@
       "source_file": "src/components/dashboard/RegionSidebar.jsx",
       "source_location": "L44",
       "id": "regionsidebar_regionsidebar",
-      "community": 38,
+      "community": 37,
       "norm_label": "regionsidebar()"
     },
     {
@@ -4509,7 +4563,7 @@
       "source_file": "src/components/dashboard/ForceGraphDashboard.jsx",
       "source_location": "L1",
       "id": "src_components_dashboard_forcegraphdashboard_jsx",
-      "community": 39,
+      "community": 38,
       "norm_label": "forcegraphdashboard.jsx"
     },
     {
@@ -4518,7 +4572,7 @@
       "source_file": "src/components/dashboard/ForceGraphDashboard.jsx",
       "source_location": "L7",
       "id": "forcegraphdashboard_node_color",
-      "community": 39,
+      "community": 38,
       "norm_label": "node_color()"
     },
     {
@@ -4527,7 +4581,7 @@
       "source_file": "src/components/dashboard/ForceGraphDashboard.jsx",
       "source_location": "L13",
       "id": "forcegraphdashboard_forcegraphdashboard",
-      "community": 39,
+      "community": 38,
       "norm_label": "forcegraphdashboard()"
     },
     {
@@ -4536,7 +4590,7 @@
       "source_file": "src/components/madagascar3d/regionData.js",
       "source_location": "L1",
       "id": "src_components_madagascar3d_regiondata_js",
-      "community": 94,
+      "community": 93,
       "norm_label": "regiondata.js"
     },
     {
@@ -4770,7 +4824,7 @@
       "source_file": "src/components/ui/prompt-suggestion.tsx",
       "source_location": "L1",
       "id": "src_components_ui_prompt_suggestion_tsx",
-      "community": 95,
+      "community": 94,
       "norm_label": "prompt-suggestion.tsx"
     },
     {
@@ -4779,7 +4833,7 @@
       "source_file": "src/components/ui/scroll-button.tsx",
       "source_location": "L1",
       "id": "src_components_ui_scroll_button_tsx",
-      "community": 58,
+      "community": 57,
       "norm_label": "scroll-button.tsx"
     },
     {
@@ -4788,7 +4842,7 @@
       "source_file": "src/components/ui/scroll-button.tsx",
       "source_location": "L12",
       "id": "scroll_button_scrollbutton",
-      "community": 58,
+      "community": 57,
       "norm_label": "scrollbutton()"
     },
     {
@@ -4797,7 +4851,7 @@
       "source_file": "src/components/ui/reasoning.tsx",
       "source_location": "L1",
       "id": "src_components_ui_reasoning_tsx",
-      "community": 30,
+      "community": 29,
       "norm_label": "reasoning.tsx"
     },
     {
@@ -4806,7 +4860,7 @@
       "source_file": "src/components/ui/reasoning.tsx",
       "source_location": "L16",
       "id": "reasoning_reasoning",
-      "community": 30,
+      "community": 29,
       "norm_label": "reasoning()"
     },
     {
@@ -4815,7 +4869,7 @@
       "source_file": "src/components/ui/reasoning.tsx",
       "source_location": "L40",
       "id": "reasoning_reasoningtrigger",
-      "community": 30,
+      "community": 29,
       "norm_label": "reasoningtrigger()"
     },
     {
@@ -4824,7 +4878,7 @@
       "source_file": "src/components/ui/reasoning.tsx",
       "source_location": "L58",
       "id": "reasoning_reasoningcontent",
-      "community": 30,
+      "community": 29,
       "norm_label": "reasoningcontent()"
     },
     {
@@ -4833,7 +4887,7 @@
       "source_file": "src/components/ui/FluidBackground.tsx",
       "source_location": "L1",
       "id": "src_components_ui_fluidbackground_tsx",
-      "community": 40,
+      "community": 39,
       "norm_label": "fluidbackground.tsx"
     },
     {
@@ -4842,7 +4896,7 @@
       "source_file": "src/components/ui/FluidBackground.tsx",
       "source_location": "L31",
       "id": "fluidbackground_checkmobile",
-      "community": 40,
+      "community": 39,
       "norm_label": "checkmobile()"
     },
     {
@@ -4851,7 +4905,7 @@
       "source_file": "src/components/ui/FluidBackground.tsx",
       "source_location": "L67",
       "id": "fluidbackground_handlemousemove",
-      "community": 40,
+      "community": 39,
       "norm_label": "handlemousemove()"
     },
     {
@@ -4860,7 +4914,7 @@
       "source_file": "src/components/ui/collapsible.tsx",
       "source_location": "L1",
       "id": "src_components_ui_collapsible_tsx",
-      "community": 96,
+      "community": 95,
       "norm_label": "collapsible.tsx"
     },
     {
@@ -4869,7 +4923,7 @@
       "source_file": "src/components/ui/chain-of-thought.tsx",
       "source_location": "L1",
       "id": "src_components_ui_chain_of_thought_tsx",
-      "community": 59,
+      "community": 58,
       "norm_label": "chain-of-thought.tsx"
     },
     {
@@ -4878,7 +4932,7 @@
       "source_file": "src/components/ui/chain-of-thought.tsx",
       "source_location": "L10",
       "id": "chain_of_thought_chainofthoughtitem",
-      "community": 59,
+      "community": 58,
       "norm_label": "chainofthoughtitem()"
     },
     {
@@ -4887,7 +4941,7 @@
       "source_file": "src/components/ui/prompt-input.tsx",
       "source_location": "L1",
       "id": "src_components_ui_prompt_input_tsx",
-      "community": 41,
+      "community": 40,
       "norm_label": "prompt-input.tsx"
     },
     {
@@ -4896,7 +4950,7 @@
       "source_file": "src/components/ui/prompt-input.tsx",
       "source_location": "L72",
       "id": "prompt_input_promptinputactions",
-      "community": 41,
+      "community": 40,
       "norm_label": "promptinputactions()"
     },
     {
@@ -4905,7 +4959,7 @@
       "source_file": "src/components/ui/prompt-input.tsx",
       "source_location": "L86",
       "id": "prompt_input_promptinputaction",
-      "community": 41,
+      "community": 40,
       "norm_label": "promptinputaction()"
     },
     {
@@ -4914,7 +4968,7 @@
       "source_file": "src/components/ui/source.tsx",
       "source_location": "L1",
       "id": "src_components_ui_source_tsx",
-      "community": 31,
+      "community": 30,
       "norm_label": "source.tsx"
     },
     {
@@ -4923,7 +4977,7 @@
       "source_file": "src/components/ui/source.tsx",
       "source_location": "L18",
       "id": "source_source",
-      "community": 31,
+      "community": 30,
       "norm_label": "source()"
     },
     {
@@ -4932,7 +4986,7 @@
       "source_file": "src/components/ui/source.tsx",
       "source_location": "L31",
       "id": "source_sourcetrigger",
-      "community": 31,
+      "community": 30,
       "norm_label": "sourcetrigger()"
     },
     {
@@ -4941,7 +4995,7 @@
       "source_file": "src/components/ui/source.tsx",
       "source_location": "L49",
       "id": "source_sourcecontent",
-      "community": 31,
+      "community": 30,
       "norm_label": "sourcecontent()"
     },
     {
@@ -4950,7 +5004,7 @@
       "source_file": "src/components/ui/ImageMarquee.jsx",
       "source_location": "L1",
       "id": "src_components_ui_imagemarquee_jsx",
-      "community": 42,
+      "community": 41,
       "norm_label": "imagemarquee.jsx"
     },
     {
@@ -4959,7 +5013,7 @@
       "source_file": "src/components/ui/ImageMarquee.jsx",
       "source_location": "L18",
       "id": "imagemarquee_imagemarquee",
-      "community": 42,
+      "community": 41,
       "norm_label": "imagemarquee()"
     },
     {
@@ -4968,7 +5022,7 @@
       "source_file": "src/components/ui/ImageMarquee.jsx",
       "source_location": "L76",
       "id": "imagemarquee_marqueerow",
-      "community": 42,
+      "community": 41,
       "norm_label": "marqueerow()"
     },
     {
@@ -4977,7 +5031,7 @@
       "source_file": "src/components/ui/message.tsx",
       "source_location": "L1",
       "id": "src_components_ui_message_tsx",
-      "community": 25,
+      "community": 24,
       "norm_label": "message.tsx"
     },
     {
@@ -4986,7 +5040,7 @@
       "source_file": "src/components/ui/message.tsx",
       "source_location": "L18",
       "id": "message_message",
-      "community": 25,
+      "community": 24,
       "norm_label": "message()"
     },
     {
@@ -4995,7 +5049,7 @@
       "source_file": "src/components/ui/message.tsx",
       "source_location": "L33",
       "id": "message_messageavatar",
-      "community": 25,
+      "community": 24,
       "norm_label": "messageavatar()"
     },
     {
@@ -5004,7 +5058,7 @@
       "source_file": "src/components/ui/message.tsx",
       "source_location": "L45",
       "id": "message_messagecontent",
-      "community": 25,
+      "community": 24,
       "norm_label": "messagecontent()"
     },
     {
@@ -5013,7 +5067,7 @@
       "source_file": "src/components/ui/message.tsx",
       "source_location": "L56",
       "id": "message_messageactions",
-      "community": 25,
+      "community": 24,
       "norm_label": "messageactions()"
     },
     {
@@ -5022,7 +5076,7 @@
       "source_file": "src/components/ui/message.tsx",
       "source_location": "L70",
       "id": "message_messageaction",
-      "community": 25,
+      "community": 24,
       "norm_label": "messageaction()"
     },
     {
@@ -5031,7 +5085,7 @@
       "source_file": "src/components/ui/tooltip.tsx",
       "source_location": "L1",
       "id": "src_components_ui_tooltip_tsx",
-      "community": 97,
+      "community": 96,
       "norm_label": "tooltip.tsx"
     },
     {
@@ -5040,7 +5094,7 @@
       "source_file": "src/components/ui/avatar.tsx",
       "source_location": "L1",
       "id": "src_components_ui_avatar_tsx",
-      "community": 98,
+      "community": 97,
       "norm_label": "avatar.tsx"
     },
     {
@@ -5049,7 +5103,7 @@
       "source_file": "src/components/ui/RegionalNavigation.jsx",
       "source_location": "L1",
       "id": "src_components_ui_regionalnavigation_jsx",
-      "community": 28,
+      "community": 27,
       "norm_label": "regionalnavigation.jsx"
     },
     {
@@ -5058,7 +5112,7 @@
       "source_file": "src/components/ui/RegionalNavigation.jsx",
       "source_location": "L36",
       "id": "regionalnavigation_fmt",
-      "community": 28,
+      "community": 27,
       "norm_label": "fmt()"
     },
     {
@@ -5067,7 +5121,7 @@
       "source_file": "src/components/ui/RegionalNavigation.jsx",
       "source_location": "L42",
       "id": "regionalnavigation_regionrow",
-      "community": 28,
+      "community": 27,
       "norm_label": "regionrow()"
     },
     {
@@ -5076,7 +5130,7 @@
       "source_file": "src/components/ui/RegionalNavigation.jsx",
       "source_location": "L71",
       "id": "regionalnavigation_herostat",
-      "community": 28,
+      "community": 27,
       "norm_label": "herostat()"
     },
     {
@@ -5085,7 +5139,7 @@
       "source_file": "src/components/ui/RegionalNavigation.jsx",
       "source_location": "L104",
       "id": "regionalnavigation_regionalnavigation",
-      "community": 28,
+      "community": 27,
       "norm_label": "regionalnavigation()"
     },
     {
@@ -5094,7 +5148,7 @@
       "source_file": "src/components/ui/system-message.tsx",
       "source_location": "L1",
       "id": "src_components_ui_system_message_tsx",
-      "community": 60,
+      "community": 59,
       "norm_label": "system-message.tsx"
     },
     {
@@ -5103,7 +5157,7 @@
       "source_file": "src/components/ui/system-message.tsx",
       "source_location": "L19",
       "id": "system_message_systemmessage",
-      "community": 60,
+      "community": 59,
       "norm_label": "systemmessage()"
     },
     {
@@ -5112,7 +5166,7 @@
       "source_file": "src/components/ui/IgamLogo3D.jsx",
       "source_location": "L1",
       "id": "src_components_ui_igamlogo3d_jsx",
-      "community": 32,
+      "community": 31,
       "norm_label": "igamlogo3d.jsx"
     },
     {
@@ -5121,7 +5175,7 @@
       "source_file": "src/components/ui/IgamLogo3D.jsx",
       "source_location": "L8",
       "id": "igamlogo3d_logomodel",
-      "community": 32,
+      "community": 31,
       "norm_label": "logomodel()"
     },
     {
@@ -5130,7 +5184,7 @@
       "source_file": "src/components/ui/IgamLogo3D.jsx",
       "source_location": "L59",
       "id": "igamlogo3d_loadingspinner",
-      "community": 32,
+      "community": 31,
       "norm_label": "loadingspinner()"
     },
     {
@@ -5139,7 +5193,7 @@
       "source_file": "src/components/ui/IgamLogo3D.jsx",
       "source_location": "L87",
       "id": "igamlogo3d_igamlogo3d",
-      "community": 32,
+      "community": 31,
       "norm_label": "igamlogo3d()"
     },
     {
@@ -5148,7 +5202,7 @@
       "source_file": "src/components/ui/thinking-bar.tsx",
       "source_location": "L1",
       "id": "src_components_ui_thinking_bar_tsx",
-      "community": 99,
+      "community": 98,
       "norm_label": "thinking-bar.tsx"
     },
     {
@@ -5157,7 +5211,7 @@
       "source_file": "src/components/ui/Accordion.jsx",
       "source_location": "L1",
       "id": "src_components_ui_accordion_jsx",
-      "community": 100,
+      "community": 99,
       "norm_label": "accordion.jsx"
     },
     {
@@ -5166,7 +5220,7 @@
       "source_file": "src/components/ui/TextScramble.jsx",
       "source_location": "L1",
       "id": "src_components_ui_textscramble_jsx",
-      "community": 61,
+      "community": 60,
       "norm_label": "textscramble.jsx"
     },
     {
@@ -5175,7 +5229,7 @@
       "source_file": "src/components/ui/TextScramble.jsx",
       "source_location": "L5",
       "id": "textscramble_textscramble",
-      "community": 61,
+      "community": 60,
       "norm_label": "textscramble()"
     },
     {
@@ -5184,7 +5238,7 @@
       "source_file": "src/lib/utils.ts",
       "source_location": "L1",
       "id": "src_lib_utils_ts",
-      "community": 62,
+      "community": 61,
       "norm_label": "utils.ts"
     },
     {
@@ -5193,7 +5247,7 @@
       "source_file": "src/lib/utils.ts",
       "source_location": "L4",
       "id": "utils_cn",
-      "community": 62,
+      "community": 61,
       "norm_label": "cn()"
     },
     {
@@ -5202,7 +5256,7 @@
       "source_file": "src/data/madagascarGraphData.js",
       "source_location": "L1",
       "id": "src_data_madagascargraphdata_js",
-      "community": 101,
+      "community": 100,
       "norm_label": "madagascargraphdata.js"
     },
     {
@@ -5211,7 +5265,7 @@
       "source_file": "src/data/regionsData.js",
       "source_location": "L1",
       "id": "src_data_regionsdata_js",
-      "community": 43,
+      "community": 42,
       "norm_label": "regionsdata.js"
     },
     {
@@ -5220,7 +5274,7 @@
       "source_file": "src/data/regionsData.js",
       "source_location": "L246",
       "id": "regionsdata_formatnumber",
-      "community": 43,
+      "community": 42,
       "norm_label": "formatnumber()"
     },
     {
@@ -5229,7 +5283,7 @@
       "source_file": "src/data/regionsData.js",
       "source_location": "L250",
       "id": "regionsdata_formatdensity",
-      "community": 43,
+      "community": 42,
       "norm_label": "formatdensity()"
     },
     {
@@ -5238,7 +5292,7 @@
       "source_file": "src/data/madagascarGeoJSON.js",
       "source_location": "L1",
       "id": "src_data_madagascargeojson_js",
-      "community": 102,
+      "community": 101,
       "norm_label": "madagascargeojson.js"
     },
     {
@@ -5247,7 +5301,7 @@
       "source_file": "src/pages/ForecastPage.tsx",
       "source_location": "L1",
       "id": "src_pages_forecastpage_tsx",
-      "community": 44,
+      "community": 43,
       "norm_label": "forecastpage.tsx"
     },
     {
@@ -5256,7 +5310,7 @@
       "source_file": "src/pages/ForecastPage.tsx",
       "source_location": "L101",
       "id": "forecastpage_toggle",
-      "community": 44,
+      "community": 43,
       "norm_label": "toggle()"
     },
     {
@@ -5265,7 +5319,7 @@
       "source_file": "src/pages/ForecastPage.tsx",
       "source_location": "L113",
       "id": "forecastpage_handlegenerate",
-      "community": 44,
+      "community": 43,
       "norm_label": "handlegenerate()"
     },
     {
@@ -5274,7 +5328,7 @@
       "source_file": "src/hooks/useTheme.ts",
       "source_location": "L1",
       "id": "src_hooks_usetheme_ts",
-      "community": 63,
+      "community": 62,
       "norm_label": "usetheme.ts"
     },
     {
@@ -5283,7 +5337,7 @@
       "source_file": "src/hooks/useTheme.ts",
       "source_location": "L3",
       "id": "usetheme_usetheme",
-      "community": 63,
+      "community": 62,
       "norm_label": "usetheme()"
     },
     {
@@ -5292,7 +5346,7 @@
       "source_file": "src/composant/login.jsx",
       "source_location": "L1",
       "id": "src_composant_login_jsx",
-      "community": 64,
+      "community": 63,
       "norm_label": "login.jsx"
     },
     {
@@ -5301,7 +5355,7 @@
       "source_file": "src/composant/login.jsx",
       "source_location": "L16",
       "id": "login_login",
-      "community": 64,
+      "community": 63,
       "norm_label": "login()"
     },
     {
@@ -5310,7 +5364,7 @@
       "source_file": "src/composant/theme-provider.tsx",
       "source_location": "L1",
       "id": "src_composant_theme_provider_tsx",
-      "community": 65,
+      "community": 64,
       "norm_label": "theme-provider.tsx"
     },
     {
@@ -5319,7 +5373,7 @@
       "source_file": "src/composant/theme-provider.tsx",
       "source_location": "L9",
       "id": "theme_provider_themeprovider",
-      "community": 65,
+      "community": 64,
       "norm_label": "themeprovider()"
     },
     {
@@ -5391,7 +5445,7 @@
       "source_file": "src/composant/register.jsx",
       "source_location": "L1",
       "id": "src_composant_register_jsx",
-      "community": 66,
+      "community": 65,
       "norm_label": "register.jsx"
     },
     {
@@ -5400,7 +5454,7 @@
       "source_file": "src/composant/register.jsx",
       "source_location": "L16",
       "id": "register_register",
-      "community": 66,
+      "community": 65,
       "norm_label": "register()"
     },
     {
@@ -5409,7 +5463,7 @@
       "source_file": "src/composant/cartographie.jsx",
       "source_location": "L1",
       "id": "src_composant_cartographie_jsx",
-      "community": 45,
+      "community": 44,
       "norm_label": "cartographie.jsx"
     },
     {
@@ -5418,7 +5472,7 @@
       "source_file": "src/composant/cartographie.jsx",
       "source_location": "L64",
       "id": "cartographie_builddwdata",
-      "community": 45,
+      "community": 44,
       "norm_label": "_builddwdata()"
     },
     {
@@ -5427,7 +5481,7 @@
       "source_file": "src/composant/cartographie.jsx",
       "source_location": "L586",
       "id": "cartographie_madagascarmap",
-      "community": 45,
+      "community": 44,
       "norm_label": "madagascarmap()"
     },
     {
@@ -5436,7 +5490,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L1",
       "id": "blender_scripts_borders_only_py",
-      "community": 1,
+      "community": 0,
       "norm_label": "borders_only.py"
     },
     {
@@ -5445,7 +5499,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L45",
       "id": "borders_only_find_col",
-      "community": 1,
+      "community": 0,
       "norm_label": "find_col()"
     },
     {
@@ -5454,7 +5508,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L57",
       "id": "borders_only_get_or_create_col",
-      "community": 1,
+      "community": 0,
       "norm_label": "get_or_create_col()"
     },
     {
@@ -5463,7 +5517,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L68",
       "id": "borders_only_link_to_scene_if_needed",
-      "community": 1,
+      "community": 0,
       "norm_label": "link_to_scene_if_needed()"
     },
     {
@@ -5472,7 +5526,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L83",
       "id": "borders_only_unlink_all",
-      "community": 1,
+      "community": 0,
       "norm_label": "unlink_all()"
     },
     {
@@ -5481,7 +5535,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L88",
       "id": "borders_only_link_obj",
-      "community": 1,
+      "community": 0,
       "norm_label": "link_obj()"
     },
     {
@@ -5490,7 +5544,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L96",
       "id": "borders_only_get_or_create_material",
-      "community": 1,
+      "community": 0,
       "norm_label": "get_or_create_material()"
     },
     {
@@ -5499,7 +5553,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L145",
       "id": "borders_only_apply_modifiers",
-      "community": 1,
+      "community": 0,
       "norm_label": "apply_modifiers()"
     },
     {
@@ -5508,7 +5562,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L183",
       "id": "borders_only_duplicate_object",
-      "community": 1,
+      "community": 0,
       "norm_label": "duplicate_object()"
     },
     {
@@ -5517,7 +5571,7 @@
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L204",
       "id": "borders_only_main",
-      "community": 1,
+      "community": 0,
       "norm_label": "main()"
     },
     {
@@ -5525,7 +5579,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L1",
-      "community": 1,
+      "community": 0,
       "norm_label": "borders_only.py \u2014 creation collection borders_only style statskog ==============",
       "id": "borders_only_rationale_1"
     },
@@ -5534,7 +5588,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L69",
-      "community": 1,
+      "community": 0,
       "norm_label": "s'assure que la collection est visible dans la scene.",
       "id": "borders_only_rationale_69"
     },
@@ -5543,7 +5597,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L146",
-      "community": 1,
+      "community": 0,
       "norm_label": "ajoute les 4 modificateurs en ordre.",
       "id": "borders_only_rationale_146"
     },
@@ -5552,7 +5606,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/borders_only.py",
       "source_location": "L184",
-      "community": 1,
+      "community": 0,
       "norm_label": "copie profonde d'un objet mesh (mesh, modifiers, transform).",
       "id": "borders_only_rationale_184"
     },
@@ -5562,7 +5616,7 @@
       "source_file": "blender_scripts/apply_topographic_material.py",
       "source_location": "L1",
       "id": "blender_scripts_apply_topographic_material_py",
-      "community": 26,
+      "community": 25,
       "norm_label": "apply_topographic_material.py"
     },
     {
@@ -5571,7 +5625,7 @@
       "source_file": "blender_scripts/apply_topographic_material.py",
       "source_location": "L3",
       "id": "apply_topographic_material_hex_to_rgba",
-      "community": 26,
+      "community": 25,
       "norm_label": "hex_to_rgba()"
     },
     {
@@ -5580,7 +5634,7 @@
       "source_file": "blender_scripts/apply_topographic_material.py",
       "source_location": "L22",
       "id": "apply_topographic_material_create_topo_material",
-      "community": 26,
+      "community": 25,
       "norm_label": "create_topo_material()"
     },
     {
@@ -5589,7 +5643,7 @@
       "source_file": "blender_scripts/apply_topographic_material.py",
       "source_location": "L154",
       "id": "apply_topographic_material_apply_material_to_target_objects",
-      "community": 26,
+      "community": 25,
       "norm_label": "apply_material_to_target_objects()"
     },
     {
@@ -5598,7 +5652,7 @@
       "source_file": "blender_scripts/apply_topographic_material.py",
       "source_location": "L176",
       "id": "apply_topographic_material_setup_scene",
-      "community": 26,
+      "community": 25,
       "norm_label": "setup_scene()"
     },
     {
@@ -5606,7 +5660,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/apply_topographic_material.py",
       "source_location": "L4",
-      "community": 26,
+      "community": 25,
       "norm_label": "convertit un code hex en rgba lineaire pour blender.     pour les couleurs tres",
       "id": "apply_topographic_material_rationale_4"
     },
@@ -5760,7 +5814,7 @@
       "source_file": "blender_scripts/diagnostic_collections.py",
       "source_location": "L1",
       "id": "blender_scripts_diagnostic_collections_py",
-      "community": 46,
+      "community": 45,
       "norm_label": "diagnostic_collections.py"
     },
     {
@@ -5769,7 +5823,7 @@
       "source_file": "blender_scripts/diagnostic_collections.py",
       "source_location": "L8",
       "id": "diagnostic_collections_print_collection",
-      "community": 46,
+      "community": 45,
       "norm_label": "print_collection()"
     },
     {
@@ -5777,7 +5831,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/diagnostic_collections.py",
       "source_location": "L1",
-      "community": 46,
+      "community": 45,
       "norm_label": "script de diagnostic : liste toutes les collections et objets de la scene.",
       "id": "diagnostic_collections_rationale_1"
     },
@@ -5787,7 +5841,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L1",
       "id": "blender_scripts_organize_madagascar_drilldown_py",
-      "community": 13,
+      "community": 12,
       "norm_label": "organize_madagascar_drilldown.py"
     },
     {
@@ -5796,7 +5850,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L139",
       "id": "organize_madagascar_drilldown_normalize",
-      "community": 13,
+      "community": 12,
       "norm_label": "normalize()"
     },
     {
@@ -5805,7 +5859,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L142",
       "id": "organize_madagascar_drilldown_get_col",
-      "community": 13,
+      "community": 12,
       "norm_label": "get_col()"
     },
     {
@@ -5814,7 +5868,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L145",
       "id": "organize_madagascar_drilldown_get_or_create_col",
-      "community": 13,
+      "community": 12,
       "norm_label": "get_or_create_col()"
     },
     {
@@ -5823,7 +5877,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L156",
       "id": "organize_madagascar_drilldown_unlink_from_all",
-      "community": 13,
+      "community": 12,
       "norm_label": "unlink_from_all()"
     },
     {
@@ -5832,7 +5886,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L161",
       "id": "organize_madagascar_drilldown_link_to",
-      "community": 13,
+      "community": 12,
       "norm_label": "link_to()"
     },
     {
@@ -5841,7 +5895,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L165",
       "id": "organize_madagascar_drilldown_bbox_overlap_area",
-      "community": 13,
+      "community": 12,
       "norm_label": "bbox_overlap_area()"
     },
     {
@@ -5850,7 +5904,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L184",
       "id": "organize_madagascar_drilldown_main",
-      "community": 13,
+      "community": 12,
       "norm_label": "main()"
     },
     {
@@ -5858,7 +5912,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L1",
-      "community": 13,
+      "community": 12,
       "norm_label": "script blender python : organisation hierarchique madagascar pour drill-down ===",
       "id": "organize_madagascar_drilldown_rationale_1"
     },
@@ -5867,7 +5921,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L166",
-      "community": 13,
+      "community": 12,
       "norm_label": "calcule l'aire de chevauchement xy entre deux objets.",
       "id": "organize_madagascar_drilldown_rationale_166"
     },
@@ -5877,7 +5931,7 @@
       "source_file": "scripts/blender_clean_madagascar.py",
       "source_location": "L1",
       "id": "scripts_blender_clean_madagascar_py",
-      "community": 1,
+      "community": 0,
       "norm_label": "blender_clean_madagascar.py"
     },
     {
@@ -5886,7 +5940,7 @@
       "source_file": "scripts/blender_clean_madagascar.py",
       "source_location": "L174",
       "id": "blender_clean_madagascar_make_mat",
-      "community": 1,
+      "community": 0,
       "norm_label": "make_mat()"
     },
     {
@@ -5895,7 +5949,7 @@
       "source_file": "scripts/blender_clean_madagascar.py",
       "source_location": "L198",
       "id": "blender_clean_madagascar_export_glb",
-      "community": 1,
+      "community": 0,
       "norm_label": "export_glb()"
     },
     {
@@ -5904,7 +5958,7 @@
       "source_file": "scripts/auto-webp.js",
       "source_location": "L1",
       "id": "scripts_auto_webp_js",
-      "community": 67,
+      "community": 66,
       "norm_label": "auto-webp.js"
     },
     {
@@ -5913,8 +5967,71 @@
       "source_file": "scripts/auto-webp.js",
       "source_location": "L11",
       "id": "auto_webp_getallfiles",
-      "community": 67,
+      "community": 66,
       "norm_label": "getallfiles()"
+    },
+    {
+      "label": "Enrichit la requ\u00eate FAISS avec les concepts li\u00e9s trouv\u00e9s dans l'ontologie.     E",
+      "file_type": "rationale",
+      "source_file": "backend/chat/pipeline/rag.py",
+      "source_location": "L121",
+      "community": 102,
+      "norm_label": "enrichit la requete faiss avec les concepts lies trouves dans l'ontologie.     e",
+      "id": "rag_rationale_121"
+    },
+    {
+      "label": "\u00c9value la qualit\u00e9 des r\u00e9sultats et construit la r\u00e9ponse appropri\u00e9e.     C'est ic",
+      "file_type": "rationale",
+      "source_file": "backend/chat/pipeline/rag.py",
+      "source_location": "L148",
+      "community": 103,
+      "norm_label": "evalue la qualite des resultats et construit la reponse appropriee.     c'est ic",
+      "id": "rag_rationale_148"
+    },
+    {
+      "label": "G\u00e8re le cas o\u00f9 le RAG ne trouve rien d'utile.     Tente le fallback sur la knowl",
+      "file_type": "rationale",
+      "source_file": "backend/chat/pipeline/rag.py",
+      "source_location": "L189",
+      "community": 104,
+      "norm_label": "gere le cas ou le rag ne trouve rien d'utile.     tente le fallback sur la knowl",
+      "id": "rag_rationale_189"
+    },
+    {
+      "label": "Formate les documents r\u00e9cup\u00e9r\u00e9s + les faits ontologiques pour le LLM.",
+      "file_type": "rationale",
+      "source_file": "backend/chat/pipeline/rag.py",
+      "source_location": "L236",
+      "community": 105,
+      "norm_label": "formate les documents recuperes + les faits ontologiques pour le llm.",
+      "id": "rag_rationale_236"
+    },
+    {
+      "label": "Contexte statique de secours bas\u00e9 sur les tags ontologiques.     Utilis\u00e9 quand F",
+      "file_type": "rationale",
+      "source_file": "backend/chat/pipeline/rag.py",
+      "source_location": "L254",
+      "community": 106,
+      "norm_label": "contexte statique de secours base sur les tags ontologiques.     utilise quand f",
+      "id": "rag_rationale_254"
+    },
+    {
+      "label": "D\u00e9coupe un texte en chunks avec chevauchement.",
+      "file_type": "rationale",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L28",
+      "community": 107,
+      "norm_label": "decoupe un texte en chunks avec chevauchement.",
+      "id": "embeddings_rationale_28"
+    },
+    {
+      "label": "Construit le vector store FAISS \u00e0 partir des documents.      Args:         docum",
+      "file_type": "rationale",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L41",
+      "community": 108,
+      "norm_label": "construit le vector store faiss a partir des documents.      args:         docum",
+      "id": "embeddings_rationale_41"
     }
   ],
   "links": [
@@ -10074,7 +10191,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L120",
+      "source_location": "L117",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_rag_py",
       "_tgt": "rag_expand_query",
@@ -10086,7 +10203,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L147",
+      "source_location": "L144",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_rag_py",
       "_tgt": "rag_build_result",
@@ -10098,7 +10215,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L188",
+      "source_location": "L185",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_rag_py",
       "_tgt": "rag_no_data_result",
@@ -10110,7 +10227,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L225",
+      "source_location": "L222",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_rag_py",
       "_tgt": "rag_empty_result",
@@ -10122,7 +10239,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L235",
+      "source_location": "L232",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_rag_py",
       "_tgt": "rag_format_context",
@@ -10134,7 +10251,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L253",
+      "source_location": "L250",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_rag_py",
       "_tgt": "rag_fallback_static",
@@ -10182,7 +10299,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L100",
+      "source_location": "L97",
       "weight": 1.0,
       "_src": "rag_retrieve",
       "_tgt": "rag_distance_to_score",
@@ -10230,7 +10347,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L87",
+      "source_location": "L84",
       "weight": 1.0,
       "_src": "rag_retrieve",
       "_tgt": "rag_expand_query",
@@ -10242,7 +10359,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L111",
+      "source_location": "L108",
       "weight": 1.0,
       "_src": "rag_retrieve",
       "_tgt": "rag_build_result",
@@ -10275,15 +10392,27 @@
       "target": "views_userlistview_get"
     },
     {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend/chat/pipeline/rag.py",
+      "source_location": "L87",
+      "weight": 1.0,
+      "_src": "rag_retrieve",
+      "_tgt": "embeddings_embed_query",
+      "source": "rag_retrieve",
+      "target": "embeddings_embed_query"
+    },
+    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L121",
+      "source_location": "L118",
       "weight": 1.0,
-      "_src": "rag_rationale_121",
+      "_src": "rag_rationale_118",
       "_tgt": "rag_expand_query",
       "source": "rag_expand_query",
-      "target": "rag_rationale_121",
+      "target": "rag_rationale_118",
       "confidence_score": 1.0
     },
     {
@@ -10302,7 +10431,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L153",
+      "source_location": "L150",
       "weight": 1.0,
       "_src": "rag_build_result",
       "_tgt": "rag_no_data_result",
@@ -10314,7 +10443,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L160",
+      "source_location": "L157",
       "weight": 1.0,
       "_src": "rag_build_result",
       "_tgt": "rag_format_context",
@@ -10326,19 +10455,19 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L148",
+      "source_location": "L145",
       "weight": 1.0,
-      "_src": "rag_rationale_148",
+      "_src": "rag_rationale_145",
       "_tgt": "rag_build_result",
       "source": "rag_build_result",
-      "target": "rag_rationale_148",
+      "target": "rag_rationale_145",
       "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L194",
+      "source_location": "L191",
       "weight": 1.0,
       "_src": "rag_no_data_result",
       "_tgt": "rag_fallback_static",
@@ -10350,24 +10479,24 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L189",
+      "source_location": "L186",
       "weight": 1.0,
-      "_src": "rag_rationale_189",
+      "_src": "rag_rationale_186",
       "_tgt": "rag_no_data_result",
       "source": "rag_no_data_result",
-      "target": "rag_rationale_189",
+      "target": "rag_rationale_186",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L236",
+      "source_location": "L233",
       "weight": 1.0,
-      "_src": "rag_rationale_236",
+      "_src": "rag_rationale_233",
       "_tgt": "rag_format_context",
       "source": "rag_format_context",
-      "target": "rag_rationale_236",
+      "target": "rag_rationale_233",
       "confidence_score": 1.0
     },
     {
@@ -10386,12 +10515,12 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/rag.py",
-      "source_location": "L254",
+      "source_location": "L251",
       "weight": 1.0,
-      "_src": "rag_rationale_254",
+      "_src": "rag_rationale_251",
       "_tgt": "rag_fallback_static",
       "source": "rag_fallback_static",
-      "target": "rag_rationale_254",
+      "target": "rag_rationale_251",
       "confidence_score": 1.0
     },
     {
@@ -13002,7 +13131,43 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/rag/embeddings.py",
-      "source_location": "L27",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_src": "backend_rag_embeddings_py",
+      "_tgt": "embeddings_get_model",
+      "source": "backend_rag_embeddings_py",
+      "target": "embeddings_get_model",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_src": "backend_rag_embeddings_py",
+      "_tgt": "embeddings_embed_documents",
+      "source": "backend_rag_embeddings_py",
+      "target": "embeddings_embed_documents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_src": "backend_rag_embeddings_py",
+      "_tgt": "embeddings_embed_query",
+      "source": "backend_rag_embeddings_py",
+      "target": "embeddings_embed_query",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L51",
       "weight": 1.0,
       "_src": "backend_rag_embeddings_py",
       "_tgt": "embeddings_chunk_text",
@@ -13014,7 +13179,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/rag/embeddings.py",
-      "source_location": "L40",
+      "source_location": "L63",
       "weight": 1.0,
       "_src": "backend_rag_embeddings_py",
       "_tgt": "embeddings_build_index",
@@ -13038,7 +13203,79 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/rag/embeddings.py",
-      "source_location": "L81",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_src": "embeddings_embed_documents",
+      "_tgt": "embeddings_get_model",
+      "source": "embeddings_get_model",
+      "target": "embeddings_embed_documents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_src": "embeddings_embed_query",
+      "_tgt": "embeddings_get_model",
+      "source": "embeddings_get_model",
+      "target": "embeddings_embed_query",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_src": "embeddings_rationale_33",
+      "_tgt": "embeddings_get_model",
+      "source": "embeddings_get_model",
+      "target": "embeddings_rationale_33",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L117",
+      "weight": 1.0,
+      "_src": "embeddings_build_index",
+      "_tgt": "embeddings_embed_documents",
+      "source": "embeddings_embed_documents",
+      "target": "embeddings_build_index",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_src": "embeddings_rationale_40",
+      "_tgt": "embeddings_embed_documents",
+      "source": "embeddings_embed_documents",
+      "target": "embeddings_rationale_40",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_src": "embeddings_rationale_46",
+      "_tgt": "embeddings_embed_query",
+      "source": "embeddings_embed_query",
+      "target": "embeddings_rationale_46",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/rag/embeddings.py",
+      "source_location": "L105",
       "weight": 1.0,
       "_src": "embeddings_build_index",
       "_tgt": "embeddings_chunk_text",
@@ -13050,24 +13287,24 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/rag/embeddings.py",
-      "source_location": "L28",
+      "source_location": "L52",
       "weight": 1.0,
-      "_src": "embeddings_rationale_28",
+      "_src": "embeddings_rationale_52",
       "_tgt": "embeddings_chunk_text",
       "source": "embeddings_chunk_text",
-      "target": "embeddings_rationale_28",
+      "target": "embeddings_rationale_52",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/rag/embeddings.py",
-      "source_location": "L41",
+      "source_location": "L64",
       "weight": 1.0,
-      "_src": "embeddings_rationale_41",
+      "_src": "embeddings_rationale_64",
       "_tgt": "embeddings_build_index",
       "source": "embeddings_build_index",
-      "target": "embeddings_rationale_41",
+      "target": "embeddings_rationale_64",
       "confidence_score": 1.0
     },
     {

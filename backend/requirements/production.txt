@@ -13,8 +13,9 @@ numpy>=1.26
 pandas>=2.2
 joblib>=1.4
 
-# RAG / Embeddings
-sentence-transformers>=3.0
+# RAG / Embeddings — fastembed (ONNX Runtime, pas de torch)
+# Image légère pour Render free tier 512 MB RAM
+fastembed>=0.4
 faiss-cpu>=1.8
 beautifulsoup4>=4.12
 pdfplumber>=0.11

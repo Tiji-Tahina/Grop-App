@@ -11,9 +11,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev gcc && \
     rm -rf /var/lib/apt/lists/*
 
-# Dépendances Python
-COPY backend/requirements/production.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Dépendances Python — copie tout le dossier requirements/
+# (production.txt référence base.txt via "-r base.txt")
+COPY backend/requirements/ /tmp/requirements/
+RUN pip install --no-cache-dir -r /tmp/requirements/production.txt
+
+# Pré-télécharge le modèle ONNX dans l'image (~120 MB) pour éviter
+# de le retélécharger à chaque cold start sur Render (free tier sans disque persistant).
+RUN python -c "from fastembed import TextEmbedding; \
+    TextEmbedding(model_name='sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')"
 
 # Code source
 COPY backend/ .
@@ -30,11 +36,4 @@ EXPOSE 8000
 
 # Render injecte $PORT dynamiquement. Free tier = 512 MB RAM → 2 workers / 4 threads.
 # Migrations à chaque boot pour rester en phase avec le schéma déployé.
-CMD sh -c "python manage.py migrate --noinput && \
-           gunicorn config.wsgi:application \
-             --bind 0.0.0.0:${PORT:-8000} \
-             --workers ${WEB_CONCURRENCY:-2} \
-             --threads 4 \
-             --timeout 120 \
-             --access-logfile - \
-             --error-logfile -"
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers ${WEB_CONCURRENCY:-2} --threads 4 --timeout 120 --access-logfile - --error-logfile -"]

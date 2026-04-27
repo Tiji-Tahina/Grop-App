@@ -75,19 +75,16 @@ def retrieve(ontology_result: dict, top_k: int = None) -> dict:
                                 ontology_result.get('ontology_facts', ''))
 
     try:
-        from sentence_transformers import SentenceTransformer
         import numpy as np
 
-        model = SentenceTransformer(
-            'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2'
-        )
+        from rag.embeddings import embed_query
 
         # ── Expansion de requête via l'ontologie ──────────────────────────────
         base_query = ontology_result['enriched_text']
         expanded_query = _expand_query(base_query, ontology_result.get('matched_keywords', []))
 
-        query_vec = model.encode([expanded_query])
-        query_vec = np.array(query_vec, dtype='float32')
+        # fastembed renvoie un np.ndarray par texte ; on en fait un batch [1, dim]
+        query_vec = np.array([embed_query(expanded_query)], dtype='float32')
 
         # Récupérer plus de candidats pour filtrer ensuite
         n_candidates = min(top_k * 3, index.ntotal)
