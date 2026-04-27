@@ -4,11 +4,12 @@
 # Services définis :
 #   grop-app-backend-staging   Web Service Docker (staging)
 #   grop-app-backend           Web Service Docker (production)
-#   grop-app-frontend          Static Site (production)
 #
 # Bases de données :
 #   grop-app-db-staging        PostgreSQL (staging)
 #   grop-app-db                PostgreSQL (production)
+#
+# Le frontend (React/Vite) est déployé sur Netlify via netlify.toml.
 #
 # ⚠️  Les valeurs sync: false signifient que les envVars ne sont pas
 #      écrasées à chaque déploiement — les modifier dans le dashboard Render.
@@ -90,19 +91,3 @@ services:
         value: "3.11.9"
       - key: WEB_CONCURRENCY
         value: "2"
-
-  # ─── Frontend Production (Static Site) ───────────────────────────────────
-  - type: web
-    name: grop-app-frontend
-    runtime: static
-    buildCommand: npm ci && npm run build
-    staticPublishPath: ./build
-    branch: main
-    plan: free
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_API_BASE_URL
-        sync: false   # Ex : https://grop-app-backend.onrender.com
