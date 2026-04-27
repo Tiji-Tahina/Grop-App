@@ -35,15 +35,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push backend image
+      # Render rebuild lui-même l'image depuis le repo via webhook → pas besoin
+      # de pousser sur GHCR. On valide juste que le Dockerfile build correctement.
+      # (Repasser à push: true + permissions: packages: write si tu veux publier)
+      - name: Build backend image (validate Dockerfile)
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile.backend
-          push: true
-          tags: |
-            ${{ steps.image.outputs.name }}:latest
-            ${{ steps.image.outputs.name }}:${{ github.sha }}
+          push: false
+          tags: ${{ steps.image.outputs.name }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
