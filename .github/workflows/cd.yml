@@ -60,8 +60,10 @@ jobs:
           node-version: "20"
           cache: npm
 
+      # --legacy-peer-deps : react-simple-maps@3 déclare peer react ≤ 18,
+      # le projet utilise react@19. Même flag que netlify.toml (cohérent).
       - name: Install & Build
-        run: npm ci && npm run build
+        run: npm ci --legacy-peer-deps && npm run build
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
 
