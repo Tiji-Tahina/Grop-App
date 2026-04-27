@@ -16,6 +16,7 @@ export interface ChatMessage {
   sources: ChatSource[];
   isStreaming: boolean;
   isOffTopic: boolean;
+  isError: boolean;
   streamingTime: number;
 }
 
@@ -36,6 +37,7 @@ export function useChatStream() {
       sources: [],
       isStreaming: false,
       isOffTopic: false,
+      isError: false,
       streamingTime: 0,
     };
     setMessages(prev => [...prev, userMsg]);
@@ -158,11 +160,14 @@ export function useChatStream() {
               )
             );
           } else if (parts[0] === 'error') {
+            // Format SSE : error|elapsed|0|MESSAGE — le message peut contenir des |
+            // donc on rejoint tous les parts à partir de l'index 3.
+            const errorMessage = parts.slice(3).join('|') || parts[1] || 'Erreur inconnue';
             setIsStreaming(false);
             setMessages(prev =>
               prev.map(m =>
                 m.id === assistantId
-                  ? { ...m, text: `Erreur: ${parts[3] || parts[1]}`, isStreaming: false }
+                  ? { ...m, text: errorMessage, isStreaming: false, isError: true }
                   : m
               )
             );

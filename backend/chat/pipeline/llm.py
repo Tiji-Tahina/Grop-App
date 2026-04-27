@@ -256,9 +256,21 @@ def stream_generate(prompt: str):
     """
     Generator qui yield chaque token via /generate/stream (SSE) du Colab.
     Format SSE Colab : data: token:TEXT|ELAPSED|PROGRESS
+
+    Yields :
+      {"token": str, "done": bool, "progress": int}  → token normal
+      {"error": str, "done": True, "progress": 100}  → erreur (LLM offline, timeout, etc.)
     """
     if not COLAB_LLM_URL:
-        yield {"token": "COLAB_LLM_URL non défini dans .env", "done": True, "progress": 100}
+        yield {
+            "error": (
+                "Le modèle LLM n'est pas connecté. "
+                "L'administrateur doit définir COLAB_LLM_URL dans les variables "
+                "d'environnement Render avec l'URL ngrok du notebook Colab."
+            ),
+            "done": True,
+            "progress": 100,
+        }
         return
 
     payload = {
@@ -289,13 +301,37 @@ def stream_generate(prompt: str):
                     yield {"token": "", "done": True, "progress": 100}
                     return
                 elif kind == "error":
-                    yield {"token": f"Erreur Colab : {text}", "done": True, "progress": 100}
+                    yield {"error": f"Erreur Colab : {text}", "done": True, "progress": 100}
                     return
                 # "start" et "thinking" ignorés (le frontend Django gère ses propres étapes)
 
+    except requests.exceptions.ConnectionError as e:
+        logger.error("Connexion Colab impossible: %s", e)
+        yield {
+            "error": (
+                "Impossible de joindre le modèle LLM. "
+                "Vérifiez que le notebook Colab est en cours d'exécution et que "
+                "l'URL ngrok est à jour dans Render."
+            ),
+            "done": True,
+            "progress": 100,
+        }
+        return
+    except requests.exceptions.Timeout as e:
+        logger.error("Timeout Colab: %s", e)
+        yield {
+            "error": "Le modèle LLM met trop de temps à répondre (timeout). Réessayez.",
+            "done": True,
+            "progress": 100,
+        }
+        return
     except Exception as e:
         logger.error("Erreur stream Colab: %s", e)
-        yield {"token": f"Erreur de connexion au modèle : {e}", "done": True, "progress": 100}
+        yield {
+            "error": f"Erreur de connexion au modèle : {e}",
+            "done": True,
+            "progress": 100,
+        }
         return
 
     yield {"token": "", "done": True, "progress": 100}

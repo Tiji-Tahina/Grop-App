@@ -31,6 +31,19 @@ def stream_chat(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    # ── Bail-out précoce : LLM pas configuré ──
+    # On évite de faire tourner ontology + RAG pour rien et on dit clairement
+    # à l'utilisateur que le modèle n'est pas branché.
+    if not getattr(llm, "COLAB_LLM_URL", "").strip():
+        def _llm_offline():
+            yield "data: start|0|0\n\n"
+            yield (
+                "data: error|0|0|"
+                "Le modèle LLM n'est pas encore connecté. "
+                "Configurez COLAB_LLM_URL dans Render → Environment.\n\n"
+            )
+        return StreamingHttpResponse(_llm_offline(), content_type="text/event-stream")
+
     def generate():
         start_time = time.time()
         yield "data: start|0|0\n\n"
@@ -96,6 +109,12 @@ def stream_chat(request):
             token_count = 0
             for result in llm.stream_generate(full_prompt):
                 elapsed = round(time.time() - start_time, 1)
+
+                # Erreur LLM (offline, timeout, etc.) → emit SSE error et stop
+                if result.get("error"):
+                    yield f"data: error|{elapsed}|0|{result['error']}\n\n"
+                    return
+
                 # Progress : 45–99% pendant la génération
                 progress = min(45 + int(result.get("progress", 0) * 0.54), 99)
                 token = result.get("token", "")

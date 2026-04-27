@@ -666,7 +666,7 @@
       "source_file": "backend/chat/urls.py",
       "source_location": "L1",
       "id": "backend_chat_urls_py",
-      "community": 5,
+      "community": 3,
       "norm_label": "urls.py"
     },
     {
@@ -684,7 +684,7 @@
       "source_file": "backend/chat/views.py",
       "source_location": "L1",
       "id": "backend_chat_views_py",
-      "community": 5,
+      "community": 3,
       "norm_label": "views.py"
     },
     {
@@ -693,34 +693,34 @@
       "source_file": "backend/chat/views.py",
       "source_location": "L15",
       "id": "views_stream_chat",
-      "community": 5,
+      "community": 3,
       "norm_label": "stream_chat()"
     },
     {
       "label": "chat()",
       "file_type": "code",
       "source_file": "backend/chat/views.py",
-      "source_location": "L118",
+      "source_location": "L137",
       "id": "views_chat",
-      "community": 5,
+      "community": 3,
       "norm_label": "chat()"
     },
     {
       "label": "ConversationViewSet",
       "file_type": "code",
       "source_file": "backend/chat/views.py",
-      "source_location": "L230",
+      "source_location": "L249",
       "id": "views_conversationviewset",
-      "community": 5,
+      "community": 3,
       "norm_label": "conversationviewset"
     },
     {
       "label": ".get_queryset()",
       "file_type": "code",
       "source_file": "backend/chat/views.py",
-      "source_location": "L234",
+      "source_location": "L253",
       "id": "views_conversationviewset_get_queryset",
-      "community": 5,
+      "community": 3,
       "norm_label": ".get_queryset()"
     },
     {
@@ -728,7 +728,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/views.py",
       "source_location": "L16",
-      "community": 5,
+      "community": 3,
       "norm_label": "post /api/chat/stream/     pipeline complet en streaming : normalizer \u2192 ontologi",
       "id": "views_rationale_16"
     },
@@ -736,10 +736,10 @@
       "label": "POST /api/chat/     Execute le pipeline complet : normalizer -> ontologie -> RAG",
       "file_type": "rationale",
       "source_file": "backend/chat/views.py",
-      "source_location": "L119",
-      "community": 5,
-      "norm_label": "post /api/chat/     execute le pipeline complet : normalizer -> ontologie -> rag",
-      "id": "views_rationale_119"
+      "source_location": "L138",
+      "id": "views_rationale_138",
+      "community": 3,
+      "norm_label": "post /api/chat/     execute le pipeline complet : normalizer -> ontologie -> rag"
     },
     {
       "label": "models.py",
@@ -747,7 +747,7 @@
       "source_file": "backend/chat/models.py",
       "source_location": "L1",
       "id": "backend_chat_models_py",
-      "community": 5,
+      "community": 3,
       "norm_label": "models.py"
     },
     {
@@ -756,7 +756,7 @@
       "source_file": "backend/chat/models.py",
       "source_location": "L5",
       "id": "models_conversation",
-      "community": 5,
+      "community": 3,
       "norm_label": "conversation"
     },
     {
@@ -765,7 +765,7 @@
       "source_file": "backend/chat/models.py",
       "source_location": "L18",
       "id": "models_conversation_str",
-      "community": 5,
+      "community": 3,
       "norm_label": ".__str__()"
     },
     {
@@ -774,7 +774,7 @@
       "source_file": "backend/chat/models.py",
       "source_location": "L22",
       "id": "models_message",
-      "community": 5,
+      "community": 3,
       "norm_label": "message"
     },
     {
@@ -783,7 +783,7 @@
       "source_file": "backend/chat/models.py",
       "source_location": "L47",
       "id": "models_message_str",
-      "community": 5,
+      "community": 3,
       "norm_label": ".__str__()"
     },
     {
@@ -792,7 +792,7 @@
       "source_file": "backend/chat/serializers.py",
       "source_location": "L1",
       "id": "backend_chat_serializers_py",
-      "community": 5,
+      "community": 3,
       "norm_label": "serializers.py"
     },
     {
@@ -801,7 +801,7 @@
       "source_file": "backend/chat/serializers.py",
       "source_location": "L5",
       "id": "serializers_messageserializer",
-      "community": 5,
+      "community": 3,
       "norm_label": "messageserializer"
     },
     {
@@ -810,7 +810,7 @@
       "source_file": "backend/chat/serializers.py",
       "source_location": "L12",
       "id": "serializers_conversationserializer",
-      "community": 5,
+      "community": 3,
       "norm_label": "conversationserializer"
     },
     {
@@ -819,7 +819,7 @@
       "source_file": "backend/chat/serializers.py",
       "source_location": "L21",
       "id": "serializers_chatrequestserializer",
-      "community": 5,
+      "community": 3,
       "norm_label": "chatrequestserializer"
     },
     {
@@ -828,7 +828,7 @@
       "source_file": "backend/chat/views_test.py",
       "source_location": "L1",
       "id": "backend_chat_views_test_py",
-      "community": 5,
+      "community": 3,
       "norm_label": "views_test.py"
     },
     {
@@ -837,7 +837,7 @@
       "source_file": "backend/chat/views_test.py",
       "source_location": "L19",
       "id": "views_test_direct_chat",
-      "community": 5,
+      "community": 3,
       "norm_label": "direct_chat()"
     },
     {
@@ -845,7 +845,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/views_test.py",
       "source_location": "L1",
-      "community": 5,
+      "community": 3,
       "norm_label": "endpoint de test direct \u2014 qwen2 local utilise le modele qwen2 charge localement.",
       "id": "views_test_rationale_1"
     },
@@ -854,7 +854,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/views_test.py",
       "source_location": "L20",
-      "community": 5,
+      "community": 3,
       "norm_label": "post /api/chat/direct/     body : { \"message\": \"ta question\" }      reponse via",
       "id": "views_test_rationale_20"
     },
@@ -882,7 +882,7 @@
       "source_file": "backend/chat/tests/test_views.py",
       "source_location": "L1",
       "id": "backend_chat_tests_test_views_py",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_views.py"
     },
     {
@@ -891,7 +891,7 @@
       "source_file": "backend/chat/tests/test_views.py",
       "source_location": "L11",
       "id": "test_views_user",
-      "community": 3,
+      "community": 4,
       "norm_label": "user()"
     },
     {
@@ -900,7 +900,7 @@
       "source_file": "backend/chat/tests/test_views.py",
       "source_location": "L16",
       "id": "test_views_auth_client",
-      "community": 3,
+      "community": 4,
       "norm_label": "auth_client()"
     },
     {
@@ -909,7 +909,7 @@
       "source_file": "backend/chat/tests/test_views.py",
       "source_location": "L23",
       "id": "test_views_testchatview",
-      "community": 3,
+      "community": 4,
       "norm_label": "testchatview"
     },
     {
@@ -918,7 +918,7 @@
       "source_file": "backend/chat/tests/test_views.py",
       "source_location": "L29",
       "id": "test_views_test_chat_creates_conversation",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_chat_creates_conversation()"
     },
     {
@@ -927,7 +927,7 @@
       "source_file": "backend/chat/tests/test_views.py",
       "source_location": "L37",
       "id": "test_views_testchatview_test_chat_requires_auth",
-      "community": 3,
+      "community": 4,
       "norm_label": ".test_chat_requires_auth()"
     },
     {
@@ -936,7 +936,7 @@
       "source_file": "backend/chat/tests/test_views.py",
       "source_location": "L46",
       "id": "test_views_test_off_topic_guardrail",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_off_topic_guardrail()"
     },
     {
@@ -945,7 +945,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L1",
       "id": "backend_chat_tests_test_rag_py",
-      "community": 4,
+      "community": 5,
       "norm_label": "test_rag.py"
     },
     {
@@ -954,7 +954,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L9",
       "id": "test_rag_testragretrieve",
-      "community": 4,
+      "community": 5,
       "norm_label": "testragretrieve"
     },
     {
@@ -963,7 +963,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L10",
       "id": "test_rag_testragretrieve_test_returns_empty_for_invalid_domain",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_returns_empty_for_invalid_domain()"
     },
     {
@@ -972,7 +972,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L19",
       "id": "test_rag_testragretrieve_test_returns_data_for_valid_rice_query",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_returns_data_for_valid_rice_query()"
     },
     {
@@ -981,7 +981,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L33",
       "id": "test_rag_testragretrieve_test_confidence_level_values_are_valid",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_confidence_level_values_are_valid()"
     },
     {
@@ -990,7 +990,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L47",
       "id": "test_rag_testragretrieve_test_static_fallback_yields_prediction",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_static_fallback_yields_prediction()"
     },
     {
@@ -999,7 +999,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L60",
       "id": "test_rag_testragretrieve_test_static_fallback_varieties",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_static_fallback_varieties()"
     },
     {
@@ -1008,7 +1008,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L73",
       "id": "test_rag_testragretrieve_test_result_has_required_keys",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_result_has_required_keys()"
     },
     {
@@ -1017,7 +1017,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L86",
       "id": "test_rag_testragretrieve_test_empty_context_tags_returns_general_data",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_empty_context_tags_returns_general_data()"
     },
     {
@@ -1026,7 +1026,7 @@
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L98",
       "id": "test_rag_testragretrieve_test_ontology_facts_elevate_confidence",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_ontology_facts_elevate_confidence()"
     },
     {
@@ -1034,7 +1034,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L1",
-      "community": 4,
+      "community": 5,
       "norm_label": "tests du pipeline rag (retrieval-augmented generation).  ces tests verifient le",
       "id": "test_rag_rationale_1"
     },
@@ -1043,7 +1043,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L11",
-      "community": 4,
+      "community": 5,
       "norm_label": "une question hors-domaine doit retourner un resultat vide.",
       "id": "test_rag_rationale_11"
     },
@@ -1052,7 +1052,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L20",
-      "community": 4,
+      "community": 5,
       "norm_label": "une question valide sur le riz doit retourner du contexte.",
       "id": "test_rag_rationale_20"
     },
@@ -1061,7 +1061,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L34",
-      "community": 4,
+      "community": 5,
       "norm_label": "le niveau de confiance doit toujours etre l'une des 4 valeurs acceptees.",
       "id": "test_rag_rationale_34"
     },
@@ -1070,7 +1070,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L48",
-      "community": 4,
+      "community": 5,
       "norm_label": "tag yield_prediction \u2192 donnees statiques sur les rendements.",
       "id": "test_rag_rationale_48"
     },
@@ -1079,7 +1079,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L61",
-      "community": 4,
+      "community": 5,
       "norm_label": "tag varieties \u2192 donnees sur les varietes fofifa.",
       "id": "test_rag_rationale_61"
     },
@@ -1088,7 +1088,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L74",
-      "community": 4,
+      "community": 5,
       "norm_label": "le resultat doit toujours contenir les cles attendues par views.py.",
       "id": "test_rag_rationale_74"
     },
@@ -1097,7 +1097,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L87",
-      "community": 4,
+      "community": 5,
       "norm_label": "sans tags specifiques \u2192 donnees generales sur la riziculture malgache.",
       "id": "test_rag_rationale_87"
     },
@@ -1106,7 +1106,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/tests/test_rag.py",
       "source_location": "L99",
-      "community": 4,
+      "community": 5,
       "norm_label": "la presence de faits ontologiques doit donner confidence=high.",
       "id": "test_rag_rationale_99"
     },
@@ -1512,7 +1512,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L6",
       "id": "test_pipeline_testnormalizer",
-      "community": 12,
+      "community": 11,
       "norm_label": "testnormalizer"
     },
     {
@@ -1521,7 +1521,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L7",
       "id": "test_pipeline_testnormalizer_test_removes_extra_spaces",
-      "community": 12,
+      "community": 11,
       "norm_label": ".test_removes_extra_spaces()"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L11",
       "id": "test_pipeline_testnormalizer_test_detects_french",
-      "community": 12,
+      "community": 11,
       "norm_label": ".test_detects_french()"
     },
     {
@@ -1539,7 +1539,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L15",
       "id": "test_pipeline_testnormalizer_test_detects_malagasy",
-      "community": 12,
+      "community": 11,
       "norm_label": ".test_detects_malagasy()"
     },
     {
@@ -1548,7 +1548,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L19",
       "id": "test_pipeline_testnormalizer_test_estimates_tokens",
-      "community": 12,
+      "community": 11,
       "norm_label": ".test_estimates_tokens()"
     },
     {
@@ -1602,7 +1602,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L49",
       "id": "test_pipeline_testragfallback",
-      "community": 4,
+      "community": 5,
       "norm_label": "testragfallback"
     },
     {
@@ -1611,7 +1611,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L50",
       "id": "test_pipeline_testragfallback_test_returns_empty_for_invalid",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_returns_empty_for_invalid()"
     },
     {
@@ -1620,7 +1620,7 @@
       "source_file": "backend/chat/tests/test_pipeline.py",
       "source_location": "L56",
       "id": "test_pipeline_testragfallback_test_static_fallback_for_yield",
-      "community": 4,
+      "community": 5,
       "norm_label": ".test_static_fallback_for_yield()"
     },
     {
@@ -1647,7 +1647,7 @@
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L1",
       "id": "backend_chat_pipeline_llm_py",
-      "community": 5,
+      "community": 3,
       "norm_label": "llm.py"
     },
     {
@@ -1656,7 +1656,7 @@
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L118",
       "id": "llm_parse_sse_line",
-      "community": 5,
+      "community": 3,
       "norm_label": "_parse_sse_line()"
     },
     {
@@ -1665,7 +1665,7 @@
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L168",
       "id": "llm_call_colab_blocking",
-      "community": 5,
+      "community": 3,
       "norm_label": "_call_colab_blocking()"
     },
     {
@@ -1674,7 +1674,7 @@
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L207",
       "id": "llm_post_process",
-      "community": 5,
+      "community": 3,
       "norm_label": "_post_process()"
     },
     {
@@ -1683,7 +1683,7 @@
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L238",
       "id": "llm_get_model_info",
-      "community": 5,
+      "community": 3,
       "norm_label": "get_model_info()"
     },
     {
@@ -1692,43 +1692,43 @@
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L255",
       "id": "llm_stream_generate",
-      "community": 5,
+      "community": 3,
       "norm_label": "stream_generate()"
     },
     {
       "label": "generate()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L304",
+      "source_location": "L340",
       "id": "llm_generate",
-      "community": 5,
+      "community": 3,
       "norm_label": "generate()"
     },
     {
       "label": "build_prompt()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L354",
+      "source_location": "L390",
       "id": "llm_build_prompt",
-      "community": 5,
+      "community": 3,
       "norm_label": "build_prompt()"
     },
     {
       "label": "clear_cache()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L393",
+      "source_location": "L429",
       "id": "llm_clear_cache",
-      "community": 5,
+      "community": 3,
       "norm_label": "clear_cache()"
     },
     {
       "label": "reload_model()",
       "file_type": "code",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L398",
+      "source_location": "L434",
       "id": "llm_reload_model",
-      "community": 5,
+      "community": 3,
       "norm_label": "reload_model()"
     },
     {
@@ -1736,7 +1736,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L1",
-      "community": 5,
+      "community": 3,
       "norm_label": "etape 4 du pipeline : appel au llm heberge sur google colab via http (fastapi +",
       "id": "llm_rationale_1"
     },
@@ -1745,7 +1745,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L119",
-      "community": 5,
+      "community": 3,
       "norm_label": "parse une ligne sse du colab au format pipe-delimite.     formats possibles :",
       "id": "llm_rationale_119"
     },
@@ -1754,7 +1754,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L169",
-      "community": 5,
+      "community": 3,
       "norm_label": "appelle /generate/stream et collecte tous les tokens \u2192 texte complet.     utilis",
       "id": "llm_rationale_169"
     },
@@ -1763,7 +1763,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L208",
-      "community": 5,
+      "community": 3,
       "norm_label": "nettoie la reponse : coupe aux stop sequences et retire les artefacts.",
       "id": "llm_rationale_208"
     },
@@ -1772,7 +1772,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L239",
-      "community": 5,
+      "community": 3,
       "norm_label": "retourne les infos sur le modele colab (appel get /info si disponible).",
       "id": "llm_rationale_239"
     },
@@ -1781,7 +1781,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
       "source_location": "L256",
-      "community": 5,
+      "community": 3,
       "norm_label": "generator qui yield chaque token via /generate/stream (sse) du colab.     format",
       "id": "llm_rationale_256"
     },
@@ -1789,37 +1789,37 @@
       "label": "G\u00e9n\u00e8re une r\u00e9ponse via le LLM Colab. Retourne reply, tokens, latence.",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L305",
-      "community": 5,
-      "norm_label": "genere une reponse via le llm colab. retourne reply, tokens, latence.",
-      "id": "llm_rationale_305"
+      "source_location": "L341",
+      "id": "llm_rationale_341",
+      "community": 3,
+      "norm_label": "genere une reponse via le llm colab. retourne reply, tokens, latence."
     },
     {
       "label": "Construit le prompt pour le LLM.",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L357",
-      "community": 5,
-      "norm_label": "construit le prompt pour le llm.",
-      "id": "llm_rationale_357"
+      "source_location": "L393",
+      "id": "llm_rationale_393",
+      "community": 3,
+      "norm_label": "construit le prompt pour le llm."
     },
     {
       "label": "No-op : le mod\u00e8le tourne sur Colab, pas en local.",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L394",
-      "community": 5,
-      "norm_label": "no-op : le modele tourne sur colab, pas en local.",
-      "id": "llm_rationale_394"
+      "source_location": "L430",
+      "id": "llm_rationale_430",
+      "community": 3,
+      "norm_label": "no-op : le modele tourne sur colab, pas en local."
     },
     {
       "label": "No-op : le mod\u00e8le tourne sur Colab, pas en local.",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L399",
-      "community": 5,
-      "norm_label": "no-op : le modele tourne sur colab, pas en local.",
-      "id": "llm_rationale_399"
+      "source_location": "L435",
+      "id": "llm_rationale_435",
+      "community": 3,
+      "norm_label": "no-op : le modele tourne sur colab, pas en local."
     },
     {
       "label": "ontology.py",
@@ -1971,7 +1971,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L1",
       "id": "backend_chat_pipeline_rag_py",
-      "community": 4,
+      "community": 5,
       "norm_label": "rag.py"
     },
     {
@@ -1980,7 +1980,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L26",
       "id": "rag_load_vector_store",
-      "community": 4,
+      "community": 5,
       "norm_label": "_load_vector_store()"
     },
     {
@@ -1989,7 +1989,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L46",
       "id": "rag_distance_to_score",
-      "community": 4,
+      "community": 5,
       "norm_label": "_distance_to_score()"
     },
     {
@@ -1998,7 +1998,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L51",
       "id": "rag_retrieve",
-      "community": 4,
+      "community": 5,
       "norm_label": "retrieve()"
     },
     {
@@ -2007,7 +2007,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L117",
       "id": "rag_expand_query",
-      "community": 4,
+      "community": 5,
       "norm_label": "_expand_query()"
     },
     {
@@ -2016,7 +2016,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L144",
       "id": "rag_build_result",
-      "community": 4,
+      "community": 5,
       "norm_label": "_build_result()"
     },
     {
@@ -2025,7 +2025,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L185",
       "id": "rag_no_data_result",
-      "community": 4,
+      "community": 5,
       "norm_label": "_no_data_result()"
     },
     {
@@ -2034,7 +2034,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L222",
       "id": "rag_empty_result",
-      "community": 4,
+      "community": 5,
       "norm_label": "_empty_result()"
     },
     {
@@ -2043,7 +2043,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L232",
       "id": "rag_format_context",
-      "community": 4,
+      "community": 5,
       "norm_label": "_format_context()"
     },
     {
@@ -2052,7 +2052,7 @@
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L250",
       "id": "rag_fallback_static",
-      "community": 4,
+      "community": 5,
       "norm_label": "_fallback_static()"
     },
     {
@@ -2060,7 +2060,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L1",
-      "community": 4,
+      "community": 5,
       "norm_label": "etape 3 du pipeline : recuperation de documents pertinents (rag).  gere 3 cas :",
       "id": "rag_rationale_1"
     },
@@ -2069,7 +2069,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L27",
-      "community": 4,
+      "community": 5,
       "norm_label": "charge le vector store faiss s'il existe, sinon retourne none.",
       "id": "rag_rationale_27"
     },
@@ -2078,7 +2078,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L47",
-      "community": 4,
+      "community": 5,
       "norm_label": "convertit une distance l2 faiss en score de similarite [0-1].",
       "id": "rag_rationale_47"
     },
@@ -2087,7 +2087,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L52",
-      "community": 4,
+      "community": 5,
       "norm_label": "recupere les documents pertinents et evalue leur confiance.      returns:",
       "id": "rag_rationale_52"
     },
@@ -2096,45 +2096,45 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L118",
-      "id": "rag_rationale_118",
-      "community": 4,
-      "norm_label": "enrichit la requete faiss avec les concepts lies trouves dans l'ontologie.     e"
+      "community": 5,
+      "norm_label": "enrichit la requete faiss avec les concepts lies trouves dans l'ontologie.     e",
+      "id": "rag_rationale_118"
     },
     {
       "label": "\u00c9value la qualit\u00e9 des r\u00e9sultats et construit la r\u00e9ponse appropri\u00e9e.     C'est ic",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L145",
-      "id": "rag_rationale_145",
-      "community": 4,
-      "norm_label": "evalue la qualite des resultats et construit la reponse appropriee.     c'est ic"
+      "community": 5,
+      "norm_label": "evalue la qualite des resultats et construit la reponse appropriee.     c'est ic",
+      "id": "rag_rationale_145"
     },
     {
       "label": "G\u00e8re le cas o\u00f9 le RAG ne trouve rien d'utile.     Tente le fallback sur la knowl",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L186",
-      "id": "rag_rationale_186",
-      "community": 4,
-      "norm_label": "gere le cas ou le rag ne trouve rien d'utile.     tente le fallback sur la knowl"
+      "community": 5,
+      "norm_label": "gere le cas ou le rag ne trouve rien d'utile.     tente le fallback sur la knowl",
+      "id": "rag_rationale_186"
     },
     {
       "label": "Formate les documents r\u00e9cup\u00e9r\u00e9s + les faits ontologiques pour le LLM.",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L233",
-      "id": "rag_rationale_233",
-      "community": 4,
-      "norm_label": "formate les documents recuperes + les faits ontologiques pour le llm."
+      "community": 5,
+      "norm_label": "formate les documents recuperes + les faits ontologiques pour le llm.",
+      "id": "rag_rationale_233"
     },
     {
       "label": "Contexte statique de secours bas\u00e9 sur les tags ontologiques.     Utilis\u00e9 quand F",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L251",
-      "id": "rag_rationale_251",
-      "community": 4,
-      "norm_label": "contexte statique de secours base sur les tags ontologiques.     utilise quand f"
+      "community": 5,
+      "norm_label": "contexte statique de secours base sur les tags ontologiques.     utilise quand f",
+      "id": "rag_rationale_251"
     },
     {
       "label": "apps.py",
@@ -2961,7 +2961,7 @@
       "source_file": "backend/users/views.py",
       "source_location": "L32",
       "id": "views_loginview_post",
-      "community": 3,
+      "community": 4,
       "norm_label": ".post()"
     },
     {
@@ -3033,7 +3033,7 @@
       "source_file": "backend/users/models.py",
       "source_location": "L5",
       "id": "models_usermanager",
-      "community": 3,
+      "community": 4,
       "norm_label": "usermanager"
     },
     {
@@ -3042,7 +3042,7 @@
       "source_file": "",
       "source_location": "",
       "id": "baseusermanager",
-      "community": 3,
+      "community": 4,
       "norm_label": "baseusermanager"
     },
     {
@@ -3051,7 +3051,7 @@
       "source_file": "backend/users/models.py",
       "source_location": "L6",
       "id": "models_usermanager_create_user",
-      "community": 3,
+      "community": 4,
       "norm_label": ".create_user()"
     },
     {
@@ -3060,7 +3060,7 @@
       "source_file": "backend/users/models.py",
       "source_location": "L15",
       "id": "models_usermanager_create_superuser",
-      "community": 3,
+      "community": 4,
       "norm_label": ".create_superuser()"
     },
     {
@@ -3248,45 +3248,45 @@
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
       "source_location": "L33",
-      "id": "embeddings_rationale_33",
       "community": 13,
-      "norm_label": "charge le modele onnx une seule fois par worker (cache process-level)."
+      "norm_label": "charge le modele onnx une seule fois par worker (cache process-level).",
+      "id": "embeddings_rationale_33"
     },
     {
       "label": "Encode une liste de textes (utilis\u00e9 \u00e0 l'indexation).",
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
       "source_location": "L40",
-      "id": "embeddings_rationale_40",
       "community": 13,
-      "norm_label": "encode une liste de textes (utilise a l'indexation)."
+      "norm_label": "encode une liste de textes (utilise a l'indexation).",
+      "id": "embeddings_rationale_40"
     },
     {
       "label": "Encode une requ\u00eate utilisateur (utilis\u00e9 au runtime).",
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
       "source_location": "L46",
-      "id": "embeddings_rationale_46",
       "community": 13,
-      "norm_label": "encode une requete utilisateur (utilise au runtime)."
+      "norm_label": "encode une requete utilisateur (utilise au runtime).",
+      "id": "embeddings_rationale_46"
     },
     {
       "label": "D\u00e9coupe un texte en chunks avec chevauchement.",
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
       "source_location": "L52",
-      "id": "embeddings_rationale_52",
       "community": 13,
-      "norm_label": "decoupe un texte en chunks avec chevauchement."
+      "norm_label": "decoupe un texte en chunks avec chevauchement.",
+      "id": "embeddings_rationale_52"
     },
     {
       "label": "Construit le vector store FAISS \u00e0 partir des documents.      Args:         docum",
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
       "source_location": "L64",
-      "id": "embeddings_rationale_64",
       "community": 13,
-      "norm_label": "construit le vector store faiss a partir des documents.      args:         docum"
+      "norm_label": "construit le vector store faiss a partir des documents.      args:         docum",
+      "id": "embeddings_rationale_64"
     },
     {
       "label": "ontology_graph.py",
@@ -3447,7 +3447,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L1",
       "id": "backend_rag_scraper_py",
-      "community": 0,
+      "community": 12,
       "norm_label": "scraper.py"
     },
     {
@@ -3456,7 +3456,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L25",
       "id": "scraper_load_sources",
-      "community": 0,
+      "community": 12,
       "norm_label": "load_sources()"
     },
     {
@@ -3465,7 +3465,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L32",
       "id": "scraper_extract_html",
-      "community": 0,
+      "community": 12,
       "norm_label": "extract_html()"
     },
     {
@@ -3474,7 +3474,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L62",
       "id": "scraper_extract_pdf",
-      "community": 0,
+      "community": 12,
       "norm_label": "extract_pdf()"
     },
     {
@@ -3483,7 +3483,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L104",
       "id": "scraper_scrape_one",
-      "community": 0,
+      "community": 12,
       "norm_label": "scrape_one()"
     },
     {
@@ -3492,7 +3492,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L149",
       "id": "scraper_scrape_all",
-      "community": 0,
+      "community": 12,
       "norm_label": "scrape_all()"
     },
     {
@@ -3501,7 +3501,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L164",
       "id": "scraper_scrape_by_id",
-      "community": 0,
+      "community": 12,
       "norm_label": "scrape_by_id()"
     },
     {
@@ -3510,7 +3510,7 @@
       "source_file": "backend/rag/scraper.py",
       "source_location": "L174",
       "id": "scraper_scrape_test",
-      "community": 0,
+      "community": 12,
       "norm_label": "scrape_test()"
     },
     {
@@ -3518,7 +3518,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L1",
-      "community": 0,
+      "community": 12,
       "norm_label": "module de scraping pour alimenter le vector store rag.  supporte : html (sites w",
       "id": "scraper_rationale_1"
     },
@@ -3527,7 +3527,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L33",
-      "community": 0,
+      "community": 12,
       "norm_label": "telecharge une page web et extrait le texte visible.",
       "id": "scraper_rationale_33"
     },
@@ -3536,7 +3536,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L63",
-      "community": 0,
+      "community": 12,
       "norm_label": "telecharge un pdf et extrait son texte.     utilise pdfplumber (plus precis que",
       "id": "scraper_rationale_63"
     },
@@ -3545,7 +3545,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L105",
-      "community": 0,
+      "community": 12,
       "norm_label": "scrape une seule source (html ou pdf selon son type).     retourne le document o",
       "id": "scraper_rationale_105"
     },
@@ -3554,7 +3554,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L150",
-      "community": 0,
+      "community": 12,
       "norm_label": "scrape toutes les sources du fichier sources.json.",
       "id": "scraper_rationale_150"
     },
@@ -3563,7 +3563,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L165",
-      "community": 0,
+      "community": 12,
       "norm_label": "scrape une seule source par son id.",
       "id": "scraper_rationale_165"
     },
@@ -3572,7 +3572,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/scraper.py",
       "source_location": "L175",
-      "community": 0,
+      "community": 12,
       "norm_label": "scrape seulement les n premieres sources \u2014 pour tester rapidement     sans atten",
       "id": "scraper_rationale_175"
     },
@@ -3663,7 +3663,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L1",
       "id": "e2e_smoke_tests_py",
-      "community": 3,
+      "community": 4,
       "norm_label": "smoke_tests.py"
     },
     {
@@ -3672,7 +3672,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L33",
       "id": "smoke_tests_access_token",
-      "community": 3,
+      "community": 4,
       "norm_label": "access_token()"
     },
     {
@@ -3708,7 +3708,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L62",
       "id": "smoke_tests_teststagingauth",
-      "community": 3,
+      "community": 4,
       "norm_label": "teststagingauth"
     },
     {
@@ -3717,7 +3717,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L63",
       "id": "smoke_tests_teststagingauth_test_login_returns_access_token",
-      "community": 3,
+      "community": 4,
       "norm_label": ".test_login_returns_access_token()"
     },
     {
@@ -3726,7 +3726,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L77",
       "id": "smoke_tests_teststagingauth_test_protected_endpoint_requires_auth",
-      "community": 3,
+      "community": 4,
       "norm_label": ".test_protected_endpoint_requires_auth()"
     },
     {
@@ -3735,7 +3735,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L84",
       "id": "smoke_tests_teststagingchat",
-      "community": 3,
+      "community": 4,
       "norm_label": "teststagingchat"
     },
     {
@@ -3744,7 +3744,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L85",
       "id": "smoke_tests_teststagingchat_test_chat_off_topic_blocked_by_guardrail",
-      "community": 3,
+      "community": 4,
       "norm_label": ".test_chat_off_topic_blocked_by_guardrail()"
     },
     {
@@ -3753,7 +3753,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L97",
       "id": "smoke_tests_teststagingchat_test_chat_agricultural_message_accepted",
-      "community": 3,
+      "community": 4,
       "norm_label": ".test_chat_agricultural_message_accepted()"
     },
     {
@@ -3762,7 +3762,7 @@
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L112",
       "id": "smoke_tests_teststagingchat_test_chat_creates_conversation_id",
-      "community": 3,
+      "community": 4,
       "norm_label": ".test_chat_creates_conversation_id()"
     },
     {
@@ -3770,7 +3770,7 @@
       "file_type": "rationale",
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L1",
-      "community": 3,
+      "community": 4,
       "norm_label": "smoke tests \u2014 executes contre l'environnement staging apres deploiement.  ces te",
       "id": "smoke_tests_rationale_1"
     },
@@ -3779,7 +3779,7 @@
       "file_type": "rationale",
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L34",
-      "community": 3,
+      "community": 4,
       "norm_label": "obtient un token jwt valide pour les tests authentifies.",
       "id": "smoke_tests_rationale_34"
     },
@@ -3806,7 +3806,7 @@
       "file_type": "rationale",
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L64",
-      "community": 3,
+      "community": 4,
       "norm_label": "post /api/auth/login/ avec bons identifiants \u2192 token jwt.",
       "id": "smoke_tests_rationale_64"
     },
@@ -3815,7 +3815,7 @@
       "file_type": "rationale",
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L78",
-      "community": 3,
+      "community": 4,
       "norm_label": "get /api/chat/conversations/ sans token \u2192 401.",
       "id": "smoke_tests_rationale_78"
     },
@@ -3824,7 +3824,7 @@
       "file_type": "rationale",
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L86",
-      "community": 3,
+      "community": 4,
       "norm_label": "un message hors-sujet doit etre rejete par le guardrail.",
       "id": "smoke_tests_rationale_86"
     },
@@ -3833,7 +3833,7 @@
       "file_type": "rationale",
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L98",
-      "community": 3,
+      "community": 4,
       "norm_label": "un message agricole doit passer le guardrail et retourner une reponse.",
       "id": "smoke_tests_rationale_98"
     },
@@ -3842,7 +3842,7 @@
       "file_type": "rationale",
       "source_file": "e2e/smoke_tests.py",
       "source_location": "L113",
-      "community": 3,
+      "community": 4,
       "norm_label": "un nouveau chat doit creer une conversation avec un id.",
       "id": "smoke_tests_rationale_113"
     },
@@ -4149,7 +4149,7 @@
       "source_file": "src/api/chat.js",
       "source_location": "L20",
       "id": "chat_sendmessage",
-      "community": 3,
+      "community": 4,
       "norm_label": "sendmessage()"
     },
     {
@@ -4176,7 +4176,7 @@
       "source_file": "src/api/crops.js",
       "source_location": "L1",
       "id": "src_api_crops_js",
-      "community": 3,
+      "community": 4,
       "norm_label": "crops.js"
     },
     {
@@ -4185,7 +4185,7 @@
       "source_file": "src/api/crops.js",
       "source_location": "L16",
       "id": "crops_getfarms",
-      "community": 3,
+      "community": 4,
       "norm_label": "getfarms()"
     },
     {
@@ -4194,7 +4194,7 @@
       "source_file": "src/api/crops.js",
       "source_location": "L21",
       "id": "crops_getfarm",
-      "community": 3,
+      "community": 4,
       "norm_label": "getfarm()"
     },
     {
@@ -4203,7 +4203,7 @@
       "source_file": "src/api/crops.js",
       "source_location": "L26",
       "id": "crops_createfarm",
-      "community": 3,
+      "community": 4,
       "norm_label": "createfarm()"
     },
     {
@@ -4221,7 +4221,7 @@
       "source_file": "src/api/crops.js",
       "source_location": "L36",
       "id": "crops_deletefarm",
-      "community": 3,
+      "community": 4,
       "norm_label": "deletefarm()"
     },
     {
@@ -4230,7 +4230,7 @@
       "source_file": "src/api/crops.js",
       "source_location": "L42",
       "id": "crops_getcrops",
-      "community": 3,
+      "community": 4,
       "norm_label": "getcrops()"
     },
     {
@@ -4239,7 +4239,7 @@
       "source_file": "src/api/crops.js",
       "source_location": "L47",
       "id": "crops_createcrop",
-      "community": 3,
+      "community": 4,
       "norm_label": "createcrop()"
     },
     {
@@ -4257,7 +4257,7 @@
       "source_file": "src/api/crops.js",
       "source_location": "L59",
       "id": "crops_getsoildata",
-      "community": 3,
+      "community": 4,
       "norm_label": "getsoildata()"
     },
     {
@@ -4266,7 +4266,7 @@
       "source_file": "src/api/crops.js",
       "source_location": "L64",
       "id": "crops_createsoildata",
-      "community": 3,
+      "community": 4,
       "norm_label": "createsoildata()"
     },
     {
@@ -4453,7 +4453,7 @@
       "label": "useChatStream()",
       "file_type": "code",
       "source_file": "src/components/chat/useChatStream.ts",
-      "source_location": "L22",
+      "source_location": "L23",
       "id": "usechatstream_usechatstream",
       "community": 56,
       "norm_label": "usechatstream()"
@@ -4464,7 +4464,7 @@
       "source_file": "src/components/chat/AgriculturalChat.tsx",
       "source_location": "L1",
       "id": "src_components_chat_agriculturalchat_tsx",
-      "community": 3,
+      "community": 4,
       "norm_label": "agriculturalchat.tsx"
     },
     {
@@ -4473,7 +4473,7 @@
       "source_file": "src/components/chat/AgriculturalChat.tsx",
       "source_location": "L60",
       "id": "agriculturalchat_handlesend",
-      "community": 3,
+      "community": 4,
       "norm_label": "handlesend()"
     },
     {
@@ -4482,7 +4482,7 @@
       "source_file": "src/components/chat/AgriculturalChat.tsx",
       "source_location": "L73",
       "id": "agriculturalchat_handlescroll",
-      "community": 3,
+      "community": 4,
       "norm_label": "handlescroll()"
     },
     {
@@ -4491,7 +4491,7 @@
       "source_file": "src/components/chat/AgriculturalChat.tsx",
       "source_location": "L79",
       "id": "agriculturalchat_scrolltobottom",
-      "community": 3,
+      "community": 4,
       "norm_label": "scrolltobottom()"
     },
     {
@@ -5670,7 +5670,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L1",
       "id": "blender_scripts_organize_madagascar_v2_py",
-      "community": 11,
+      "community": 0,
       "norm_label": "organize_madagascar_v2.py"
     },
     {
@@ -5679,7 +5679,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L186",
       "id": "organize_madagascar_v2_n",
-      "community": 11,
+      "community": 0,
       "norm_label": "n()"
     },
     {
@@ -5688,7 +5688,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L188",
       "id": "organize_madagascar_v2_find_col",
-      "community": 11,
+      "community": 0,
       "norm_label": "find_col()"
     },
     {
@@ -5697,7 +5697,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L199",
       "id": "organize_madagascar_v2_get_or_create",
-      "community": 11,
+      "community": 0,
       "norm_label": "get_or_create()"
     },
     {
@@ -5706,7 +5706,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L207",
       "id": "organize_madagascar_v2_unlink_all",
-      "community": 11,
+      "community": 0,
       "norm_label": "unlink_all()"
     },
     {
@@ -5715,7 +5715,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L212",
       "id": "organize_madagascar_v2_link_obj",
-      "community": 11,
+      "community": 0,
       "norm_label": "link_obj()"
     },
     {
@@ -5724,7 +5724,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L220",
       "id": "organize_madagascar_v2_identify_objects",
-      "community": 11,
+      "community": 0,
       "norm_label": "identify_objects()"
     },
     {
@@ -5733,7 +5733,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L266",
       "id": "organize_madagascar_v2_build_bvh",
-      "community": 11,
+      "community": 0,
       "norm_label": "build_bvh()"
     },
     {
@@ -5742,7 +5742,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L283",
       "id": "organize_madagascar_v2_point_inside",
-      "community": 11,
+      "community": 0,
       "norm_label": "point_inside()"
     },
     {
@@ -5751,7 +5751,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L295",
       "id": "organize_madagascar_v2_centroid_world",
-      "community": 11,
+      "community": 0,
       "norm_label": "centroid_world()"
     },
     {
@@ -5760,7 +5760,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L301",
       "id": "organize_madagascar_v2_sample_pts",
-      "community": 11,
+      "community": 0,
       "norm_label": "sample_pts()"
     },
     {
@@ -5769,7 +5769,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L307",
       "id": "organize_madagascar_v2_geo_region",
-      "community": 11,
+      "community": 0,
       "norm_label": "geo_region()"
     },
     {
@@ -5778,7 +5778,7 @@
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L324",
       "id": "organize_madagascar_v2_main",
-      "community": 11,
+      "community": 0,
       "norm_label": "main()"
     },
     {
@@ -5786,7 +5786,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L1",
-      "community": 11,
+      "community": 0,
       "norm_label": "organize_madagascar_v2.py \u2014 option b (robuste) =================================",
       "id": "organize_madagascar_v2_rationale_1"
     },
@@ -5795,7 +5795,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L221",
-      "community": 11,
+      "community": 0,
       "norm_label": "identifie regions et districts depuis bpy.data.objects.     strategie : si le no",
       "id": "organize_madagascar_v2_rationale_221"
     },
@@ -5804,7 +5804,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/organize_madagascar_v2.py",
       "source_location": "L284",
-      "community": 11,
+      "community": 0,
       "norm_label": "raycast vers +z, compte les hits \u2014 impair = dedans.",
       "id": "organize_madagascar_v2_rationale_284"
     },
@@ -5841,7 +5841,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L1",
       "id": "blender_scripts_organize_madagascar_drilldown_py",
-      "community": 12,
+      "community": 11,
       "norm_label": "organize_madagascar_drilldown.py"
     },
     {
@@ -5850,7 +5850,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L139",
       "id": "organize_madagascar_drilldown_normalize",
-      "community": 12,
+      "community": 11,
       "norm_label": "normalize()"
     },
     {
@@ -5859,7 +5859,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L142",
       "id": "organize_madagascar_drilldown_get_col",
-      "community": 12,
+      "community": 11,
       "norm_label": "get_col()"
     },
     {
@@ -5868,7 +5868,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L145",
       "id": "organize_madagascar_drilldown_get_or_create_col",
-      "community": 12,
+      "community": 11,
       "norm_label": "get_or_create_col()"
     },
     {
@@ -5877,7 +5877,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L156",
       "id": "organize_madagascar_drilldown_unlink_from_all",
-      "community": 12,
+      "community": 11,
       "norm_label": "unlink_from_all()"
     },
     {
@@ -5886,7 +5886,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L161",
       "id": "organize_madagascar_drilldown_link_to",
-      "community": 12,
+      "community": 11,
       "norm_label": "link_to()"
     },
     {
@@ -5895,7 +5895,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L165",
       "id": "organize_madagascar_drilldown_bbox_overlap_area",
-      "community": 12,
+      "community": 11,
       "norm_label": "bbox_overlap_area()"
     },
     {
@@ -5904,7 +5904,7 @@
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L184",
       "id": "organize_madagascar_drilldown_main",
-      "community": 12,
+      "community": 11,
       "norm_label": "main()"
     },
     {
@@ -5912,7 +5912,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L1",
-      "community": 12,
+      "community": 11,
       "norm_label": "script blender python : organisation hierarchique madagascar pour drill-down ===",
       "id": "organize_madagascar_drilldown_rationale_1"
     },
@@ -5921,7 +5921,7 @@
       "file_type": "rationale",
       "source_file": "blender_scripts/organize_madagascar_drilldown.py",
       "source_location": "L166",
-      "community": 12,
+      "community": 11,
       "norm_label": "calcule l'aire de chevauchement xy entre deux objets.",
       "id": "organize_madagascar_drilldown_rationale_166"
     },
@@ -5971,11 +5971,56 @@
       "norm_label": "getallfiles()"
     },
     {
+      "label": "POST /api/chat/     Execute le pipeline complet : normalizer -> ontologie -> RAG",
+      "file_type": "rationale",
+      "source_file": "backend/chat/views.py",
+      "source_location": "L119",
+      "community": 3,
+      "norm_label": "post /api/chat/     execute le pipeline complet : normalizer -> ontologie -> rag",
+      "id": "views_rationale_119"
+    },
+    {
+      "label": "G\u00e9n\u00e8re une r\u00e9ponse via le LLM Colab. Retourne reply, tokens, latence.",
+      "file_type": "rationale",
+      "source_file": "backend/chat/pipeline/llm.py",
+      "source_location": "L305",
+      "community": 102,
+      "norm_label": "genere une reponse via le llm colab. retourne reply, tokens, latence.",
+      "id": "llm_rationale_305"
+    },
+    {
+      "label": "Construit le prompt pour le LLM.",
+      "file_type": "rationale",
+      "source_file": "backend/chat/pipeline/llm.py",
+      "source_location": "L357",
+      "community": 103,
+      "norm_label": "construit le prompt pour le llm.",
+      "id": "llm_rationale_357"
+    },
+    {
+      "label": "No-op : le mod\u00e8le tourne sur Colab, pas en local.",
+      "file_type": "rationale",
+      "source_file": "backend/chat/pipeline/llm.py",
+      "source_location": "L394",
+      "community": 104,
+      "norm_label": "no-op : le modele tourne sur colab, pas en local.",
+      "id": "llm_rationale_394"
+    },
+    {
+      "label": "No-op : le mod\u00e8le tourne sur Colab, pas en local.",
+      "file_type": "rationale",
+      "source_file": "backend/chat/pipeline/llm.py",
+      "source_location": "L399",
+      "community": 105,
+      "norm_label": "no-op : le modele tourne sur colab, pas en local.",
+      "id": "llm_rationale_399"
+    },
+    {
       "label": "Enrichit la requ\u00eate FAISS avec les concepts li\u00e9s trouv\u00e9s dans l'ontologie.     E",
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L121",
-      "community": 102,
+      "community": 106,
       "norm_label": "enrichit la requete faiss avec les concepts lies trouves dans l'ontologie.     e",
       "id": "rag_rationale_121"
     },
@@ -5984,7 +6029,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L148",
-      "community": 103,
+      "community": 107,
       "norm_label": "evalue la qualite des resultats et construit la reponse appropriee.     c'est ic",
       "id": "rag_rationale_148"
     },
@@ -5993,7 +6038,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L189",
-      "community": 104,
+      "community": 108,
       "norm_label": "gere le cas ou le rag ne trouve rien d'utile.     tente le fallback sur la knowl",
       "id": "rag_rationale_189"
     },
@@ -6002,7 +6047,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L236",
-      "community": 105,
+      "community": 109,
       "norm_label": "formate les documents recuperes + les faits ontologiques pour le llm.",
       "id": "rag_rationale_236"
     },
@@ -6011,7 +6056,7 @@
       "file_type": "rationale",
       "source_file": "backend/chat/pipeline/rag.py",
       "source_location": "L254",
-      "community": 106,
+      "community": 110,
       "norm_label": "contexte statique de secours base sur les tags ontologiques.     utilise quand f",
       "id": "rag_rationale_254"
     },
@@ -6020,7 +6065,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
       "source_location": "L28",
-      "community": 107,
+      "community": 111,
       "norm_label": "decoupe un texte en chunks avec chevauchement.",
       "id": "embeddings_rationale_28"
     },
@@ -6029,7 +6074,7 @@
       "file_type": "rationale",
       "source_file": "backend/rag/embeddings.py",
       "source_location": "L41",
-      "community": 108,
+      "community": 112,
       "norm_label": "construit le vector store faiss a partir des documents.      args:         docum",
       "id": "embeddings_rationale_41"
     }
@@ -7515,7 +7560,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/views.py",
-      "source_location": "L118",
+      "source_location": "L137",
       "weight": 1.0,
       "_src": "backend_chat_views_py",
       "_tgt": "views_chat",
@@ -7527,7 +7572,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/views.py",
-      "source_location": "L230",
+      "source_location": "L249",
       "weight": 1.0,
       "_src": "backend_chat_views_py",
       "_tgt": "views_conversationviewset",
@@ -7575,12 +7620,12 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/views.py",
-      "source_location": "L119",
+      "source_location": "L138",
       "weight": 1.0,
-      "_src": "views_rationale_119",
+      "_src": "views_rationale_138",
       "_tgt": "views_chat",
       "source": "views_chat",
-      "target": "views_rationale_119",
+      "target": "views_rationale_138",
       "confidence_score": 1.0
     },
     {
@@ -7671,7 +7716,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/views.py",
-      "source_location": "L234",
+      "source_location": "L253",
       "weight": 1.0,
       "_src": "views_conversationviewset",
       "_tgt": "views_conversationviewset_get_queryset",
@@ -7781,11 +7826,11 @@
       "source_file": "backend/chat/views.py",
       "source_location": "L8",
       "weight": 0.8,
-      "_src": "views_rationale_119",
+      "_src": "views_rationale_138",
       "_tgt": "models_conversation",
-      "confidence_score": 0.5,
-      "source": "views_rationale_119",
-      "target": "models_conversation"
+      "source": "views_rationale_138",
+      "target": "models_conversation",
+      "confidence_score": 0.5
     },
     {
       "relation": "uses",
@@ -7793,11 +7838,11 @@
       "source_file": "backend/chat/views.py",
       "source_location": "L8",
       "weight": 0.8,
-      "_src": "views_rationale_119",
+      "_src": "views_rationale_138",
       "_tgt": "models_message",
-      "confidence_score": 0.5,
-      "source": "views_rationale_119",
-      "target": "models_message"
+      "source": "views_rationale_138",
+      "target": "models_message",
+      "confidence_score": 0.5
     },
     {
       "relation": "uses",
@@ -7805,11 +7850,11 @@
       "source_file": "backend/chat/views.py",
       "source_location": "L9",
       "weight": 0.8,
-      "_src": "views_rationale_119",
+      "_src": "views_rationale_138",
       "_tgt": "serializers_conversationserializer",
-      "confidence_score": 0.5,
-      "source": "views_rationale_119",
-      "target": "serializers_conversationserializer"
+      "source": "views_rationale_138",
+      "target": "serializers_conversationserializer",
+      "confidence_score": 0.5
     },
     {
       "relation": "uses",
@@ -7817,11 +7862,11 @@
       "source_file": "backend/chat/views.py",
       "source_location": "L9",
       "weight": 0.8,
-      "_src": "views_rationale_119",
+      "_src": "views_rationale_138",
       "_tgt": "serializers_chatrequestserializer",
-      "confidence_score": 0.5,
-      "source": "views_rationale_119",
-      "target": "serializers_chatrequestserializer"
+      "source": "views_rationale_138",
+      "target": "serializers_chatrequestserializer",
+      "confidence_score": 0.5
     },
     {
       "relation": "contains",
@@ -7908,6 +7953,18 @@
       "target": "serializers_chatrequestserializer"
     },
     {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "backend/chat/views.py",
+      "source_location": "L8",
+      "weight": 0.8,
+      "_src": "views_rationale_119",
+      "_tgt": "models_conversation",
+      "confidence_score": 0.5,
+      "source": "models_conversation",
+      "target": "views_rationale_119"
+    },
+    {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/models.py",
@@ -7956,6 +8013,18 @@
       "target": "serializers_chatrequestserializer"
     },
     {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "backend/chat/views.py",
+      "source_location": "L8",
+      "weight": 0.8,
+      "_src": "views_rationale_119",
+      "_tgt": "models_message",
+      "confidence_score": 0.5,
+      "source": "models_message",
+      "target": "views_rationale_119"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/serializers.py",
@@ -7990,6 +8059,30 @@
       "source": "backend_chat_serializers_py",
       "target": "serializers_chatrequestserializer",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "backend/chat/views.py",
+      "source_location": "L9",
+      "weight": 0.8,
+      "_src": "views_rationale_119",
+      "_tgt": "serializers_conversationserializer",
+      "confidence_score": 0.5,
+      "source": "serializers_conversationserializer",
+      "target": "views_rationale_119"
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "backend/chat/views.py",
+      "source_location": "L9",
+      "weight": 0.8,
+      "_src": "views_rationale_119",
+      "_tgt": "serializers_chatrequestserializer",
+      "confidence_score": 0.5,
+      "source": "serializers_chatrequestserializer",
+      "target": "views_rationale_119"
     },
     {
       "relation": "contains",
@@ -9567,7 +9660,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L304",
+      "source_location": "L340",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_llm_py",
       "_tgt": "llm_generate",
@@ -9579,7 +9672,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L354",
+      "source_location": "L390",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_llm_py",
       "_tgt": "llm_build_prompt",
@@ -9591,7 +9684,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L393",
+      "source_location": "L429",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_llm_py",
       "_tgt": "llm_clear_cache",
@@ -9603,7 +9696,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L398",
+      "source_location": "L434",
       "weight": 1.0,
       "_src": "backend_chat_pipeline_llm_py",
       "_tgt": "llm_reload_model",
@@ -9639,7 +9732,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L282",
+      "source_location": "L294",
       "weight": 1.0,
       "_src": "llm_stream_generate",
       "_tgt": "llm_parse_sse_line",
@@ -9663,7 +9756,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L319",
+      "source_location": "L355",
       "weight": 1.0,
       "_src": "llm_generate",
       "_tgt": "llm_call_colab_blocking",
@@ -9699,7 +9792,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L320",
+      "source_location": "L356",
       "weight": 1.0,
       "_src": "llm_generate",
       "_tgt": "llm_post_process",
@@ -9771,7 +9864,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L312",
+      "source_location": "L348",
       "weight": 1.0,
       "_src": "llm_generate",
       "_tgt": "llm_build_prompt",
@@ -9783,12 +9876,12 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L305",
+      "source_location": "L341",
       "weight": 1.0,
-      "_src": "llm_rationale_305",
+      "_src": "llm_rationale_341",
       "_tgt": "llm_generate",
       "source": "llm_generate",
-      "target": "llm_rationale_305",
+      "target": "llm_rationale_341",
       "confidence_score": 1.0
     },
     {
@@ -9807,12 +9900,12 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L357",
+      "source_location": "L393",
       "weight": 1.0,
-      "_src": "llm_rationale_357",
+      "_src": "llm_rationale_393",
       "_tgt": "llm_build_prompt",
       "source": "llm_build_prompt",
-      "target": "llm_rationale_357",
+      "target": "llm_rationale_393",
       "confidence_score": 1.0
     },
     {
@@ -9831,24 +9924,24 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L394",
+      "source_location": "L430",
       "weight": 1.0,
-      "_src": "llm_rationale_394",
+      "_src": "llm_rationale_430",
       "_tgt": "llm_clear_cache",
       "source": "llm_clear_cache",
-      "target": "llm_rationale_394",
+      "target": "llm_rationale_430",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backend/chat/pipeline/llm.py",
-      "source_location": "L399",
+      "source_location": "L435",
       "weight": 1.0,
-      "_src": "llm_rationale_399",
+      "_src": "llm_rationale_435",
       "_tgt": "llm_reload_model",
       "source": "llm_reload_model",
-      "target": "llm_rationale_399",
+      "target": "llm_rationale_435",
       "confidence_score": 1.0
     },
     {
@@ -14943,7 +15036,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/chat/useChatStream.ts",
-      "source_location": "L22",
+      "source_location": "L23",
       "weight": 1.0,
       "_src": "src_components_chat_usechatstream_ts",
       "_tgt": "usechatstream_usechatstream",

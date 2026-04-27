@@ -234,7 +234,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
           </div>
         )}
 
-        {/* Off-topic alert */}
+        {/* Off-topic alert (warning orange) */}
         {message.isOffTopic && (
           <div style={{
             display: 'flex', alignItems: 'flex-start', gap: 10,
@@ -247,8 +247,26 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
           </div>
         )}
 
+        {/* Error alert (red — LLM offline, timeout, network error) */}
+        {message.isError && (
+          <div style={{
+            display: 'flex', alignItems: 'flex-start', gap: 10,
+            padding: 12, background: 'rgba(239, 68, 68, 0.1)',
+            border: '1px solid rgba(239, 68, 68, 0.35)',
+            borderRadius: 10, color: '#EF4444',
+          }}>
+            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: 1 }} />
+            <div style={{ fontSize: 14, lineHeight: 1.5 }}>
+              <strong style={{ display: 'block', marginBottom: 4 }}>
+                Erreur du modèle
+              </strong>
+              <span>{message.text}</span>
+            </div>
+          </div>
+        )}
+
         {/* Main response */}
-        {message.text && !message.isOffTopic && (
+        {message.text && !message.isOffTopic && !message.isError && (
           <div>
             <MarkdownMessage content={message.text} />
 
@@ -269,7 +287,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
         )}
 
         {/* Actions */}
-        {!message.isStreaming && message.text && !message.isOffTopic && (
+        {!message.isStreaming && message.text && !message.isOffTopic && !message.isError && (
           <div style={{
             display: 'flex', alignItems: 'center', gap: 4, marginTop: 8,
             opacity: 0, transition: 'opacity 0.2s',

@@ -49,15 +49,11 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 # ─── Deploy contexts ──────────────────────────────────────────
-# Each PR gets its own preview URL automatically.
-# Production deploys come from main branch.
+# Tous les contextes Netlify pointent sur le seul backend Render
+# déployé (staging = environnement unique de démo client).
+# Note : netlify.toml override les variables du dashboard Netlify.
 
 [context.production.environment]
-  # ⚠️  Tant que le backend "production" Render n'est pas déployé, on pointe
-  #     sur le staging (le seul live). Repasser à grop-app-backend.onrender.com
-  #     quand le service prod sera up dans Render.
-  # Note : netlify.toml override le dashboard — pour changer rapidement,
-  #        modifier ici et push, OU vider ce bloc et utiliser le dashboard.
   VITE_API_BASE_URL = "https://grop-app-backend-staging.onrender.com"
 
 [context.deploy-preview.environment]

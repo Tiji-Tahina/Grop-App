@@ -1,12 +1,12 @@
 # Graph Report - .  (2026-04-27)
 
 ## Corpus Check
-- 141 files · ~232,218 words
+- 141 files · ~232,944 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 670 nodes · 898 edges · 109 communities detected
-- Extraction: 73% EXTRACTED · 27% INFERRED · 0% AMBIGUOUS · INFERRED: 244 edges (avg confidence: 0.68)
+- 675 nodes · 902 edges · 113 communities detected
+- Extraction: 73% EXTRACTED · 27% INFERRED · 0% AMBIGUOUS · INFERRED: 248 edges (avg confidence: 0.67)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -119,6 +119,10 @@
 - [[_COMMUNITY_Community 106|Community 106]]
 - [[_COMMUNITY_Community 107|Community 107]]
 - [[_COMMUNITY_Community 108|Community 108]]
+- [[_COMMUNITY_Community 109|Community 109]]
+- [[_COMMUNITY_Community 110|Community 110]]
+- [[_COMMUNITY_Community 111|Community 111]]
+- [[_COMMUNITY_Community 112|Community 112]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `retrieve()` - 21 edges
@@ -148,7 +152,7 @@
 
 ### Community 0 - "Community 0"
 Cohesion: 0.05
-Nodes (43): make_mat(), apply_modifiers(), duplicate_object(), find_col(), get_or_create_col(), get_or_create_material(), link_to_scene_if_needed(), main() (+35 more)
+Nodes (44): make_mat(), apply_modifiers(), duplicate_object(), find_col(), get_or_create_col(), get_or_create_material(), link_to_scene_if_needed(), main() (+36 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.1
@@ -159,16 +163,16 @@ Cohesion: 0.07
 Nodes (32): _get_ontology_facts(), _find_individual(), get_class_tag(), get_domain_keywords(), get_facts_block(), get_graph(), get_pedigree(), get_related_concepts() (+24 more)
 
 ### Community 3 - "Community 3"
+Cohesion: 0.08
+Nodes (33): build_prompt(), _call_colab_blocking(), clear_cache(), generate(), get_model_info(), _parse_sse_line(), _post_process(), Étape 4 du pipeline : appel au LLM hébergé sur Google Colab via HTTP (FastAPI + (+25 more)
+
+### Community 4 - "Community 4"
 Cohesion: 0.06
 Nodes (25): handleSend(), BaseUserManager, sendMessage(), createCrop(), createFarm(), createSoilData(), getCrops(), getFarm() (+17 more)
 
-### Community 4 - "Community 4"
+### Community 5 - "Community 5"
 Cohesion: 0.07
 Nodes (29): _build_result(), _distance_to_score(), _empty_result(), _expand_query(), _fallback_static(), _format_context(), _load_vector_store(), _no_data_result() (+21 more)
-
-### Community 5 - "Community 5"
-Cohesion: 0.08
-Nodes (32): build_prompt(), _call_colab_blocking(), clear_cache(), generate(), get_model_info(), _parse_sse_line(), _post_process(), Étape 4 du pipeline : appel au LLM hébergé sur Google Colab via HTTP (FastAPI + (+24 more)
 
 ### Community 6 - "Community 6"
 Cohesion: 0.07
@@ -191,12 +195,12 @@ Cohesion: 0.18
 Nodes (10): _detect_tags_from_ontology(), _get_ontology_keywords(), Étape 2 du pipeline : validation ontologique et enrichissement du contexte.  - V, Verifie que `keyword` apparait comme mot entier dans `text_lower`.     Evite les, Retourne les keywords du graphe rdflib, avec fallback sur le dict local., Détecte les context_tags en deux passes :     1. Via les classes OWL des entités, validate_and_enrich(), _word_match() (+2 more)
 
 ### Community 11 - "Community 11"
-Cohesion: 0.23
-Nodes (15): build_bvh(), centroid_world(), find_col(), geo_region(), get_or_create(), identify_objects(), link_obj(), main() (+7 more)
-
-### Community 12 - "Community 12"
 Cohesion: 0.22
 Nodes (10): bbox_overlap_area(), get_col(), get_or_create_col(), link_to(), main(), normalize(), Script Blender Python : Organisation hiérarchique Madagascar pour Drill-down ===, Calcule l'aire de chevauchement XY entre deux objets. (+2 more)
+
+### Community 12 - "Community 12"
+Cohesion: 0.21
+Nodes (14): extract_html(), extract_pdf(), load_sources(), Module de scraping pour alimenter le vector store RAG.  Supporte : HTML (sites w, Scrape une seule source (HTML ou PDF selon son type).     Retourne le document o, Scrape toutes les sources du fichier sources.json., Scrape une seule source par son id., Scrape seulement les N premières sources — pour tester rapidement     sans atten (+6 more)
 
 ### Community 13 - "Community 13"
 Cohesion: 0.23
@@ -556,34 +560,50 @@ Nodes (0):
 
 ### Community 102 - "Community 102"
 Cohesion: 1.0
-Nodes (1): Enrichit la requête FAISS avec les concepts liés trouvés dans l'ontologie.     E
+Nodes (1): Génère une réponse via le LLM Colab. Retourne reply, tokens, latence.
 
 ### Community 103 - "Community 103"
 Cohesion: 1.0
-Nodes (1): Évalue la qualité des résultats et construit la réponse appropriée.     C'est ic
+Nodes (1): Construit le prompt pour le LLM.
 
 ### Community 104 - "Community 104"
 Cohesion: 1.0
-Nodes (1): Gère le cas où le RAG ne trouve rien d'utile.     Tente le fallback sur la knowl
+Nodes (1): No-op : le modèle tourne sur Colab, pas en local.
 
 ### Community 105 - "Community 105"
 Cohesion: 1.0
-Nodes (1): Formate les documents récupérés + les faits ontologiques pour le LLM.
+Nodes (1): No-op : le modèle tourne sur Colab, pas en local.
 
 ### Community 106 - "Community 106"
 Cohesion: 1.0
-Nodes (1): Contexte statique de secours basé sur les tags ontologiques.     Utilisé quand F
+Nodes (1): Enrichit la requête FAISS avec les concepts liés trouvés dans l'ontologie.     E
 
 ### Community 107 - "Community 107"
 Cohesion: 1.0
-Nodes (1): Découpe un texte en chunks avec chevauchement.
+Nodes (1): Évalue la qualité des résultats et construit la réponse appropriée.     C'est ic
 
 ### Community 108 - "Community 108"
+Cohesion: 1.0
+Nodes (1): Gère le cas où le RAG ne trouve rien d'utile.     Tente le fallback sur la knowl
+
+### Community 109 - "Community 109"
+Cohesion: 1.0
+Nodes (1): Formate les documents récupérés + les faits ontologiques pour le LLM.
+
+### Community 110 - "Community 110"
+Cohesion: 1.0
+Nodes (1): Contexte statique de secours basé sur les tags ontologiques.     Utilisé quand F
+
+### Community 111 - "Community 111"
+Cohesion: 1.0
+Nodes (1): Découpe un texte en chunks avec chevauchement.
+
+### Community 112 - "Community 112"
 Cohesion: 1.0
 Nodes (1): Construit le vector store FAISS à partir des documents.      Args:         docum
 
 ## Knowledge Gaps
-- **135 isolated node(s):** `Test du chargeur d'ontologie CropGPT. Lancer depuis backend/ :     python test_o`, `Run administrative tasks.`, `Test CropGPT - Qwen2 Local Model Lancer: python test_cropgpt.py  Affiche: memoir`, `Retourne l'utilisation memoire en MB.`, `Quick test Qwen2 - sans details memoire` (+130 more)
+- **139 isolated node(s):** `Test du chargeur d'ontologie CropGPT. Lancer depuis backend/ :     python test_o`, `Run administrative tasks.`, `Test CropGPT - Qwen2 Local Model Lancer: python test_cropgpt.py  Affiche: memoir`, `Retourne l'utilisation memoire en MB.`, `Quick test Qwen2 - sans details memoire` (+134 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Community 46`** (2 nodes): `vite.config.js`, `manualChunks()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -697,27 +717,35 @@ Nodes (1): Construit le vector store FAISS à partir des documents.      Args:  
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 101`** (1 nodes): `madagascarGeoJSON.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 102`** (1 nodes): `Enrichit la requête FAISS avec les concepts liés trouvés dans l'ontologie.     E`
+- **Thin community `Community 102`** (1 nodes): `Génère une réponse via le LLM Colab. Retourne reply, tokens, latence.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 103`** (1 nodes): `Évalue la qualité des résultats et construit la réponse appropriée.     C'est ic`
+- **Thin community `Community 103`** (1 nodes): `Construit le prompt pour le LLM.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 104`** (1 nodes): `Gère le cas où le RAG ne trouve rien d'utile.     Tente le fallback sur la knowl`
+- **Thin community `Community 104`** (1 nodes): `No-op : le modèle tourne sur Colab, pas en local.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 105`** (1 nodes): `Formate les documents récupérés + les faits ontologiques pour le LLM.`
+- **Thin community `Community 105`** (1 nodes): `No-op : le modèle tourne sur Colab, pas en local.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 106`** (1 nodes): `Contexte statique de secours basé sur les tags ontologiques.     Utilisé quand F`
+- **Thin community `Community 106`** (1 nodes): `Enrichit la requête FAISS avec les concepts liés trouvés dans l'ontologie.     E`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 107`** (1 nodes): `Découpe un texte en chunks avec chevauchement.`
+- **Thin community `Community 107`** (1 nodes): `Évalue la qualité des résultats et construit la réponse appropriée.     C'est ic`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 108`** (1 nodes): `Construit le vector store FAISS à partir des documents.      Args:         docum`
+- **Thin community `Community 108`** (1 nodes): `Gère le cas où le RAG ne trouve rien d'utile.     Tente le fallback sur la knowl`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 109`** (1 nodes): `Formate les documents récupérés + les faits ontologiques pour le LLM.`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 110`** (1 nodes): `Contexte statique de secours basé sur les tags ontologiques.     Utilisé quand F`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 111`** (1 nodes): `Découpe un texte en chunks avec chevauchement.`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 112`** (1 nodes): `Construit le vector store FAISS à partir des documents.      Args:         docum`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `retrieve()` connect `Community 4` to `Community 0`, `Community 13`, `Community 5`?**
-  _High betweenness centrality (0.064) - this node is a cross-community bridge._
-- **Why does `UserSerializer` connect `Community 7` to `Community 0`, `Community 3`?**
+- **Why does `retrieve()` connect `Community 5` to `Community 0`, `Community 3`, `Community 13`?**
+  _High betweenness centrality (0.063) - this node is a cross-community bridge._
+- **Why does `UserSerializer` connect `Community 7` to `Community 0`, `Community 4`?**
   _High betweenness centrality (0.044) - this node is a cross-community bridge._
 - **Why does `predict()` connect `Community 1` to `Community 0`, `Community 8`?**
   _High betweenness centrality (0.044) - this node is a cross-community bridge._
