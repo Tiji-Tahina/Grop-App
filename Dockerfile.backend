@@ -23,9 +23,18 @@ COPY backend/ .
 # Si les données RAG changent, rebuild l'image (git push suffit via CI/CD)
 RUN mkdir -p /app/rag/data
 
-# Collecte des fichiers statiques
+# Collecte des statiques au build (servis par WhiteNoise au runtime)
 RUN python manage.py collectstatic --noinput || true
 
 EXPOSE 8000
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4", "--timeout", "120"]
+# Render injecte $PORT dynamiquement. Free tier = 512 MB RAM → 2 workers / 4 threads.
+# Migrations à chaque boot pour rester en phase avec le schéma déployé.
+CMD sh -c "python manage.py migrate --noinput && \
+           gunicorn config.wsgi:application \
+             --bind 0.0.0.0:${PORT:-8000} \
+             --workers ${WEB_CONCURRENCY:-2} \
+             --threads 4 \
+             --timeout 120 \
+             --access-logfile - \
+             --error-logfile -"

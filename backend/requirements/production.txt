@@ -3,6 +3,8 @@
 # Serveur
 gunicorn>=22.0
 psycopg2-binary>=2.9
+dj-database-url>=2.2
+whitenoise>=6.7
 
 # ML / IA
 scikit-learn>=1.5

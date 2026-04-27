@@ -46,13 +46,17 @@ services:
       - key: ALLOWED_HOSTS
         value: .onrender.com
       - key: CORS_ALLOWED_ORIGINS
-        value: https://grop-app-frontend.onrender.com
+        sync: false   # ex : https://deploy-preview-12--grop-app.netlify.app,https://staging--grop-app.netlify.app
       - key: COLAB_LLM_URL
-        sync: false   # À définir manuellement dans le dashboard Render
+        sync: false   # ngrok URL — change à chaque relance Colab
       - key: DEBUG
         value: "False"
       - key: ENVIRONMENT
         value: staging
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: WEB_CONCURRENCY
+        value: "1"
 
   # ─── Backend Production ───────────────────────────────────────────────────
   - type: web
@@ -75,13 +79,17 @@ services:
       - key: ALLOWED_HOSTS
         value: .onrender.com
       - key: CORS_ALLOWED_ORIGINS
-        value: https://grop-app-frontend.onrender.com
+        sync: false   # ex : https://grop-app.netlify.app,https://grop.tonnom.com
       - key: COLAB_LLM_URL
-        sync: false   # À définir manuellement dans le dashboard Render
+        sync: false   # ngrok URL — change à chaque relance Colab
       - key: DEBUG
         value: "False"
       - key: ENVIRONMENT
         value: production
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: WEB_CONCURRENCY
+        value: "2"
 
   # ─── Frontend Production (Static Site) ───────────────────────────────────
   - type: web
