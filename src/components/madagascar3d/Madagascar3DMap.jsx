@@ -48,6 +48,53 @@ const COLOR_SELECTED = new THREE.Color('#FF9A3C');   // warm amber
 const COLOR_OFF      = new THREE.Color('#000000');
 
 // ─────────────────────────────────────────────────────────────────────────────
+// BIOME PALETTE — alignée sur le design system "AGRI-NEXUS Nature Edition"
+// (cf. src/index.css : --bg-deep, --primary-500, --agri-*, --ai-*)
+// ─────────────────────────────────────────────────────────────────────────────
+const BIOME_COLORS = {
+  rainforest: '#1F4A3D',   // forêt humide profonde
+  tropical:   '#3A7A5A',   // tropical médium
+  highland:   '#6A9B52',   // hauts plateaux — sage agri-500
+  transition: '#8FAF6E',   // transition olive clair
+  mangrove:   '#4F8B7B',   // mangrove teal-vert
+  savanna:    '#C17F3A',   // savane — amber-earth ai-500
+  spiny:      '#A06530',   // forêt épineuse — amber foncé
+  dry:        '#D4944A',   // zone sèche — amber clair
+};
+
+// Mapping région → biome (extrait de madagascarGraphData.js)
+const REGION_BIOME = {
+  'Diana':                'tropical',
+  'Sava':                 'rainforest',
+  'Analanjirofo':         'rainforest',
+  'Sofia':                'savanna',
+  'Boeny':                'savanna',
+  'Betsiboka':            'savanna',
+  'Melaky':               'mangrove',
+  'Bongolava':            'savanna',
+  'Itasy':                'highland',
+  'Analamanga':           'highland',
+  'Alaotra-Mangoro':      'transition',
+  'Atsinanana':           'rainforest',
+  'Vakinankaratra':       'highland',
+  "Amoron'i Mania":       'highland',
+  'Menabe':               'savanna',
+  'Matsiatra Ambony':     'highland',
+  'Vatovavy-Fitovinany':  'rainforest',
+  'Ihorombe':             'transition',
+  'Atsimo-Atsinanana':    'transition',
+  'Atsimo-Andrefana':     'spiny',
+  'Androy':               'spiny',
+  'Anosy':                'dry',
+};
+
+// Helper : couleur THREE pour une région donnée (avec fallback sage)
+const colorForRegion = (regionName) => {
+  const biome = REGION_BIOME[regionName] || 'highland';
+  return new THREE.Color(BIOME_COLORS[biome] || '#7FB069');
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // OCEAN SHADER (small-scale wavelets)
 // ─────────────────────────────────────────────────────────────────────────────
 const OCEAN_VERT = `
@@ -133,6 +180,12 @@ function ADM1Model({
         mat.emissiveIntensity = 0;
         mat.transparent = true;
         mat.opacity = 1.0;
+        // ── Override base color from biome palette (design system) ──
+        // Le GLB embarque un sage neutre #7FB069 ; on remplace par la
+        // couleur du biome pour rester cohérent avec le thème nature.
+        mat.color.copy(colorForRegion(m.name));
+        mat.roughness = 0.65;
+        mat.metalness = 0.0;
         mat.needsUpdate = true;
         m.material = mat;
         m.userData._owned = true;
@@ -235,14 +288,28 @@ function ADM2Districts({ parentRegion, onDistrictHover, modelOffset }) {
 
   useEffect(() => {
     matsRef.current = {};
+    // Couleur du biome parent — partagée par tous les districts de la région
+    const parentBiomeColor = colorForRegion(parentRegion);
+    const hsl = { h: 0, s: 0, l: 0 };
+    parentBiomeColor.getHSL(hsl);
+
     districts.forEach((d, i) => {
-      const hue = (i * 137.5) % 360;
+      // Subtile variation de luminosité (±10%) pour distinguer les districts
+      // adjacents tout en restant dans la teinte du biome parent.
+      const lightVar = ((i % 5) - 2) * 0.05;
+      const districtColor = new THREE.Color().setHSL(
+        hsl.h,
+        hsl.s,
+        Math.max(0.18, Math.min(0.78, hsl.l + lightVar)),
+      );
+      const emissiveColor = districtColor.clone().multiplyScalar(0.45);
+
       const mat = new THREE.MeshStandardMaterial({
-        color:    new THREE.Color(`hsl(${hue}, 72%, 56%)`),
-        emissive: new THREE.Color(`hsl(${hue}, 72%, 36%)`),
-        emissiveIntensity: 0.18,
-        roughness: 0.45,
-        metalness: 0.06,
+        color:    districtColor,
+        emissive: emissiveColor,
+        emissiveIntensity: 0.12,
+        roughness: 0.55,
+        metalness: 0.04,
         transparent: true,
         opacity: 0,
         side: THREE.DoubleSide,
@@ -260,7 +327,7 @@ function ADM2Districts({ parentRegion, onDistrictHover, modelOffset }) {
     return () => {
       Object.values(matsRef.current).forEach((m) => m.dispose());
     };
-  }, [districts]);
+  }, [districts, parentRegion]);
 
   useEffect(() => {
     Object.entries(matsRef.current).forEach(([n, mat]) => {

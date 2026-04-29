@@ -3,7 +3,7 @@ import React, { useState, useMemo, useCallback, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MadagascarMap3D = lazy(() => import('../madagascar3d/MadagascarMap3D'));
-
+import MapLoadingSkeleton from './MapLoadingSkeleton';
 /* ============================================================
    22 régions de Madagascar — statistiques + position approximative
    Coordonnées (x, y) sur viewBox 200×360 (carte stylisée)
@@ -165,16 +165,8 @@ export default function RegionalNavigation({ onRegionChange }) {
       }}>
         {/* 3D map — full canvas, the "earth" */}
         <div style={{ position: 'absolute', inset: 0 }}>
-          <Suspense fallback={
-            <div style={{
-              width: '100%', height: '100%',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
-              textTransform: 'uppercase', color: 'rgba(255,255,255,0.32)',
-            }}>
-              Chargement carte 3D…
-            </div>
-          }>
+          <MapLoadingSkeleton />
+          <Suspense fallback={<MapLoadingSkeleton forced />}>
             <MadagascarMap3D activeId={selectedId} onPick={handlePick} />
           </Suspense>
         </div>
