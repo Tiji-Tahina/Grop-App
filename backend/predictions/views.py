@@ -7,6 +7,7 @@ from crops.models import Crop
 from .models import Prediction, MLModelVersion
 from .serializers import PredictionSerializer, PredictRequestSerializer
 from .ml.yield_model import predict_yield
+from data_werehouse.olap_engine import engine
 
 
 @api_view(['POST'])
@@ -76,3 +77,17 @@ class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
         return Prediction.objects.filter(
             farm__owner=self.request.user
         ).select_related('farm', 'crop', 'model_version')
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny]) # On peut restreindre plus tard
+def olap_query(request):
+    """
+    POST /api/predictions/analytics/
+    Point d'entrée unique pour toutes les opérations OLAP (Slice, Dice, etc.)
+    """
+    try:
+        results = engine.execute_query(request.data)
+        return Response(results, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

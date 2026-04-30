@@ -20,10 +20,21 @@ build/
 # =============================================
 .claude/
 CLAUDE.md
+claude.md
 .opencode/
 opencode.json
 graphify-out/
 AGENTS.md
+agent.md
+blender_script/
+
+# =============================================
+# IA & RAG — Stockés sur Drive/Cloud
+# =============================================
+backend/rag/data/vector_store/index.faiss
+backend/rag/data/vector_store/metadata.pkl
+backend/rag/data/documents/*.json
+backend/rag/data/knowledge_base/*.json
 
 # =============================================
 # DONNÉES GÉOSPATIALES VOLUMINEUSES (>100MB)

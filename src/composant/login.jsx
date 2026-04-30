@@ -79,24 +79,41 @@ export default function Login() {
             }}>
 
               {/* Logo + brand */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 36 }}>
-                <img
-                  src="/logo.png"
-                  alt="CropGPT"
-                  style={{ width: 28, height: 28, borderRadius: 6, objectFit: 'cover' }}
-                />
-                <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 40 }}>
+                {/* Logo ISPM - Partnership indicator dans un cercle */}
+                <div style={{
+                  width: 90, height: 90,
+                  borderRadius: '50%',
+                  background: '#FFFFFF',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+                  overflow: 'hidden'
+                }}>
+                  <img
+                    src="/ispm-logo.png"
+                    alt="ISPM"
+                    style={{ width: 100, height: 100, objectFit: 'contain' }}
+                  />
+                </div>
+                <div style={{ borderLeft: '1px solid rgba(77,255,145,0.2)', paddingLeft: 16 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <img
+                      src="/logo.png"
+                      alt="CropGPT"
+                      style={{ width: 32, height: 32, borderRadius: 4, objectFit: 'cover' }}
+                    />
+                    <p style={{
+                      fontSize: 20, fontWeight: 700, letterSpacing: '-0.01em',
+                      color: '#FFFFFF', fontFamily: 'var(--font-display)',
+                      margin: 0,
+                    }}>
+                      CropGPT
+                    </p>
+                  </div>
                   <p style={{
-                    fontSize: 14, fontWeight: 700, letterSpacing: '-0.01em',
-                    color: '#FFFFFF', fontFamily: 'var(--font-display)',
-                    margin: 0,
-                  }}>
-                    CropGPT
-                  </p>
-                  <p style={{
-                    fontSize: 9, fontWeight: 600, letterSpacing: '0.18em',
+                    fontSize: 10, fontWeight: 600, letterSpacing: '0.18em',
                     textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
-                    margin: 0, marginTop: 2,
+                    margin: 0, marginTop: 4,
                   }}>
                     Plateforme agricole IA
                   </p>

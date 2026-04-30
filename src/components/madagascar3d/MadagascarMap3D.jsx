@@ -14,7 +14,65 @@ import imgM7 from '../../assets/marquee/BAOBAB-2-1290x540.webp';
 
 const REGION_IMAGES = [imgM1, imgM2, imgM3, imgM4, imgM5, imgM6, imgM7];
 
-useGLTF.preload('/madagascar.glb');
+const BIOME_IMAGES = {
+  rainforest: imgM1,
+  tropical: imgM2,
+  highland: imgM3,
+  transition: imgM4,
+  mangrove: imgM5,
+  savanna: imgM6,
+  spiny: imgM7,
+  dry: imgM7,
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BIOME PALETTE — alignée sur le design system "AGRI-NEXUS Nature Edition"
+// (cf. src/index.css : --bg-deep, --primary-500, --agri-*, --ai-*)
+// ─────────────────────────────────────────────────────────────────────────────
+const BIOME_COLORS = {
+  rainforest: '#1F4A3D',   // forêt humide profonde
+  tropical:   '#3A7A5A',   // tropical médium
+  highland:   '#6A9B52',   // hauts plateaux — sage agri-500
+  transition: '#8FAF6E',   // transition olive clair
+  mangrove:   '#4F8B7B',   // mangrove teal-vert
+  savanna:    '#C17F3A',   // savane — amber-earth ai-500
+  spiny:      '#A06530',   // forêt épineuse — amber foncé
+  dry:        '#D4944A',   // zone sèche — amber clair
+};
+
+// Mapping région (par region_id slug) → biome
+const REGION_BIOME = {
+  'diana':                'tropical',
+  'sava':                 'rainforest',
+  'analanjirofo':         'rainforest',
+  'sofia':                'savanna',
+  'boeny':                'savanna',
+  'betsiboka':            'savanna',
+  'melaky':               'mangrove',
+  'bongolava':            'savanna',
+  'itasy':                'highland',
+  'analamanga':           'highland',
+  'alaotra-mangoro':      'transition',
+  'atsinanana':           'rainforest',
+  'vakinankaratra':       'highland',
+  'amoron-i-mania':       'highland',
+  'menabe':               'savanna',
+  'matsiatra-ambony':     'highland',
+  'haute-matsiatra':      'highland',
+  'vatovavy-fitovinany':  'rainforest',
+  'ihorombe':             'transition',
+  'atsimo-atsinanana':    'transition',
+  'atsimo-andrefana':     'spiny',
+  'androy':               'spiny',
+  'anosy':                'dry',
+};
+
+const BIOME_FALLBACK = '#7FB069';  // sage agri-400
+
+const colorForRegionId = (regionId) => {
+  const biome = REGION_BIOME[regionId] || 'highland';
+  return new THREE.Color(BIOME_COLORS[biome] || BIOME_FALLBACK);
+};
 
 /* ============================================================
    Camera rig — initial top-down + arc-transition GSAP on focus
@@ -137,7 +195,7 @@ function EdgeLines({ meshes, color = '#4DFF91', opacity = 0.55, thresholdAngle =
    - Per-frame opacity pulse driven by a single useFrame in parent
    - Hover state local (no React re-render cascade)
    ============================================================ */
-function BiolumDot({ position, regionId, label, isActiveSelection, delay, kind, onPick }) {
+function BiolumDot({ position, regionId, label, isActiveSelection, delay, kind, onPick, setHoverCount }) {
   const meshRef = useRef();
   const [hovered, setHovered] = useState(false);
   const { invalidate } = useThree();
@@ -160,8 +218,8 @@ function BiolumDot({ position, regionId, label, isActiveSelection, delay, kind, 
       position={position}
       scale={isHighlight ? 1.6 : 1}
       onClick={(e) => { e.stopPropagation(); onPick?.(regionId); invalidate(); }}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; invalidate(); }}
-      onPointerOut={() => { setHovered(false); document.body.style.cursor = ''; invalidate(); }}
+      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); setHoverCount?.(c => c + 1); invalidate(); }}
+      onPointerOut={(e) => { e.stopPropagation(); setHovered(false); setHoverCount?.(c => Math.max(0, c - 1)); invalidate(); }}
     >
       <sphereGeometry args={[baseRadius, 12, 8]} />
       <meshBasicMaterial
@@ -201,42 +259,32 @@ function ActiveLabel({ position, text }) {
    Map model — visibility filtering + click pick on regions.
    Only runs effects on activeId changes; no per-frame work.
    ============================================================ */
-function MapModel({ activeId, onPick, onBoundsReady, onTargetChange, onCentroids }) {
-  const { scene } = useGLTF('/madagascar.glb');
+function MapModel({ activeId, onPick, onBoundsReady, onTargetChange, onCentroids, setHoverCount }) {
+  const { scene } = useGLTF('/madagascar.glb?v=20260428');
   const { invalidate } = useThree();
+  const hoverMeshes = useRef({});
 
-  // Load marquee textures once. Each region picks one deterministically.
+  // Load marquee textures mapped by biome
   const textures = useMemo(() => {
     const loader = new THREE.TextureLoader();
-    return REGION_IMAGES.map(url => {
+    const map = {};
+    Object.entries(BIOME_IMAGES).forEach(([biome, url]) => {
       const t = loader.load(url, () => invalidate());
       t.colorSpace = THREE.SRGBColorSpace;
-      return t;
+      map[biome] = t;
     });
+    return map;
   }, [invalidate]);
-
-  // Cached "image hover" materials per region_id
-  const hoverMaterialCache = useRef({});
-  const getHoverMaterial = useCallback((regionId) => {
-    if (!hoverMaterialCache.current[regionId]) {
-      // Hash region_id deterministically to pick an image
-      let hash = 0;
-      for (let i = 0; i < regionId.length; i++) hash = (hash * 31 + regionId.charCodeAt(i)) | 0;
-      const idx = Math.abs(hash) % textures.length;
-      hoverMaterialCache.current[regionId] = new THREE.MeshBasicMaterial({
-        map: textures[idx],
-        toneMapped: false,
-        transparent: false,
-        side: THREE.DoubleSide,
-      });
-    }
-    return hoverMaterialCache.current[regionId];
-  }, [textures]);
 
   useEffect(() => {
     if (!scene) return;
     const box = new THREE.Box3().setFromObject(scene);
     onBoundsReady(box);
+
+    const toRemove = [];
+    scene.traverse(o => { if (o.userData?.isHoverMesh) toRemove.push(o); });
+    toRemove.forEach(o => o.removeFromParent());
+    hoverMeshes.current = {}; // FIX: Clear cache so they are recreated correctly in StrictMode
 
     const regions = {};
     const districts = {};
@@ -245,18 +293,77 @@ function MapModel({ activeId, onPick, onBoundsReady, onTargetChange, onCentroids
 
     scene.traverse(o => {
       if (!o.isMesh) return;
+      if (o.userData.isHoverMesh) return;
       const k = o.userData?.kind;
       const rid = o.userData?.region_id;
       if (!rid) return;
 
-      // Save original material on first traverse so we can revert after hover
-      if (!o.userData._origMat) o.userData._origMat = o.material;
+      if (!o.userData._origMat) {
+        const baseColor = colorForRegionId(rid);
+        const cloned = o.material.clone();
+        cloned.color = baseColor;
+        if (k === 'district') {
+          const hsl = { h: 0, s: 0, l: 0 };
+          cloned.color.getHSL(hsl);
+          cloned.color.setHSL(hsl.h, hsl.s, Math.min(0.78, hsl.l + 0.08));
+        }
+        cloned.roughness = 0.62;
+        cloned.metalness = 0.04;
+        cloned.needsUpdate = true;
+        o.material = cloned;
+        o.userData._origMat = cloned;
+      }
 
       const b = new THREE.Box3().setFromObject(o);
       const c = b.getCenter(new THREE.Vector3());
+      const s = b.getSize(new THREE.Vector3());
       c.y = b.max.y + 0.06;
 
       if (k === 'region') {
+        // Planar UV Mapping
+        if (o.geometry && o.geometry.attributes.position) {
+          if (!o.geometry.attributes.uv) {
+             const count = o.geometry.attributes.position.count;
+             o.geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(count * 2), 2));
+          }
+          
+          // Use LOCAL bounding box for UVs, not the world box (b)
+          o.geometry.computeBoundingBox();
+          const localB = o.geometry.boundingBox;
+          const localS = new THREE.Vector3();
+          localB.getSize(localS);
+
+          const uvAttr = o.geometry.attributes.uv;
+          const posAttr = o.geometry.attributes.position;
+          for (let i = 0; i < uvAttr.count; i++) {
+            const x = posAttr.getX(i);
+            const z = posAttr.getZ(i);
+            const u = localS.x === 0 ? 0 : (x - localB.min.x) / localS.x;
+            const v = localS.z === 0 ? 0 : 1.0 - ((z - localB.min.z) / localS.z);
+            uvAttr.setXY(i, u, v);
+          }
+          uvAttr.needsUpdate = true;
+        }
+
+        // Hover Clone Mesh (Crossfade setup)
+        if (!hoverMeshes.current[rid]) {
+          const hoverMesh = o.clone();
+          hoverMesh.position.y += 0.005; // Lift to avoid Z-fighting
+          const biome = REGION_BIOME[rid] || 'highland';
+          hoverMesh.material = new THREE.MeshStandardMaterial({
+            map: textures[biome],
+            transparent: true,
+            opacity: 0,
+            depthWrite: false,
+            roughness: 0.65,
+            metalness: 0.0,
+          });
+          hoverMesh.userData = { isHoverMesh: true };
+          hoverMesh.castShadow = false;
+          o.parent.add(hoverMesh);
+          hoverMeshes.current[rid] = hoverMesh;
+        }
+
         regions[rid] = {
           name: o.userData?.region_label || rid,
           position: c.toArray(),
@@ -287,7 +394,16 @@ function MapModel({ activeId, onPick, onBoundsReady, onTargetChange, onCentroids
       const k = o.userData?.kind;
       const rid = o.userData?.region_id;
 
-      // Always restore the original material when activeId changes (cleans up any hover state)
+      // Force fade out hover meshes when zooming in
+      if (o.userData.isHoverMesh) {
+        if (activeId && o.material.opacity > 0) {
+          gsap.killTweensOf(o.material);
+          gsap.to(o.material, { opacity: 0, duration: 0.3, onUpdate: invalidate });
+        }
+        o.visible = !activeId;
+        return;
+      }
+      
       if (o.userData._origMat && o.material !== o.userData._origMat) {
         o.material = o.userData._origMat;
       }
@@ -319,30 +435,45 @@ function MapModel({ activeId, onPick, onBoundsReady, onTargetChange, onCentroids
   }, [onPick]);
 
   // Hover region → swap to image material. Pointer out → revert.
-  // Only fires in default mode (no activeId) to avoid weird state when zoomed.
   const handlePointerOver = useCallback((e) => {
-    if (activeId) return;
     e.stopPropagation();
     const obj = e.object;
     if (!obj.userData) return;
     const rid = obj.userData.region_id;
     const kind = obj.userData.kind;
+    
+    // Always trigger cursor hover for regions and districts
+    if (rid && (kind === 'region' || kind === 'district')) {
+      setHoverCount?.(c => c + 1);
+    }
+    
+    if (activeId) return; // Prevent material swap if zoomed
     if (!rid || kind !== 'region') return;
-    obj.material = getHoverMaterial(rid);
-    document.body.style.cursor = 'pointer';
-    invalidate();
-  }, [activeId, getHoverMaterial, invalidate]);
+    const hoverMesh = hoverMeshes.current[rid];
+    if (hoverMesh) {
+      gsap.killTweensOf(hoverMesh.material);
+      gsap.to(hoverMesh.material, { opacity: 1, duration: 0.25, ease: 'power2.out', onUpdate: invalidate });
+    }
+  }, [activeId, invalidate, setHoverCount]);
 
   const handlePointerOut = useCallback((e) => {
     e.stopPropagation();
     const obj = e.object;
     if (!obj.userData) return;
-    if (obj.userData._origMat) {
-      obj.material = obj.userData._origMat;
+    const rid = obj.userData.region_id;
+    const kind = obj.userData.kind;
+
+    if (rid && (kind === 'region' || kind === 'district')) {
+      setHoverCount?.(c => Math.max(0, c - 1));
     }
-    document.body.style.cursor = '';
-    invalidate();
-  }, [invalidate]);
+
+    if (!rid || kind !== 'region') return;
+    const hoverMesh = hoverMeshes.current[rid];
+    if (hoverMesh) {
+      gsap.killTweensOf(hoverMesh.material);
+      gsap.to(hoverMesh.material, { opacity: 0, duration: 0.35, ease: 'power2.inOut', onUpdate: invalidate });
+    }
+  }, [invalidate, setHoverCount]);
 
   return (
     <primitive
@@ -393,6 +524,7 @@ export default function MadagascarMap3D({ activeId, onPick }) {
   const [target, setTarget] = useState(null);
   const [centroids, setCentroids] = useState(null);
   const [pickedDistrict, setPickedDistrict] = useState(null);
+  const [hoverCount, setHoverCount] = useState(0);
 
   useEffect(() => {
     if (!activeId) setPickedDistrict(null);
@@ -413,7 +545,7 @@ export default function MadagascarMap3D({ activeId, onPick }) {
         stencil: false,
         depth: true,
       }}
-      style={{ width: '100%', height: '100%', background: 'transparent' }}
+      style={{ width: '100%', height: '100%', background: 'transparent', cursor: hoverCount > 0 ? 'pointer' : 'auto' }}
       onPointerMissed={() => { setPickedDistrict(null); onPick(null); }}
     >
       <ambientLight intensity={0.25} />
@@ -425,6 +557,7 @@ export default function MadagascarMap3D({ activeId, onPick }) {
           onBoundsReady={setBounds}
           onTargetChange={setTarget}
           onCentroids={setCentroids}
+          setHoverCount={setHoverCount}
         />
       </Suspense>
 
@@ -452,6 +585,7 @@ export default function MadagascarMap3D({ activeId, onPick }) {
           delay={i * 0.087}
           kind="region"
           onPick={onPick}
+          setHoverCount={setHoverCount}
         />
       ))}
 
@@ -466,6 +600,7 @@ export default function MadagascarMap3D({ activeId, onPick }) {
           delay={i * 0.087}
           kind="district"
           onPick={() => setPickedDistrict(d.name === pickedDistrict ? null : d.name)}
+          setHoverCount={setHoverCount}
         />
       ))}
 
