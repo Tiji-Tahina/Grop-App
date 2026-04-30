@@ -12,27 +12,11 @@ export default defineConfig({
   build: {
     outDir: 'build',
     emptyOutDir: true,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('three') || id.includes('@react-three')) {
-              return 'vendor-three';
-            }
-            if (id.includes('d3')) {
-              return 'vendor-d3';
-            }
-            if (id.includes('framer-motion')) {
-              return 'vendor-framer';
-            }
-            if (id.includes('globe.gl') || id.includes('react-globe.gl')) {
-              return 'vendor-globe';
-            }
-            return 'vendor'; // Reste des dépendances
-          }
-        }
-      }
-    }
+    // No manualChunks: with React.lazy() page boundaries, Vite/Rollup auto-splits
+    // each lazy route into its own chunk and hoists shared deps into a common
+    // chunk without the circular-graph problems caused by hand-grouping
+    // three / d3 / globe.gl. Each user only downloads what their current page needs.
+    chunkSizeWarningLimit: 1500,
   },
   optimizeDeps: {
     include: ['react-globe.gl', 'globe.gl', 'three'],

@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import gsap from 'gsap';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useGLTF } from '@react-three/drei';
 import { Send, MessageSquare, Settings, User, Users, TrendingUp, TrendingDown, Sprout, Leaf, CloudRain, Save, Lock, Eye, EyeOff, CheckCircle, AlertCircle, Search, Shield, UserCheck, Brain, Mic, MicOff, Wifi, WifiOff, ChevronDown, ChevronRight, ChevronLeft, Copy, Check, Sparkles, FlaskConical, BookOpen, FileText, RefreshCw, PanelLeftClose, PanelLeftOpen, LogOut, Sun, Moon, MapPin, Activity, X, Home, Map } from 'lucide-react';
 import { MADAGASCAR_GEOJSON } from './data/madagascarGeoJSON';
 import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
@@ -10,14 +9,16 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Login from "./composant/login";
 import Register from "./composant/register";
-import GlobeAnalysis from "./composant/GlobeAnalysis";
 import { getAccessToken, clearTokens, authAPI } from "./api/auth";
-import { AgriculturalChat } from './components/chat';
 import { FluidBackground } from './components/ui/FluidBackground';
-import RegionalNavigation from './components/ui/RegionalNavigation';
-import { ForecastPage } from './pages/ForecastPage';
-import { ForceGraphDashboard } from './components/dashboard/ForceGraphDashboard';
-import Madagascar3DMap from './components/madagascar3d/Madagascar3DMap';
+
+// Lazy-loaded heavy pages — keep login fast.
+// three.js, globe.gl, d3 are only fetched when the user opens the matching page.
+const GlobeAnalysis      = lazy(() => import('./composant/GlobeAnalysis'));
+const AgriculturalChat   = lazy(() => import('./components/chat').then(m => ({ default: m.AgriculturalChat })));
+const RegionalNavigation = lazy(() => import('./components/ui/RegionalNavigation'));
+const ForecastPage       = lazy(() => import('./pages/ForecastPage').then(m => ({ default: m.ForecastPage })));
+const ForceGraphDashboard = lazy(() => import('./components/dashboard/ForceGraphDashboard').then(m => ({ default: m.ForceGraphDashboard })));
 
 function MarkdownMessage({ content }) {
   return (
@@ -162,9 +163,15 @@ useEffect(() => {
       .catch(() => {});
   }, []);
 
-  // Précharger le modèle 3D dès que l'utilisateur est connecté (montage du MainLayout)
+  // Précharger le modèle 3D quand le réseau est libre, sans tirer @react-three/drei
+  // dans le bundle du login. L'import dynamique cohabite avec le chunk vendor-three.
   useEffect(() => {
-    useGLTF.preload('/madagascar.glb?v=20260428');
+    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1500));
+    idle(() => {
+      import('@react-three/drei').then(({ useGLTF }) => {
+        useGLTF.preload('/madagascar.glb?v=20260428');
+      }).catch(() => {});
+    });
   }, []);
 
   useEffect(() => {
@@ -529,19 +536,41 @@ useEffect(() => {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col" style={{ position: 'relative', zIndex: 1, height: '100vh' }}>
-        {currentPage === 'chat'
-          ? <AgriculturalChat />
-          : currentPage === 'dashboard'
-            ? <DashboardPage />
-            : currentPage === 'map3d'
-              ? <RegionalNavigation />
-              : currentPage === 'forecast'
-                ? <ForecastPage />
-                : currentPage === 'settings'
-                  ? <SettingsPage />
-                  : <UsersPage />
-        }
+        <Suspense fallback={<PageLoader />}>
+          {currentPage === 'chat'
+            ? <AgriculturalChat />
+            : currentPage === 'dashboard'
+              ? <DashboardPage />
+              : currentPage === 'map3d'
+                ? <RegionalNavigation />
+                : currentPage === 'forecast'
+                  ? <ForecastPage />
+                  : currentPage === 'settings'
+                    ? <SettingsPage />
+                    : <UsersPage />
+          }
+        </Suspense>
       </main>
+    </div>
+  );
+}
+
+// Minimal full-screen loader used as Suspense fallback while a lazy chunk downloads.
+function PageLoader() {
+  return (
+    <div style={{
+      flex: 1,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'transparent',
+      color: 'rgba(255,255,255,0.55)',
+      fontFamily: 'var(--font-display)',
+      fontSize: 13,
+      letterSpacing: '0.18em',
+      textTransform: 'uppercase',
+    }}>
+      Chargement…
     </div>
   );
 }
@@ -550,19 +579,21 @@ useEffect(() => {
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/cartographie" element={<GlobeAnalysis />} />
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <MainLayout />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/cartographie" element={<GlobeAnalysis />} />
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <MainLayout />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
