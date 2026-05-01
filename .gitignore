@@ -116,3 +116,6 @@ desktop.ini
 # PACKAGE MANAGER — Lock file optionnel selon équipe
 # =============================================
 # package-lock.json  # Décommenter si vous préférez ne pas le committer
+
+# GADM source GeoJSON (regenerable, large) — only generated paths are committed
+scripts/data/gadm*.json

@@ -1,36 +1,36 @@
 "use client";
-import React, { useState, useMemo, useCallback, Suspense, lazy } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const MadagascarMap3D = lazy(() => import('../madagascar3d/MadagascarMap3D'));
-import MapLoadingSkeleton from './MapLoadingSkeleton';
+import Madagascar2DMap from '../madagascar2d/Madagascar2DMap';
+
 /* ============================================================
-   22 régions de Madagascar — statistiques + position approximative
-   Coordonnées (x, y) sur viewBox 200×360 (carte stylisée)
+   22 régions de Madagascar — statistiques.
+   Slugs alignés sur GADM 4.1 (= ceux de src/data/madagascarPaths.json).
    ============================================================ */
 const REGIONS = [
-  { id: 'diana',             name: 'Diana',             capital: 'Ambanja',         population: 890000,  superficie: 19256, densite: 46.2, productionRiz: 41000, productionManioc: 35000, productionMais: 16000, x: 112, y: 32  },
-  { id: 'antsiranana',       name: 'Antsiranana',       capital: 'Antsiranana',     population: 720000,  superficie: 25526, densite: 28.2, productionRiz: 32000, productionManioc: 25000, productionMais: 12000, x: 132, y: 26  },
-  { id: 'sava',              name: 'Sava',              capital: 'Sambava',         population: 1050000, superficie: 21539, densite: 48.8, productionRiz: 52000, productionManioc: 40000, productionMais: 22000, x: 148, y: 56  },
-  { id: 'sofia',             name: 'Sofia',             capital: 'Antsohihy',       population: 1350000, superficie: 52320, densite: 25.8, productionRiz: 45000, productionManioc: 38000, productionMais: 18000, x: 102, y: 78  },
-  { id: 'boeny',             name: 'Boeny',             capital: 'Mahajanga',       population: 860000,  superficie: 27899, densite: 30.8, productionRiz: 32000, productionManioc: 24000, productionMais: 13000, x: 76,  y: 92  },
-  { id: 'analanjirofo',      name: 'Analanjirofo',      capital: 'Sambava',         population: 940000,  superficie: 21930, densite: 42.9, productionRiz: 45000, productionManioc: 38000, productionMais: 18000, x: 150, y: 100 },
-  { id: 'betsiboka',         name: 'Betsiboka',         capital: 'Maevatanana',     population: 290000,  superficie: 31803, densite: 9.1,  productionRiz: 9500,  productionManioc: 7200,  productionMais: 3800,  x: 92,  y: 130 },
-  { id: 'melaky',            name: 'Melaky',            capital: 'Maintirano',      population: 240000,  superficie: 37569, densite: 6.4,  productionRiz: 7500,  productionManioc: 5500,  productionMais: 2800,  x: 50,  y: 142 },
-  { id: 'bongolava',         name: 'Bongolava',         capital: 'Tsiroanomandidy', population: 670000,  superficie: 16688, densite: 40.1, productionRiz: 28000, productionManioc: 22000, productionMais: 15000, x: 82,  y: 168 },
-  { id: 'itasy',             name: 'Itasy',             capital: 'Arivonimamo',     population: 850000,  superficie: 14930, densite: 56.9, productionRiz: 38000, productionManioc: 28000, productionMais: 14000, x: 96,  y: 176 },
-  { id: 'analamanga',        name: 'Analamanga',        capital: 'Antananarivo',    population: 3450000, superficie: 37775, densite: 91.3, productionRiz: 125000,productionManioc: 85000, productionMais: 42000, x: 108, y: 188 },
-  { id: 'atsinanana',        name: 'Atsinanana',        capital: 'Toamasina',       population: 1480000, superficie: 21927, densite: 67.5, productionRiz: 78000, productionManioc: 52000, productionMais: 31000, x: 148, y: 178 },
-  { id: 'menabe',            name: 'Menabe',            capital: 'Morondava',       population: 390000,  superficie: 46071, densite: 8.5,  productionRiz: 12000, productionManioc: 9500,  productionMais: 4500,  x: 60,  y: 220 },
-  { id: 'vakinankaratra',    name: 'Vakinankaratra',    capital: 'Antsirabe',       population: 1960000, superficie: 21230, densite: 92.3, productionRiz: 92000, productionManioc: 65000, productionMais: 38000, x: 102, y: 218 },
-  { id: 'amoron_i_onilahy',  name: "Amoron'i Onilahy",  capital: 'Ampanihy',        population: 670000,  superficie: 37519, densite: 17.9, productionRiz: 22000, productionManioc: 16500, productionMais: 8500,  x: 108, y: 244 },
-  { id: 'matsiatra_ambony',  name: 'Matsiatra Ambony',  capital: 'Fianarantsoa',    population: 1360000, superficie: 35490, densite: 38.3, productionRiz: 58000, productionManioc: 42000, productionMais: 25000, x: 116, y: 264 },
-  { id: 'ihorombe',          name: 'Ihorombe',          capital: 'Ihosy',           population: 310000,  superficie: 31380, densite: 9.9,  productionRiz: 12000, productionManioc: 8500,  productionMais: 5500,  x: 96,  y: 282 },
-  { id: 'vatoavy',           name: 'Vatovavy-Fitovinany', capital: 'Farafangana',   population: 620000,  superficie: 34580, densite: 17.9, productionRiz: 25000, productionManioc: 18000, productionMais: 9500,  x: 134, y: 286 },
-  { id: 'atsimo_andrefana',  name: 'Atsimo-Andrefana',  capital: 'Toliara',         population: 1150000, superficie: 66460, densite: 17.3, productionRiz: 35000, productionManioc: 28000, productionMais: 12000, x: 50,  y: 292 },
-  { id: 'atsimo_atsinanana', name: 'Atsimo-Atsinanana', capital: 'Farafangana',     population: 1020000, superficie: 29857, densite: 34.2, productionRiz: 42000, productionManioc: 32000, productionMais: 16000, x: 132, y: 308 },
-  { id: 'anosy',             name: 'Anosy',             capital: 'Fort Dauphin',    population: 570000,  superficie: 43591, densite: 13.1, productionRiz: 18000, productionManioc: 14000, productionMais: 7500,  x: 102, y: 336 },
-  { id: 'androy',            name: 'Androy',            capital: 'Ambovombe',       population: 480000,  superficie: 30893, densite: 15.5, productionRiz: 15000, productionManioc: 12000, productionMais: 6500,  x: 78,  y: 346 },
+  { id: 'diana',                name: 'Diana',                capital: 'Antsiranana',     population: 890000,  superficie: 19256, densite: 46.2, productionRiz: 41000, productionManioc: 35000, productionMais: 16000 },
+  { id: 'sava',                 name: 'Sava',                 capital: 'Sambava',         population: 1050000, superficie: 21539, densite: 48.8, productionRiz: 52000, productionManioc: 40000, productionMais: 22000 },
+  { id: 'sofia',                name: 'Sofia',                capital: 'Antsohihy',       population: 1350000, superficie: 52320, densite: 25.8, productionRiz: 45000, productionManioc: 38000, productionMais: 18000 },
+  { id: 'boeny',                name: 'Boeny',                capital: 'Mahajanga',       population: 860000,  superficie: 27899, densite: 30.8, productionRiz: 32000, productionManioc: 24000, productionMais: 13000 },
+  { id: 'analanjirofo',         name: 'Analanjirofo',         capital: 'Fenoarivo',       population: 940000,  superficie: 21930, densite: 42.9, productionRiz: 45000, productionManioc: 38000, productionMais: 18000 },
+  { id: 'betsiboka',            name: 'Betsiboka',            capital: 'Maevatanana',     population: 290000,  superficie: 31803, densite: 9.1,  productionRiz: 9500,  productionManioc: 7200,  productionMais: 3800  },
+  { id: 'melaky',               name: 'Melaky',               capital: 'Maintirano',      population: 240000,  superficie: 37569, densite: 6.4,  productionRiz: 7500,  productionManioc: 5500,  productionMais: 2800  },
+  { id: 'alaotra-mangoro',      name: 'Alaotra-Mangoro',      capital: 'Ambatondrazaka',  population: 1100000, superficie: 31948, densite: 34.4, productionRiz: 78000, productionManioc: 38000, productionMais: 14000 },
+  { id: 'bongolava',            name: 'Bongolava',            capital: 'Tsiroanomandidy', population: 670000,  superficie: 16688, densite: 40.1, productionRiz: 28000, productionManioc: 22000, productionMais: 15000 },
+  { id: 'itasy',                name: 'Itasy',                capital: 'Miarinarivo',     population: 850000,  superficie: 14930, densite: 56.9, productionRiz: 38000, productionManioc: 28000, productionMais: 14000 },
+  { id: 'analamanga',           name: 'Analamanga',           capital: 'Antananarivo',    population: 3450000, superficie: 37775, densite: 91.3, productionRiz: 125000,productionManioc: 85000, productionMais: 42000 },
+  { id: 'atsinanana',           name: 'Atsinanana',           capital: 'Toamasina',       population: 1480000, superficie: 21927, densite: 67.5, productionRiz: 78000, productionManioc: 52000, productionMais: 31000 },
+  { id: 'menabe',               name: 'Menabe',               capital: 'Morondava',       population: 390000,  superficie: 46071, densite: 8.5,  productionRiz: 12000, productionManioc: 9500,  productionMais: 4500  },
+  { id: 'vakinankaratra',       name: 'Vakinankaratra',       capital: 'Antsirabe',       population: 1960000, superficie: 21230, densite: 92.3, productionRiz: 92000, productionManioc: 65000, productionMais: 38000 },
+  { id: 'amoron-i-mania',       name: "Amoron'i Mania",       capital: 'Ambositra',       population: 670000,  superficie: 16575, densite: 40.4, productionRiz: 22000, productionManioc: 16500, productionMais: 8500  },
+  { id: 'matsiatra-ambony',     name: 'Haute Matsiatra',      capital: 'Fianarantsoa',    population: 1360000, superficie: 21080, densite: 64.5, productionRiz: 58000, productionManioc: 42000, productionMais: 25000 },
+  { id: 'ihorombe',             name: 'Ihorombe',             capital: 'Ihosy',           population: 310000,  superficie: 31380, densite: 9.9,  productionRiz: 12000, productionManioc: 8500,  productionMais: 5500  },
+  { id: 'vatovavy-fitovinany',  name: 'Vatovavy-Fitovinany',  capital: 'Manakara',        population: 620000,  superficie: 21080, densite: 29.4, productionRiz: 25000, productionManioc: 18000, productionMais: 9500  },
+  { id: 'atsimo-andrefana',     name: 'Atsimo-Andrefana',     capital: 'Toliara',         population: 1150000, superficie: 66460, densite: 17.3, productionRiz: 35000, productionManioc: 28000, productionMais: 12000 },
+  { id: 'atsimo-atsinanana',    name: 'Atsimo-Atsinanana',    capital: 'Farafangana',     population: 1020000, superficie: 29857, densite: 34.2, productionRiz: 42000, productionManioc: 32000, productionMais: 16000 },
+  { id: 'anosy',                name: 'Anosy',                capital: 'Fort Dauphin',    population: 570000,  superficie: 25731, densite: 22.2, productionRiz: 18000, productionManioc: 14000, productionMais: 7500  },
+  { id: 'androy',               name: 'Androy',               capital: 'Ambovombe',       population: 480000,  superficie: 19317, densite: 24.8, productionRiz: 15000, productionManioc: 12000, productionMais: 6500  },
 ];
 
 const fmt = (n) => new Intl.NumberFormat('fr-FR').format(n);
@@ -159,16 +159,18 @@ export default function RegionalNavigation({ onRegionChange }) {
         </div>
       </aside>
 
-      {/* ──────────── RIGHT: 3D map fills the entire space, stats overlay as "sky" ──────────── */}
+      {/* ──────────── RIGHT: 2D map fills the entire space, stats overlay as "sky" ──────────── */}
       <main style={{
         flex: 1, position: 'relative', minWidth: 0,
       }}>
-        {/* 3D map — full canvas, the "earth" */}
+        {/* 2D SVG map — full canvas, fits any aspect ratio (preserveAspectRatio meet) */}
         <div style={{ position: 'absolute', inset: 0 }}>
-          <MapLoadingSkeleton />
-          <Suspense fallback={<MapLoadingSkeleton forced />}>
-            <MadagascarMap3D activeId={selectedId} onPick={handlePick} />
-          </Suspense>
+          <Madagascar2DMap
+            activeId={selectedId}
+            hoveredId={hoveredId}
+            onPick={handlePick}
+            onHover={setHoveredId}
+          />
         </div>
 
         {/* Title block — top-left overlay */}
