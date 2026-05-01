@@ -7,7 +7,8 @@ from django.http import StreamingHttpResponse
 
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, ChatRequestSerializer
-from .pipeline import normalizer, ontology, rag, llm
+from .pipeline import normalizer, ontology, llm
+from data_werehouse import ch_facts
 
 
 @api_view(["POST"])
@@ -65,49 +66,35 @@ def stream_chat(request):
                 yield f"data: end|{elapsed}|100\n\n"
                 return
 
-            # ── Étape 3 : RAG ─────────────────────────────────────────────────
-            yield "data: thinking:Recherche dans la base documentaire...|0|30\n\n"
+            # ── Étape 3 : Lookup ClickHouse (chiffres factuels) ───────────────
+            # Le RAG (embed + FAISS) tourne côté Colab désormais. Render
+            # fournit en plus les faits CH pour ancrer la réponse sur les
+            # données officielles du data warehouse.
+            yield "data: thinking:Consultation des données officielles...|0|30\n\n"
             try:
-                rag_result = rag.retrieve(onto_result)
+                ch_block = ch_facts.fetch_facts(
+                    onto_result.get("context_tags", []),
+                    onto_result.get("matched_keywords", []),
+                )
             except Exception:
-                rag_result = {"retrieved_docs": [], "rag_context": "", "confidence_level": "none"}
+                ch_block = ""
 
-            # ── Étape 3.5 : Émission du RAG score et sources ─────────────
-            confidence = rag_result.get("confidence_level", "none")
-            # Calcul du score (mock pour l'instant)
-            if confidence == "high":
-                rag_score = 85
-            elif confidence == "medium":
-                rag_score = 60
-            elif confidence == "low":
-                rag_score = 35
-            else:
-                rag_score = 0
-            
-            sources = rag_result.get("retrieved_docs", [])
-            print(f"[DEBUG BACKEND] RAG Score: {rag_score}, Sources count: {len(sources)}")
-            print(f"[DEBUG BACKEND] Sources: {sources}")
-            yield f"data: rag_score:{rag_score}|{len(sources)}\n\n"
-            
-            for src in sources:
-                src_name = src.get("title", src.get("url", "Source")).split("/")[-1][:30]
-                src_conf = 95 if src.get("source") == "ontology" else 80
-                print(f"[DEBUG BACKEND] Emitting source: {src_name} conf:{src_conf}")
-                yield f"data: source:{src_name}|{src.get('url', '')}|{src_conf}\n\n"
+            # Score indicatif pour le frontend (chip "données")
+            rag_score = 75 if ch_block else 0
+            yield f"data: rag_score:{rag_score}|0\n\n"
+            if ch_block:
+                yield f"data: source:ClickHouse Madagascar|data_warehouse|90\n\n"
 
-            # ── Étape 4 : Construction du prompt ──────────────────────────────
+            # ── Étape 4 : Génération streaming (RAG fait dans Colab) ─────────
             yield "data: thinking:Génération de la réponse...|0|45\n\n"
-            full_prompt = llm.build_prompt(
-                user_message,
-                rag_result.get("rag_context", ""),
+            payload = llm.build_colab_payload(
+                {**onto_result, "ch_facts": ch_block},
                 history=[],
-                confidence_level=rag_result.get("confidence_level", "none"),
             )
 
-            # ── Étape 5 : Génération streaming ────────────────────────────────
             full_response = ""
             token_count = 0
-            for result in llm.stream_generate(full_prompt):
+            for result in llm.stream_generate(payload):
                 elapsed = round(time.time() - start_time, 1)
 
                 # Erreur LLM (offline, timeout, etc.) → emit SSE error et stop
@@ -182,18 +169,21 @@ def chat(request):
             "guardrail": True,
             "latency_ms": round((time.time() - t0) * 1000),
         }
-        rag_result = {"retrieved_docs": [], "rag_context": ""}
+        ch_block = ""
     else:
-        # 3. RAG
+        # 3. ClickHouse facts (rendements/prix officiels)
         try:
-            rag_result = rag.retrieve(onto_result)
-        except Exception as rag_err:
+            ch_block = ch_facts.fetch_facts(
+                onto_result.get("context_tags", []),
+                onto_result.get("matched_keywords", []),
+            )
+        except Exception as ch_err:
             import logging
-            logging.getLogger(__name__).warning("RAG retrieve error: %s", rag_err)
-            rag_result = {"retrieved_docs": [], "rag_context": ""}
+            logging.getLogger(__name__).warning("CH facts error: %s", ch_err)
+            ch_block = ""
 
-        # 4. LLM
-        full_context = {**onto_result, **rag_result}
+        # 4. LLM (Colab fait le RAG en interne avec son vector_store)
+        full_context = {**onto_result, "ch_facts": ch_block}
         llm_result = llm.generate(full_context, history=history)
         bot_reply = llm_result["reply"]
         thinking = llm_result.get("thinking", "")
@@ -201,18 +191,10 @@ def chat(request):
         output_tok = llm_result.get("output_tokens", 0)
         llm_latency = llm_result.get("latency_ms", 0)
 
-        # Si disclaimer RAG → l'ajouter en tête de la réponse
-        disclaimer = rag_result.get("disclaimer")
-        if disclaimer:
-            bot_reply = f"{disclaimer}\n\n{bot_reply}"
-
         pipeline_meta = {
             "guardrail": False,
             "context_tags": onto_result.get("context_tags", []),
-            "rag_source": rag_result.get("source", "none"),
-            "confidence_level": rag_result.get("confidence_level", "none"),
-            "has_data": rag_result.get("has_data", False),
-            "docs_retrieved": len(rag_result.get("retrieved_docs", [])),
+            "has_ch_facts": bool(ch_block),
             "language": normalized["language"],
             "latency_ms": round((time.time() - t0) * 1000),
             "input_tokens": input_tok,
@@ -231,7 +213,7 @@ def chat(request):
         conversation=conversation,
         role=Message.ROLE_ASSISTANT,
         content=bot_reply,
-        sources=[d.get("url", "") for d in rag_result.get("retrieved_docs", [])],
+        sources=["ClickHouse Madagascar"] if ch_block else [],
         pipeline_meta=pipeline_meta,
     )
 
@@ -240,7 +222,7 @@ def chat(request):
             "conversation_id": conversation.pk,
             "reply": bot_reply,
             "thinking": thinking,
-            "sources": rag_result.get("retrieved_docs", []),
+            "sources": [{"title": "ClickHouse Madagascar", "source": "data_warehouse"}] if ch_block else [],
             "meta": pipeline_meta,
         }
     )

@@ -1,6 +1,12 @@
 -r base.txt
 google-generativeai>=0.8
 
+# RAG offline build — utilisés uniquement par `python -m rag.embeddings --build`
+# pour générer index.faiss + metadata.pkl à uploader ensuite vers Drive.
+# Hors prod : Colab a ses propres copies installées via la cellule 0 du notebook.
+fastembed>=0.4
+faiss-cpu>=1.8
+
 # Tests
 pytest>=8.0
 pytest-django>=4.8

@@ -16,18 +16,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY backend/requirements/ /tmp/requirements/
 RUN pip install --no-cache-dir -r /tmp/requirements/production.txt
 
-# Pré-télécharge le modèle ONNX dans l'image (~120 MB) pour éviter
-# de le retélécharger à chaque cold start sur Render (free tier sans disque persistant).
-RUN python -c "from fastembed import TextEmbedding; \
-    TextEmbedding(model_name='sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')"
-
 # Code source
 COPY backend/ .
 
-# RAG / FAISS data — embarqué dans l'image pour persistence sur Render free tier
-# (pas de volumes persistants disponibles sur le plan gratuit)
-# Si les données RAG changent, rebuild l'image (git push suffit via CI/CD)
-RUN mkdir -p /app/rag/data
+# Option B1 : le RAG (embed + FAISS) tourne dans Colab depuis Drive.
+# Render se contente d'orchestrer (Django + ontology + ClickHouse facts).
+# Plus de pré-téléchargement fastembed → ~300 MB et ~180 MB RAM économisés.
 
 # Collecte des statiques au build (servis par WhiteNoise au runtime)
 RUN python manage.py collectstatic --noinput || true

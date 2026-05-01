@@ -42,6 +42,18 @@ services:
         sync: false   # ex : https://cropmg.netlify.app
       - key: COLAB_LLM_URL
         sync: false   # ngrok URL — change à chaque relance Colab
+      # ── ClickHouse Cloud (data warehouse OLAP) ─────────────────────────
+      # Consommé par OLAPEngine pour /api/predictions/analytics/
+      # ET par data_werehouse.ch_facts pour enrichir le chat avec des
+      # chiffres factuels (rendement, production, prix par région/année).
+      - key: CH_HOST
+        sync: false   # ex : j78t3xodco.eu-central-1.aws.clickhouse.cloud
+      - key: CH_PORT
+        value: "8443"
+      - key: CH_USER
+        value: default
+      - key: CH_PASSWORD
+        sync: false
       - key: DEBUG
         value: "False"
       - key: ENVIRONMENT

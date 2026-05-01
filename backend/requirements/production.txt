@@ -6,7 +6,7 @@ psycopg2-binary>=2.9
 dj-database-url>=2.2
 whitenoise>=6.7
 
-# ML / IA
+# ML / IA (modèle de prédiction de rendement uniquement)
 scikit-learn>=1.5
 xgboost>=2.0
 numpy>=1.26
@@ -14,10 +14,7 @@ pandas>=2.2
 joblib>=1.4
 clickhouse-connect>=0.7
 
-# RAG / Embeddings — fastembed (ONNX Runtime, pas de torch)
-# Image légère pour Render free tier 512 MB RAM
-fastembed>=0.4
-faiss-cpu>=1.8
+# Ontologie + scraping (le RAG embed/FAISS tourne dans Colab — Option B1)
 rdflib>=7.0
 beautifulsoup4>=4.12
 pdfplumber>=0.11

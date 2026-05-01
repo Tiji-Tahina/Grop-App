@@ -165,23 +165,22 @@ def _parse_sse_line(line: str):
     return None
 
 
-def _call_colab_blocking(prompt: str) -> str:
+def _call_colab_blocking(payload: dict) -> str:
     """
-    Appelle /generate/stream et collecte tous les tokens → texte complet.
+    Appelle /generate/rag_stream et collecte tous les tokens → texte complet.
     Utilisé par generate() pour un appel non-streaming.
+
+    Payload attendu (Option B1) :
+      {question, ontology_facts, ch_facts, context_tags, matched_keywords,
+       max_new_tokens, temperature}
+    Le RAG (embed + FAISS) est exécuté côté Colab.
     """
     if not COLAB_LLM_URL:
         raise ValueError("COLAB_LLM_URL non défini. Ajoutez-le dans le fichier .env.")
 
-    payload = {
-        "prompt": prompt,
-        "max_new_tokens": MAX_NEW_TOKENS,
-        "temperature": TEMPERATURE,
-    }
-
     full_text = []
     with requests.post(
-        f"{COLAB_LLM_URL}/generate/stream",
+        f"{COLAB_LLM_URL}/generate/rag_stream",
         json=payload,
         timeout=REQUEST_TIMEOUT,
         stream=True,
@@ -252,9 +251,18 @@ def get_model_info() -> dict:
     }
 
 
-def stream_generate(prompt: str):
+def stream_generate(payload: dict):
     """
-    Generator qui yield chaque token via /generate/stream (SSE) du Colab.
+    Generator qui yield chaque token via /generate/rag_stream (SSE) du Colab.
+
+    Le RAG (embed + FAISS) tourne maintenant dans Colab (Option B1).
+    Render envoie un payload structuré, Colab construit le prompt augmenté
+    en interne avec son vector_store local.
+
+    Payload attendu :
+      {question, ontology_facts, ch_facts, context_tags, matched_keywords,
+       history?, max_new_tokens?, temperature?}
+
     Format SSE Colab : data: token:TEXT|ELAPSED|PROGRESS
 
     Yields :
@@ -274,14 +282,14 @@ def stream_generate(prompt: str):
         return
 
     payload = {
-        "prompt": prompt,
-        "max_new_tokens": MAX_NEW_TOKENS,
-        "temperature": TEMPERATURE,
+        **payload,
+        "max_new_tokens": payload.get("max_new_tokens", MAX_NEW_TOKENS),
+        "temperature": payload.get("temperature", TEMPERATURE),
     }
 
     try:
         with requests.post(
-            f"{COLAB_LLM_URL}/generate/stream",
+            f"{COLAB_LLM_URL}/generate/rag_stream",
             json=payload,
             timeout=REQUEST_TIMEOUT,
             stream=True,
@@ -338,36 +346,35 @@ def stream_generate(prompt: str):
 
 
 def generate(pipeline_data: dict, history: list = None) -> dict:
-    """Génère une réponse via le LLM Colab. Retourne reply, tokens, latence."""
+    """
+    Génère une réponse via le LLM Colab. Retourne reply, tokens, latence.
+
+    Option B1 : le RAG (embed + FAISS) tourne dans Colab.
+    Render envoie : question, ontology_facts, ch_facts, context_tags,
+    matched_keywords, system_prompt, history.
+    """
     if history is None:
         history = []
 
     t0 = time.time()
 
     try:
-        full_prompt = build_prompt(
-            user_message=pipeline_data["enriched_text"],
-            rag_context=pipeline_data.get("rag_context", ""),
-            history=history,
-            confidence_level=pipeline_data.get("confidence_level", "none"),
-        )
-
-        raw_reply = _call_colab_blocking(full_prompt)
+        payload = build_colab_payload(pipeline_data, history)
+        raw_reply = _call_colab_blocking(payload)
         reply = _post_process(raw_reply)
         latency = round((time.time() - t0) * 1000)
 
-        input_tokens = 0
         output_tokens = len(reply.split())
 
         return {
             "reply": reply,
             "thinking": "",
-            "input_tokens": input_tokens,
+            "input_tokens": 0,
             "output_tokens": output_tokens,
             "latency_ms": latency,
             "tokens_per_second": round(output_tokens / (latency / 1000), 1) if latency > 0 else 0,
             "provider": "colab-ngrok",
-            "model": data.get("model", "colab-llm"),
+            "model": "colab-llm",
             "max_tokens": MAX_NEW_TOKENS,
             "temperature": TEMPERATURE,
         }
@@ -384,43 +391,44 @@ def generate(pipeline_data: dict, history: list = None) -> dict:
         }
 
 
-# ─── Prompt builder (inchangé) ────────────────────────────────────────────────
+# ─── Payload builder pour Colab (Option B1) ──────────────────────────────────
+
+
+def build_colab_payload(pipeline_data: dict, history: list) -> dict:
+    """
+    Construit le payload JSON envoyé à /generate/rag_stream.
+
+    Le RAG (embed + FAISS) tourne côté Colab. Render fournit :
+    - le system prompt (source de vérité du format de réponse)
+    - la question normalisée + l'historique conversation
+    - les faits ontologiques (relations entre concepts du graphe rdflib)
+    - les chiffres factuels ClickHouse (rendements, prix, production)
+    - les context_tags + matched_keywords pour aider le re-ranking RAG côté Colab
+    """
+    return {
+        "system_prompt": SYSTEM_PROMPT,
+        "question": pipeline_data.get("enriched_text", ""),
+        "history": [
+            {"role": m["role"], "content": m["content"]}
+            for m in (history or [])[-20:]
+        ],
+        "ontology_facts": pipeline_data.get("ontology_facts", ""),
+        "ch_facts": pipeline_data.get("ch_facts", ""),
+        "context_tags": pipeline_data.get("context_tags", []),
+        "matched_keywords": pipeline_data.get("matched_keywords", []),
+        "max_new_tokens": MAX_NEW_TOKENS,
+        "temperature": TEMPERATURE,
+    }
 
 
 def build_prompt(
     user_message: str, rag_context: str, history: list, confidence_level: str = "high"
 ) -> str:
-    """Construit le prompt pour le LLM."""
-
-    full_prompt = f"<|system|>\n{SYSTEM_PROMPT}\n<|end|>\n"
-
-    for msg in history[-20:]:
-        if msg["role"] == "user":
-            full_prompt += f"<|user|>\n{msg['content']}\n<|end|>\n"
-        else:
-            full_prompt += f"<|assistant|>\n{msg['content']}\n<|end|>\n"
-
-    confidence_instructions = {
-        "high": "Tu disposes de donnees fiables ci-dessous. Base ta reponse sur ces donnees et cite tes sources.",
-        "medium": "Les donnees disponibles sont partielles. Utilise-les mais signale les limites.",
-        "low": "Donnees generales disponibles. Recommande de consulter un expert local (MAEP/FOFIFA).",
-        "none": "IMPORTANT : Pas de donnees specifiques. Ne pas inventer de chiffres. Consulter MAEP/FOFIFA.",
-    }
-    instruction = confidence_instructions.get(confidence_level, confidence_instructions["none"])
-
-    if rag_context:
-        user_content = (
-            f"{user_message}\n\n---\n"
-            f"[Instructions : {instruction}]\n\n"
-            f"[Donnees documentaires — repondre en francais]\n{rag_context}\n---"
-        )
-    else:
-        user_content = f"{user_message}\n\n[Instruction : {instruction}]"
-
-    full_prompt += f"<|user|>\n{user_content}\n<|end|>\n"
-    full_prompt += "<|assistant|>\n"
-
-    return full_prompt
+    """
+    DEPRECATED — conservé pour compatibilité avec d'anciens tests.
+    Le prompt est désormais construit côté Colab via build_colab_payload().
+    """
+    return user_message
 
 
 # ─── Stubs (plus nécessaires, conservés pour compatibilité) ──────────────────
