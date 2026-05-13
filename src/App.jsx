@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, MessageSquare, Settings, User, Users, TrendingUp, TrendingDown, Sprout, Leaf, CloudRain, Save, Lock, Eye, EyeOff, CheckCircle, AlertCircle, Search, Shield, UserCheck, Brain, Mic, MicOff, Wifi, WifiOff, ChevronDown, ChevronRight, ChevronLeft, Copy, Check, Sparkles, FlaskConical, BookOpen, FileText, RefreshCw, PanelLeftClose, PanelLeftOpen, LogOut, Sun, Moon, MapPin, Activity, X, Home, Map } from 'lucide-react';
 import { MADAGASCAR_GEOJSON } from './data/madagascarGeoJSON';
 import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { MapActionProvider } from './contexts/MapActionContext';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Login from "./composant/login";
@@ -386,6 +387,7 @@ useEffect(() => {
   };
 
   return (
+    <MapActionProvider onGoToMap={() => setCurrentPage('map3d')}>
     <div className="flex h-screen relative" style={{ background: 'var(--bg-deep)', overflow: 'hidden' }}>
       <FluidBackground />
       
@@ -552,6 +554,7 @@ useEffect(() => {
         </Suspense>
       </main>
     </div>
+    </MapActionProvider>
   );
 }
 

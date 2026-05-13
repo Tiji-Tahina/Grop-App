@@ -81,27 +81,35 @@ REGLES DE CONTENU — OBLIGATOIRES
 
 7. REPONSE UNIQUE : Une seule reponse directe. Pas de faux dialogue. Pas de continuation apres la fin.
 
-EXEMPLE DE BONNE REPONSE :
+EXEMPLE DE BONNE REPONSE (sujet illustratif — NE PAS RECOPIER) :
 
-## Variétés de riz recommandées à Madagascar
+## Lutte contre la pyriculariose du riz
 
-Les principales variétés cultivées à Madagascar sont adaptées aux différentes zones climatiques.
+La pyriculariose est une maladie fongique majeure causée par Magnaporthe oryzae.
 
-### Variétés des Hauts Plateaux
+### Symptômes
 
-- **FOFIFA 154** — rendement moyen **3,5 t/ha**, adaptée aux altitudes > 1000 m
-- **Makalioka** — variété traditionnelle, qualité gustative supérieure
-- **NERICA 4** — variété améliorée, résistante à la sécheresse
+- Taches losangiques **gris-brun** sur les feuilles
+- Cou de panicule noirci entrainant la chute des grains
+- Apparition favorisée par l'humidité élevée (> **85 %**) et l'azote excédentaire
 
-### Comparaison des rendements
+### Stratégies de contrôle
 
-| Variété | Rendement (t/ha) | Altitude | Résistance |
-|---------|-----------------|----------|------------|
-| FOFIFA 154 | 3,5 | > 1000 m | Bonne |
-| Makalioka | 2,8 | 800-1200 m | Moyenne |
-| NERICA 4 | 4,0 | < 800 m | Très bonne |
+1. Choisir des variétés résistantes (ex : Sebota 281)
+2. Réduire la fumure azotée à **80 kg/ha** maximum
+3. Traitement préventif au tricyclazole en cas de pression élevée
 
-> **Note :** Ces rendements sont obtenus avec la méthode SRI et une bonne gestion de l'eau. (Source : FOFIFA 2022)
+> **Note :** La rotation rizicole avec une légumineuse réduit l'inoculum résiduel. (Source : FOFIFA 2021)
+
+═══════════════════════════════════════
+INTERDITS — sous peine de réponse rejetée
+═══════════════════════════════════════
+
+- Ne JAMAIS recopier l'exemple ci-dessus mot pour mot, c'est juste une illustration de format.
+- Ne JAMAIS produire de section nommée "Récapitulation", "Conclusion", "Notes supplémentaires",
+  "Résumé", "Synthèse", "Pour aller plus loin". Une seule reponse directe, sans meta-commentaire.
+- Ne JAMAIS dupliquer le contenu (réécrire la même section deux fois).
+- Toujours mettre des sauts de ligne entre titres, paragraphes, listes et tableaux.
 """
 
 _STOP_SEQUENCES = [
@@ -110,6 +118,22 @@ _STOP_SEQUENCES = [
     "\nMachine Learning Model:", "\nAssistant:",
     "Human:", "User :", "Machine Learning",
 ]
+
+# Caracteres Unicode box-drawing que Qwen2 utilise parfois pour les tableaux,
+# au lieu du pipe ASCII | que Markdown attend. On les remappe a la volee.
+_BOX_DRAWING_TO_ASCII = str.maketrans({
+    "│": "|", "┃": "|", "║": "|",
+    "─": "-", "━": "-", "═": "-",
+    "┌": "+", "┐": "+", "└": "+", "┘": "+",
+    "├": "+", "┤": "+", "┬": "+", "┴": "+", "┼": "+",
+})
+
+
+def _clean_token(text: str) -> str:
+    """Normalise les caracteres parasites au fil du stream (cheap, par token)."""
+    if not text:
+        return text
+    return text.translate(_BOX_DRAWING_TO_ASCII)
 
 
 # ─── Appel HTTP vers Colab ────────────────────────────────────────────────────
@@ -304,7 +328,7 @@ def stream_generate(payload: dict):
                     continue
                 kind, text, progress = parsed
                 if kind == "token":
-                    yield {"token": text, "done": False, "progress": progress}
+                    yield {"token": _clean_token(text), "done": False, "progress": progress}
                 elif kind == "end":
                     yield {"token": "", "done": True, "progress": 100}
                     return
@@ -394,7 +418,9 @@ def generate(pipeline_data: dict, history: list = None) -> dict:
 # ─── Payload builder pour Colab (Option B1) ──────────────────────────────────
 
 
-def build_colab_payload(pipeline_data: dict, history: list) -> dict:
+def build_colab_payload(
+    pipeline_data: dict, history: list, system_prompt: str | None = None
+) -> dict:
     """
     Construit le payload JSON envoyé à /generate/rag_stream.
 
@@ -404,9 +430,12 @@ def build_colab_payload(pipeline_data: dict, history: list) -> dict:
     - les faits ontologiques (relations entre concepts du graphe rdflib)
     - les chiffres factuels ClickHouse (rendements, prix, production)
     - les context_tags + matched_keywords pour aider le re-ranking RAG côté Colab
+
+    `system_prompt` override : passé par `intent.run_intent` en slow-path pour
+    injecter les instructions <map_action>. None → SYSTEM_PROMPT standard.
     """
     return {
-        "system_prompt": SYSTEM_PROMPT,
+        "system_prompt": system_prompt if system_prompt is not None else SYSTEM_PROMPT,
         "question": pipeline_data.get("enriched_text", ""),
         "history": [
             {"role": m["role"], "content": m["content"]}

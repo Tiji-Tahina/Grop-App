@@ -21,8 +21,10 @@ import {
   ThumbsUp,
   ThumbsDown,
   CheckCircle,
+  Map as MapIcon,
 } from 'lucide-react';
 import type { ChatMessage } from './useChatStream';
+import { useMapActionBus } from '@/contexts/MapActionContext';
 
 interface AssistantMessageProps {
   message: ChatMessage;
@@ -98,6 +100,7 @@ function getStepDescription(step: string): string[] {
 }
 
 export function AssistantMessage({ message, isStreaming, onStop, mode }: AssistantMessageProps) {
+  const mapBus = useMapActionBus();
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = () => {
@@ -284,6 +287,35 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
         {/* Sources */}
         {!message.isStreaming && message.sources.length > 0 && (
           <AgriSources sources={message.sources} />
+        )}
+
+        {/* MapAction CTA — visible quand le pipeline a produit un plan carte */}
+        {!message.isStreaming && message.mapAction && (
+          <button
+            onClick={() => mapBus.goToMap()}
+            title={message.mapAction.explain?.title || 'Voir le résultat sur la carte'}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              marginTop: 12, padding: '8px 14px',
+              fontSize: 12, fontWeight: 600, letterSpacing: '0.04em',
+              background: 'rgba(77, 255, 145, 0.10)',
+              color: 'var(--agri-400, #4DFF91)',
+              border: '1px solid rgba(77, 255, 145, 0.32)',
+              borderRadius: 8, cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(77, 255, 145, 0.18)';
+              e.currentTarget.style.borderColor = 'rgba(77, 255, 145, 0.52)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(77, 255, 145, 0.10)';
+              e.currentTarget.style.borderColor = 'rgba(77, 255, 145, 0.32)';
+            }}
+          >
+            <MapIcon size={14} strokeWidth={2} />
+            Voir sur la carte
+          </button>
         )}
 
         {/* Actions */}

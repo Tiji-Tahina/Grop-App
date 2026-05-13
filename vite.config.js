@@ -9,6 +9,21 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Le projet contient le backend Python à coté du front. Sans cette liste,
+  // chokidar tente de watcher backend/venv/ (~50k fichiers pandas/numpy/...)
+  // et plante avec ENOSPC sur les linux par défaut.
+  server: {
+    watch: {
+      ignored: [
+        '**/backend/**',
+        '**/graphify-out/**',
+        '**/blender_scripts/**',
+        '**/.venv/**',
+        '**/venv/**',
+        '**/__pycache__/**',
+      ],
+    },
+  },
   build: {
     outDir: 'build',
     emptyOutDir: true,
