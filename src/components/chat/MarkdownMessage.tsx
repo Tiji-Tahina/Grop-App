@@ -8,17 +8,17 @@ interface MarkdownMessageProps {
 
 export function MarkdownMessage({ content }: MarkdownMessageProps) {
   return (
-    <div style={{ color: 'rgba(255,255,255,0.78)', lineHeight: 1.7, fontSize: 15, fontFamily: 'var(--font-body)' }}>
+    <div style={{ color: 'rgba(255,255,255,0.78)', lineHeight: 1.7, fontSize: 14, fontFamily: 'var(--font-body)' }}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          h1: ({ children }) => <h1 style={{ fontSize: '1.4rem', fontWeight: 700, margin: '1.5rem 0 0.75rem', color: '#FFFFFF', lineHeight: 1.2, letterSpacing: '-0.02em', fontFamily: 'var(--font-display)' }}>{children}</h1>,
-          h2: ({ children }) => <h2 style={{ fontSize: '1.15rem', fontWeight: 700, margin: '1.25rem 0 0.5rem', color: '#FFFFFF', lineHeight: 1.25, letterSpacing: '-0.01em', fontFamily: 'var(--font-display)' }}>{children}</h2>,
-          h3: ({ children }) => <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: '1rem 0 0.4rem', color: 'rgba(255,255,255,0.92)', lineHeight: 1.3 }}>{children}</h3>,
-          p: ({ children }) => <p style={{ margin: '0 0 0.85rem', color: 'rgba(255,255,255,0.78)', lineHeight: 1.7, fontSize: '0.95rem' }}>{children}</p>,
+          h1: ({ children }) => <h1 style={{ fontSize: '1.3rem', fontWeight: 700, margin: '1.5rem 0 0.75rem', color: '#FFFFFF', lineHeight: 1.2, letterSpacing: '-0.02em', fontFamily: 'var(--font-display)' }}>{children}</h1>,
+          h2: ({ children }) => <h2 style={{ fontSize: '1.05rem', fontWeight: 700, margin: '1.25rem 0 0.5rem', color: '#FFFFFF', lineHeight: 1.25, letterSpacing: '-0.01em', fontFamily: 'var(--font-display)' }}>{children}</h2>,
+          h3: ({ children }) => <h3 style={{ fontSize: '0.95rem', fontWeight: 600, margin: '1rem 0 0.4rem', color: 'rgba(255,255,255,0.92)', lineHeight: 1.3 }}>{children}</h3>,
+          p: ({ children }) => <p style={{ margin: '0 0 0.85rem', color: 'rgba(255,255,255,0.78)', lineHeight: 1.7, fontSize: '0.875rem' }}>{children}</p>,
           ul: ({ children }) => <ul style={{ margin: '0.5rem 0 1rem 1.25rem', paddingLeft: '0.5rem', color: 'rgba(255,255,255,0.78)', listStyleType: 'disc' }}>{children}</ul>,
           ol: ({ children }) => <ol style={{ margin: '0.5rem 0 1rem 1.25rem', paddingLeft: '0.5rem', color: 'rgba(255,255,255,0.78)', listStyleType: 'decimal' }}>{children}</ol>,
-          li: ({ children, ...props }) => <li style={{ margin: '0.35rem 0', lineHeight: 1.65, fontSize: '0.95rem', color: 'rgba(255,255,255,0.78)' }} {...props}>{children}</li>,
+          li: ({ children, ...props }) => <li style={{ margin: '0.35rem 0', lineHeight: 1.65, fontSize: '0.875rem', color: 'rgba(255,255,255,0.78)' }} {...props}>{children}</li>,
           strong: ({ children }) => <strong style={{ fontWeight: 700, color: '#FFFFFF' }}>{children}</strong>,
           em: ({ children }) => <em style={{ fontStyle: 'italic', color: 'rgba(255,255,255,0.55)' }}>{children}</em>,
           code: ({ className, children, ...props }) => {

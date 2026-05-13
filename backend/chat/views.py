@@ -1,3 +1,4 @@
+import base64
 import time
 import json
 from rest_framework import status, viewsets, permissions
@@ -7,8 +8,38 @@ from django.http import StreamingHttpResponse
 
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, ChatRequestSerializer
-from .pipeline import normalizer, ontology, llm
+from .pipeline import normalizer, ontology, llm, intent
 from data_werehouse import ch_facts
+
+
+def _sse_map_action(payload: dict, elapsed: float, progress: int) -> str:
+    """Sérialise un MapAction pour SSE en base64.
+
+    Le JSON peut contenir `:`, `|`, sauts de ligne — base64 le rend opaque
+    aux délimiteurs du protocole SSE pipe-séparé. Le front décode via atob().
+    """
+    encoded = base64.b64encode(json.dumps(payload).encode("utf-8")).decode("ascii")
+    return f"data: map_action:{encoded}|{elapsed}|{progress}\n\n"
+
+
+# Sentinels pour échapper les caractères qui cassent le format SSE pipe-délimité :
+#   `\n` couperait `data: token:...` en deux lignes (le reste serait orphelin)
+#   `|`  serait split par le front et perdrait la fin du TEXT (tableaux cassés)
+# Choix : caractères de contrôle U+0001/U+0002 — impossibles dans du texte LLM normal.
+_SSE_NL_SENTINEL = ""
+_SSE_PIPE_SENTINEL = ""
+
+
+def _encode_sse_text(text: str) -> str:
+    """Échappe \\n et | dans un fragment de texte avant insertion en SSE."""
+    if not text:
+        return text
+    return (
+        text
+        .replace("\r", "")  # Mac line endings — on les drop
+        .replace("\n", _SSE_NL_SENTINEL)
+        .replace("|", _SSE_PIPE_SENTINEL)
+    )
 
 
 @api_view(["POST"])
@@ -85,33 +116,36 @@ def stream_chat(request):
             if ch_block:
                 yield f"data: source:ClickHouse Madagascar|data_warehouse|90\n\n"
 
-            # ── Étape 4 : Génération streaming (RAG fait dans Colab) ─────────
+            # ── Étape 4 : Pipeline d'intention map_action + génération LLM ──
+            # `intent.run_intent` orchestre :
+            #   - extract_rules : règles → MapAction partiel
+            #   - confidence_level : decide fast-path / slow-path / bypass
+            #   - fetch_map_data : enrichit avec les data ClickHouse
+            #   - LLM streaming (avec ou sans instructions <map_action>)
             yield "data: thinking:Génération de la réponse...|0|45\n\n"
-            payload = llm.build_colab_payload(
-                {**onto_result, "ch_facts": ch_block},
-                history=[],
-            )
+            onto_with_ch = {**onto_result, "ch_facts": ch_block}
 
-            full_response = ""
-            token_count = 0
-            for result in llm.stream_generate(payload):
+            last_progress = 45
+            for ev in intent.run_intent(onto_with_ch, user_message, history=[]):
                 elapsed = round(time.time() - start_time, 1)
+                kind = ev["event"]
 
-                # Erreur LLM (offline, timeout, etc.) → emit SSE error et stop
-                if result.get("error"):
-                    yield f"data: error|{elapsed}|0|{result['error']}\n\n"
+                if kind == "thinking":
+                    yield f"data: thinking:{ev['stage']}|{elapsed}|{last_progress}\n\n"
+                elif kind == "map_action":
+                    yield _sse_map_action(ev["payload"], elapsed, last_progress)
+                elif kind == "token":
+                    # Progress LLM 0-100 → bande 45-99 du progress global
+                    progress = min(45 + int(ev.get("progress", 0) * 0.54), 99)
+                    last_progress = progress
+                    safe_text = _encode_sse_text(ev["text"])
+                    yield f"data: token:{safe_text}|{elapsed}|{progress}\n\n"
+                elif kind == "error":
+                    yield f"data: error|{elapsed}|0|{ev['message']}\n\n"
                     return
 
-                # Progress : 45–99% pendant la génération
-                progress = min(45 + int(result.get("progress", 0) * 0.54), 99)
-                token = result.get("token", "")
-                if token:
-                    full_response += token
-                    token_count += 1
-                    yield f"data: token:{token}|{elapsed}|{progress}\n\n"
-                if result.get("done") or token_count >= 512:
-                    yield f"data: end|{elapsed}|100\n\n"
-                    break
+            elapsed = round(time.time() - start_time, 1)
+            yield f"data: end|{elapsed}|100\n\n"
 
         except Exception as e:
             yield f"data: error|0|0|{str(e)}\n\n"

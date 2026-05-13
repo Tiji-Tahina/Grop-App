@@ -1,8 +1,9 @@
 "use client";
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import Madagascar2DMap from '../madagascar2d/Madagascar2DMap';
+import { useMapActionBus, normalizeSlugForFront } from '../../contexts/MapActionContext';
 
 /* ============================================================
    22 régions de Madagascar — statistiques.
@@ -117,6 +118,32 @@ export default function RegionalNavigation({ onRegionChange }) {
     setSelectedId(id);
     onRegionChange?.(id);
   }, [onRegionChange]);
+
+  // ─── Bridge MapAction → carte ──────────────────────────────────────────
+  // Le chat publie un MapAction sur le bus (cf. MapActionContext). On l'applique
+  // au selectedId selon l'op. V1 : navigation seule (pas de coloriage par valeur,
+  // pas de mode compare split-screen — réservés à une future itération UI).
+  const { lastAction } = useMapActionBus();
+  useEffect(() => {
+    if (!lastAction) return;
+    const { op, view, filters } = lastAction;
+    let target = undefined;  // undefined = no-op, null = clear
+
+    if (op === 'clear') {
+      target = null;
+    } else if (op === 'highlight' && view?.highlighted_areas?.[0]) {
+      target = normalizeSlugForFront(view.highlighted_areas[0]);
+    } else if (op === 'drill_down' && view?.scope_region) {
+      target = normalizeSlugForFront(view.scope_region);
+    } else if ((op === 'slice' || op === 'dice') && filters?.regions?.length === 1) {
+      target = normalizeSlugForFront(filters.regions[0]);
+    }
+    // op=compare ou slice/dice multi-régions : pas de selectedId à appliquer ici
+
+    if (target !== undefined) {
+      setSelectedId(target);
+    }
+  }, [lastAction]);
 
   return (
     <div style={{

@@ -19,12 +19,18 @@ class OLAPEngine:
 
     def get_client(self):
         if not self._client:
+            # Timeouts indispensables : sans eux, un CH injoignable bloque
+            # le pipeline chat indéfiniment (le user voit "loading" sans fin).
+            # connect_timeout : ouverture TCP/TLS. send_receive_timeout : durée
+            # max d'une requête une fois connecté.
             self._client = clickhouse_connect.get_client(
                 host=self.host,
                 port=self.port,
                 username=self.user,
                 password=self.password,
-                secure=True
+                secure=True,
+                connect_timeout=5,
+                send_receive_timeout=15,
             )
         return self._client
 

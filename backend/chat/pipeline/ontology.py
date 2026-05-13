@@ -150,6 +150,20 @@ def validate_and_enrich(normalized: dict) -> dict:
 
     is_valid = len(matched) > 0
 
+    # ── Fallback géospatial : « où est Itasy ? », « zoome sur Alaotra-Mangoro »,
+    # « vue nationale » contiennent peu/pas de keywords agricoles mais sont des
+    # commandes carte légitimes. On considère valide si on détecte un nom de
+    # région connu OU un déclencheur d'opération (compare/highlight/drill_down…).
+    if not is_valid:
+        try:
+            from .intent import _detect_op_from_triggers, _detect_regions, _norm
+            text_norm = _norm(normalized['text'])
+            if _detect_op_from_triggers(text_norm) or _detect_regions(text_norm):
+                is_valid = True
+                matched = ['__geospatial__']  # marqueur pour traçabilité
+        except Exception as e:
+            logger.warning("fallback géospatial KO : %s", e)
+
     if not is_valid:
         return {
             'is_valid': False,
