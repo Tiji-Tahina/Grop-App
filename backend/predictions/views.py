@@ -80,7 +80,7 @@ class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 @api_view(['POST'])
-@permission_classes([permissions.AllowAny]) # On peut restreindre plus tard
+@permission_classes([permissions.IsAuthenticated])
 def olap_query(request):
     """
     POST /api/predictions/analytics/

@@ -3,11 +3,11 @@
 
 - Vérifie que la question est dans le domaine agricole (guardrail)
   → keywords issus du graphe rdflib (185 FR / 90 MG / 186 EN) au lieu d'un dict hardcodé
-- Détecte les context_tags via les classes OWL des entités trouvées
+- Détecte les cont{}ext_tags via les classes OWL des entités trouvées
 - Enrichit le prompt avec les faits ontologiques (pedigree, catégorie, concepts liés)
 
 Input  : dict normalisé { text, language, … }
-Output : dict { is_valid, domain, context_tags, enriched_text, rejection_reason,
+Output : dict { is_valid, domain, context_tags, enriched_text rejection_reason,
                 matched_keywords, ontology_facts }
 """
 
