@@ -12,7 +12,7 @@ chatAPI.interceptors.request.use((config) => {
 });
 
 /**
- * Envoie un message et reçoit la réponse du pipeline IA.
+ * Sends a message and receives the AI pipeline response.
  * @param {string} message
  * @param {number|null} conversationId
  * @returns {Promise<{conversation_id, reply, sources, meta}>}
@@ -23,7 +23,7 @@ export async function sendMessage(message, conversationId = null) {
 }
 
 /**
- * Récupère la liste des conversations de l'utilisateur.
+ * Retrieves the user's conversation list.
  */
 export async function getConversations() {
   const response = await chatAPI.get('/conversations/');
@@ -31,7 +31,7 @@ export async function getConversations() {
 }
 
 /**
- * Récupère une conversation avec ses messages.
+ * Retrieves a conversation with its messages.
  * @param {number} conversationId
  */
 export async function getConversation(conversationId) {

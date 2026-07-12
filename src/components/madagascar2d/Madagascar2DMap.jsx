@@ -2,7 +2,7 @@
  * Madagascar 2D SVG map — pure SVG, no three.js, fluid at 60 fps.
  *
  * Paths are pre-projected at build time by scripts/generate-madagascar-paths.mjs
- * from GADM 4.1 (22 régions, 110 districts).
+ * from GADM 4.1 (22 regions, 110 districts).
  *
  * Interactions:
  *   - Hover a region   → outline + lift (no zoom)
@@ -91,7 +91,7 @@ export default function Madagascar2DMap({ activeId, hoveredId, onPick, onHover }
           transition: `transform ${ZOOM_DURATION}s cubic-bezier(0.32, 0.72, 0, 1)`,
         }}
       >
-        {/* Régions — rendered without an SVG filter wrapper. SVG <filter>
+        {/* Regions — rendered without an SVG filter wrapper. SVG <filter>
             elements have their region computed in user-space and clip the
             output when the parent <g> is heavily transformed (scale > 2),
             which made the active region's polygon disappear during zoom.

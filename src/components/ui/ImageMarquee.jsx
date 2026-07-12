@@ -1,6 +1,6 @@
 import React from 'react';
 
-// ── Images locales (assets/marquee) ──────────────────────────────────────────
+// ── Local images (assets/marquee) ──────────────────────────────────────────
 import img_2148761816   from '../../assets/marquee/2148761816.webp';
 import img_2149711095   from '../../assets/marquee/2149711095.webp';
 import img_644          from '../../assets/marquee/644.webp';
@@ -100,8 +100,8 @@ function MarqueeRow({ images, speed, reverse = false, tileSize }) {
   );
 }
 
-// ── Répartition des 7 images locales sur 2 rangées ───────────────────────────
-// Rangée du haut (4 images) — défile droite→gauche
+// Distribution of 7 local images across 2 rows
+// Top row (4 images) — scrolls right→left
 const DEFAULT_TOP = [
   img_2148761816,
   img_baobab,
@@ -109,12 +109,12 @@ const DEFAULT_TOP = [
   img_litchi,
 ];
 
-// Rangée du bas (4 images) — défile gauche→droite
+// Bottom row (4 images) — scrolls left→right
 const DEFAULT_BOTTOM = [
   img_safari,
   img_2149711095,
   img_644,
-  img_litchi,   // réutilisée pour équilibrer les rangées
+  img_litchi,   // reused to balance rows
 ];
 
 export default ImageMarquee;

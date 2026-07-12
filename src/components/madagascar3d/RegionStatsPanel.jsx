@@ -94,9 +94,9 @@ export function RegionStatsPanel({ region, info, stats, onClose }) {
           }} />
 
           <div style={{ position: 'relative', zIndex: 1 }}>
-            {/* ── Section : Géographie ─────────────────────── */}
+            {/* ── Section : Geography ─────────────────────── */}
             {info && (
-              <Section title="Géographie" accent={theme.accent} icon={<MapPin size={11} />}>
+              <Section title="Geography" accent={theme.accent} icon={<MapPin size={11} />}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 9 }}>
                   <MetricTile
                     label="SUPERFICIE"
@@ -182,7 +182,7 @@ export function RegionStatsPanel({ region, info, stats, onClose }) {
                 e.currentTarget.style.borderColor = theme.accent + '35';
               }}
             >
-              <span>Explorer les districts</span>
+              <span>Explore districts</span>
               <ArrowUpRight size={15} />
               {/* Shimmer effect */}
               <div style={{
@@ -307,7 +307,7 @@ function HeroImage({ region, info, imageUrl, theme, onClose }) {
           background: theme.accent,
           animation: 'pulseRing 1.5s ease-out infinite',
         }} />
-        Région {theme.zone}
+        Region {theme.zone}
       </motion.div>
 
       {/* Title bloc */}
@@ -484,40 +484,40 @@ function formatPop(n) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// THEMES per region (zone + accent couleur + glow)
+// THEMES per region (zone + accent color + glow)
 // ─────────────────────────────────────────────────────────────────────────────
 const THEMES = {
-  // Côte Est — vert tropical
-  'Atsinanana':          { accent: '#10b981', glow: 'rgba(16,185,129,0.45)',  border: 'rgba(16,185,129,0.25)',  zone: 'Côte Est' },
-  'Analanjirofo':        { accent: '#14b8a6', glow: 'rgba(20,184,166,0.45)',  border: 'rgba(20,184,166,0.25)',  zone: 'Côte Est' },
-  'Atsimo-Atsinanana':   { accent: '#059669', glow: 'rgba(5,150,105,0.45)',   border: 'rgba(5,150,105,0.25)',   zone: 'Côte Est' },
-  'Vatovavy-Fitovinany': { accent: '#22c55e', glow: 'rgba(34,197,94,0.45)',   border: 'rgba(34,197,94,0.25)',   zone: 'Côte Est' },
+  // East Coast — tropical green
+  'Atsinanana':          { accent: '#10b981', glow: 'rgba(16,185,129,0.45)',  border: 'rgba(16,185,129,0.25)',  zone: 'East Coast' },
+  'Analanjirofo':        { accent: '#14b8a6', glow: 'rgba(20,184,166,0.45)',  border: 'rgba(20,184,166,0.25)',  zone: 'East Coast' },
+  'Atsimo-Atsinanana':   { accent: '#059669', glow: 'rgba(5,150,105,0.45)',   border: 'rgba(5,150,105,0.25)',   zone: 'East Coast' },
+  'Vatovavy-Fitovinany': { accent: '#22c55e', glow: 'rgba(34,197,94,0.45)',   border: 'rgba(34,197,94,0.25)',   zone: 'East Coast' },
 
-  // Nord — bleu tropical
-  'Diana':               { accent: '#06b6d4', glow: 'rgba(6,182,212,0.45)',   border: 'rgba(6,182,212,0.25)',   zone: 'Nord' },
-  'Sava':                { accent: '#0ea5e9', glow: 'rgba(14,165,233,0.45)',  border: 'rgba(14,165,233,0.25)',  zone: 'Nord' },
+  // North — tropical blue
+  'Diana':               { accent: '#06b6d4', glow: 'rgba(6,182,212,0.45)',   border: 'rgba(6,182,212,0.25)',   zone: 'North' },
+  'Sava':                { accent: '#0ea5e9', glow: 'rgba(14,165,233,0.45)',  border: 'rgba(14,165,233,0.25)',  zone: 'North' },
 
-  // Hauts Plateaux — vert olive
-  'Analamanga':          { accent: '#84cc16', glow: 'rgba(132,204,22,0.45)',  border: 'rgba(132,204,22,0.25)',  zone: 'Hauts Plateaux' },
-  'Vakinankaratra':      { accent: '#a3e635', glow: 'rgba(163,230,53,0.45)',  border: 'rgba(163,230,53,0.25)',  zone: 'Hauts Plateaux' },
-  "Amoron'i Mania":      { accent: '#65a30d', glow: 'rgba(101,163,13,0.45)',  border: 'rgba(101,163,13,0.25)',  zone: 'Hauts Plateaux' },
-  'Itasy':               { accent: '#bef264', glow: 'rgba(190,242,100,0.4)',  border: 'rgba(190,242,100,0.25)', zone: 'Hauts Plateaux' },
-  'Bongolava':           { accent: '#4ade80', glow: 'rgba(74,222,128,0.4)',   border: 'rgba(74,222,128,0.25)',  zone: 'Hauts Plateaux' },
-  'Matsiatra Ambony':    { accent: '#86efac', glow: 'rgba(134,239,172,0.4)',  border: 'rgba(134,239,172,0.25)', zone: 'Hauts Plateaux' },
-  'Alaotra-Mangoro':     { accent: '#34d399', glow: 'rgba(52,211,153,0.4)',   border: 'rgba(52,211,153,0.25)',  zone: 'Hauts Plateaux' },
-  'Ihorombe':            { accent: '#d4d4aa', glow: 'rgba(212,212,170,0.35)', border: 'rgba(212,212,170,0.2)',  zone: 'Hauts Plateaux' },
+  // Central Highlands — olive green
+  'Analamanga':          { accent: '#84cc16', glow: 'rgba(132,204,22,0.45)',  border: 'rgba(132,204,22,0.25)',  zone: 'Central Highlands' },
+  'Vakinankaratra':      { accent: '#a3e635', glow: 'rgba(163,230,53,0.45)',  border: 'rgba(163,230,53,0.25)',  zone: 'Central Highlands' },
+  "Amoron'i Mania":      { accent: '#65a30d', glow: 'rgba(101,163,13,0.45)',  border: 'rgba(101,163,13,0.25)',  zone: 'Central Highlands' },
+  'Itasy':               { accent: '#bef264', glow: 'rgba(190,242,100,0.4)',  border: 'rgba(190,242,100,0.25)', zone: 'Central Highlands' },
+  'Bongolava':           { accent: '#4ade80', glow: 'rgba(74,222,128,0.4)',   border: 'rgba(74,222,128,0.25)',  zone: 'Central Highlands' },
+  'Matsiatra Ambony':    { accent: '#86efac', glow: 'rgba(134,239,172,0.4)',  border: 'rgba(134,239,172,0.25)', zone: 'Central Highlands' },
+  'Alaotra-Mangoro':     { accent: '#34d399', glow: 'rgba(52,211,153,0.4)',   border: 'rgba(52,211,153,0.25)',  zone: 'Central Highlands' },
+  'Ihorombe':            { accent: '#d4d4aa', glow: 'rgba(212,212,170,0.35)', border: 'rgba(212,212,170,0.2)',  zone: 'Central Highlands' },
 
-  // Côte Ouest — ochre
-  'Boeny':               { accent: '#f59e0b', glow: 'rgba(245,158,11,0.45)',  border: 'rgba(245,158,11,0.25)',  zone: 'Côte Ouest' },
-  'Sofia':               { accent: '#d97706', glow: 'rgba(217,119,6,0.45)',   border: 'rgba(217,119,6,0.25)',   zone: 'Côte Ouest' },
-  'Melaky':              { accent: '#ea580c', glow: 'rgba(234,88,12,0.45)',   border: 'rgba(234,88,12,0.25)',   zone: 'Côte Ouest' },
-  'Menabe':              { accent: '#f97316', glow: 'rgba(249,115,22,0.45)',  border: 'rgba(249,115,22,0.25)',  zone: 'Côte Ouest' },
-  'Betsiboka':           { accent: '#eab308', glow: 'rgba(234,179,8,0.45)',   border: 'rgba(234,179,8,0.25)',   zone: 'Côte Ouest' },
+  // West Coast — ochre
+  'Boeny':               { accent: '#f59e0b', glow: 'rgba(245,158,11,0.45)',  border: 'rgba(245,158,11,0.25)',  zone: 'West Coast' },
+  'Sofia':               { accent: '#d97706', glow: 'rgba(217,119,6,0.45)',   border: 'rgba(217,119,6,0.25)',   zone: 'West Coast' },
+  'Melaky':              { accent: '#ea580c', glow: 'rgba(234,88,12,0.45)',   border: 'rgba(234,88,12,0.25)',   zone: 'West Coast' },
+  'Menabe':              { accent: '#f97316', glow: 'rgba(249,115,22,0.45)',  border: 'rgba(249,115,22,0.25)',  zone: 'West Coast' },
+  'Betsiboka':           { accent: '#eab308', glow: 'rgba(234,179,8,0.45)',   border: 'rgba(234,179,8,0.25)',   zone: 'West Coast' },
 
-  // Sud — désert rouge
-  'Atsimo-Andrefana':    { accent: '#ef4444', glow: 'rgba(239,68,68,0.45)',   border: 'rgba(239,68,68,0.25)',   zone: 'Sud Aride' },
-  'Androy':              { accent: '#dc2626', glow: 'rgba(220,38,38,0.45)',   border: 'rgba(220,38,38,0.25)',   zone: 'Sud Aride' },
-  'Anosy':               { accent: '#e11d48', glow: 'rgba(225,29,72,0.45)',   border: 'rgba(225,29,72,0.25)',   zone: 'Sud Aride' },
+  // South — red desert
+  'Atsimo-Andrefana':    { accent: '#ef4444', glow: 'rgba(239,68,68,0.45)',   border: 'rgba(239,68,68,0.25)',   zone: 'Arid South' },
+  'Androy':              { accent: '#dc2626', glow: 'rgba(220,38,38,0.45)',   border: 'rgba(220,38,38,0.25)',   zone: 'Arid South' },
+  'Anosy':               { accent: '#e11d48', glow: 'rgba(225,29,72,0.45)',   border: 'rgba(225,29,72,0.25)',   zone: 'Arid South' },
 
   default: { accent: '#4DFF91', glow: 'rgba(34,211,238,0.45)', border: 'rgba(34,211,238,0.25)', zone: 'Madagascar' },
 };

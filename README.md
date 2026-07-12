@@ -2,11 +2,11 @@
   <img src="public/logo.png" alt="CropGPT" width="120" />
 </p>
 
-<h1 align="center">CropGPT — Assistant agricole intelligent pour Madagascar</h1>
+<h1 align="center">CropGPT — Intelligent Agricultural Assistant for Madagascar</h1>
 
 <p align="center">
   <a href="https://cropmg.netlify.app">
-    <img src="https://img.shields.io/badge/d%C3%A9mo-cropmg.netlify.app-2ecc71?style=for-the-badge" alt="Démo en ligne" />
+    <img src="https://img.shields.io/badge/demo-cropmg.netlify.app-2ecc71?style=for-the-badge" alt="Live Demo" />
   </a>
   <a href="https://github.com/njakaniavo4789/Grop-App/actions/workflows/cd.yml">
     <img src="https://github.com/njakaniavo4789/Grop-App/actions/workflows/cd.yml/badge.svg?branch=main" alt="CD status" />
@@ -20,63 +20,63 @@
   <img src="https://img.shields.io/badge/react-19-61DAFB" alt="React 19" />
 </p>
 
-> **Démo en ligne :** https://cropmg.netlify.app
+> **Live Demo:** https://cropmg.netlify.app
 
-CropGPT est une plateforme d'aide à la décision agricole qui combine un **LLM spécialisé**, un **moteur RAG** alimenté par des sources institutionnelles malgaches (FOFIFA, MAEP, FAO, CIRAD) et une **cartographie interactive** des 22 régions de Madagascar. Le tout exposé à travers une interface web grand public.
-
----
-
-## Pourquoi ce projet
-
-Madagascar a la plus forte consommation de riz par habitant d'Afrique (~130 kg/an) et plus de 70 % de sa population rurale vit de l'agriculture. Pourtant, l'accès aux **données techniques fiables** — variétés, maladies, calendriers culturaux, rendements régionaux — reste fragmenté entre des PDF FAO, des rapports FOFIFA difficiles à trouver et des connaissances orales non capitalisées.
-
-CropGPT vise à condenser ce savoir dispersé dans un assistant conversationnel **ancré sur des sources vérifiables**, pour que poser une question agricole en français ou en malgache donne une réponse sourcée et contextualisée à la région concernée.
+CropGPT is an agricultural decision-support platform that combines a **specialized LLM**, a **RAG engine** powered by Malagasy institutional sources (FOFIFA, MAEP, FAO, CIRAD), and an **interactive map** of Madagascar's 22 regions. All exposed through a consumer-facing web interface.
 
 ---
 
-## Aperçu
+## Why This Project
 
-| Page | Capture |
+Madagascar has the highest per-capita rice consumption in Africa (~130 kg/year) and over 70% of its rural population depends on agriculture. Yet access to **reliable technical data** — varieties, diseases, crop calendars, regional yields — remains fragmented across FAO PDFs, hard-to-find FOFIFA reports, and uncaptured oral knowledge.
+
+CropGPT aims to condense this scattered knowledge into a conversational assistant **anchored to verifiable sources**, so that asking an agricultural question in French or Malagasy yields a sourced, region-contextualized answer.
+
+---
+
+## Overview
+
+| Page | Screenshot |
 |---|---|
-| Accueil & chat agricole | ![Chat](docs/screenshots/chat.png) |
-| Carte 3D des 22 régions | ![Carte](docs/screenshots/map3d.png) |
-| Dashboard force-graph thématique | ![Dashboard](docs/screenshots/dashboard.png) |
-| Réponse streaming + sources | ![Streaming](docs/screenshots/streaming.png) |
+| Home & agricultural chat | ![Chat](docs/screenshots/chat.png) |
+| 3D map of 22 regions | ![Map](docs/screenshots/map3d.png) |
+| Thematic force-graph dashboard | ![Dashboard](docs/screenshots/dashboard.png) |
+| Streaming response + sources | ![Streaming](docs/screenshots/streaming.png) |
 
-> Les captures ci-dessus sont à déposer dans `docs/screenshots/`. La démo live reste la référence à jour : https://cropmg.netlify.app
+> Screenshots above should be placed in `docs/screenshots/`. The live demo remains the up-to-date reference: https://cropmg.netlify.app
 
 ---
 
-## Cible utilisateurs
+## Target Users
 
-| Public | Cas d'usage |
+| Audience | Use Cases |
 |---|---|
-| **Agriculteurs et coopératives** | Choisir une variété adaptée à sa région, identifier une maladie, anticiper un risque climatique |
-| **Agronomes et techniciens FOFIFA / MAEP** | Comparer rendements interrégionaux, croiser ontologie + données terrain |
-| **Bailleurs et ONG (FAO, BM, CIRAD)** | Vue macro de l'état rizicole national, suivi de programmes (KERE, SRI…) |
-| **Étudiants et chercheurs** | Exploration documentaire des filières agricoles malgaches |
+| **Farmers and cooperatives** | Choose a variety suited to their region, identify a disease, anticipate climate risks |
+| **Agronomists and FOFIFA/MAEP technicians** | Compare inter-regional yields, cross-reference ontology + field data |
+| **Donors and NGOs (FAO, World Bank, CIRAD)** | Macro view of national rice status, program monitoring (KERE, SRI, etc.) |
+| **Students and researchers** | Documentary exploration of Malagasy agricultural value chains |
 
 ---
 
-## Fonctionnalités principales
+## Key Features
 
-### Chat agricole avec garde-fou ontologique
-- Pipeline en 4 étapes : `normalizer` (langue, accents, malgache) → `ontology` (validation domaine + enrichissement de requête) → `rag` (récupération FAISS) → `llm` (génération streaming SSE)
-- Refus explicite des questions hors-sujet (ex : sport, politique) avec message clair
-- Affichage des sources documentaires utilisées dans la réponse, avec score de confiance
+### Agricultural chat with ontological guardrail
+- 4-step pipeline: `normalizer` (language, accents, Malagasy) → `ontology` (domain validation + query enrichment) → `rag` (FAISS retrieval) → `llm` (SSE streaming generation)
+- Explicit refusal of off-topic questions (e.g., sports, politics) with a clear message
+- Display of document sources used in the response, with confidence score
 
-### Cartographie Madagascar
-- Carte 3D Three.js des 22 régions administratives
-- Force-graph thématique reliant chaque région à ses spécificités (filières dominantes, infrastructures, écosystèmes)
-- Fiches région : population, superficie, climat, cultures principales, tendances
+### Madagascar mapping
+- 3D Three.js map of the 22 administrative regions
+- Thematic force-graph linking each region to its specialties (dominant value chains, infrastructure, ecosystems)
+- Region fact sheets: population, area, climate, main crops, trends
 
-### Prédictions et analyses
-- Module `predictions/` avec modèles scikit-learn / xgboost pour estimation de rendement
-- Knowledge base intégrée : variétés FOFIFA, maladies, rendements régionaux
+### Predictions and analytics
+- `predictions/` module with scikit-learn / xgboost models for yield estimation
+- Integrated knowledge base: FOFIFA varieties, diseases, regional yields
 
-### Authentification et conversations
+### Authentication and conversations
 - JWT (access + refresh) via SimpleJWT
-- Historique de conversations multi-sessions par utilisateur
+- Multi-session conversation history per user
 
 ---
 
@@ -91,53 +91,53 @@ CropGPT vise à condenser ce savoir dispersé dans un assistant conversationnel 
 └─────────────────────┘    JSON     └───────────────────────┘  SSE stream  └──────────────────────┘
 ```
 
-**Pipeline backend (`backend/chat/pipeline/`) :**
+**Backend pipeline (`backend/chat/pipeline/`):**
 
 ```
-question utilisateur
+user question
       │
       ▼
-normalizer.py     → langue, accents, malgache
+normalizer.py     → language, accents, Malagasy
       │
       ▼
-ontology.py       → guardrail hors-domaine + enrichissement
+ontology.py       → off-domain guardrail + enrichment
       │
       ▼
-rag.py            → embedding fastembed (ONNX) + FAISS top-k
+rag.py            → fastembed embedding (ONNX) + FAISS top-k
       │
       ▼
-llm.py            → POST /generate/stream vers Colab (SSE)
+llm.py            → POST /generate/stream to Colab (SSE)
       │
       ▼
-réponse streaming token-par-token au frontend
-```
+streaming response token-by-token to frontend
+
 
 ---
 
-## Stack technique
+## Tech Stack
 
-| Couche | Technologies |
+| Layer | Technologies |
 |---|---|
 | **Frontend** | React 19 · Vite · TypeScript · Tailwind CSS · Radix UI · Framer Motion |
-| **Cartographie 3D** | Three.js · @react-three/fiber · @react-three/drei · maplibre-gl |
-| **Visualisation** | react-force-graph-2d · d3 · recharts · react-globe.gl |
+| **3D Mapping** | Three.js · @react-three/fiber · @react-three/drei · maplibre-gl |
+| **Visualization** | react-force-graph-2d · d3 · recharts · react-globe.gl |
 | **Backend** | Django 5 · Django REST Framework · SimpleJWT · django-cors-headers |
-| **Base de données** | PostgreSQL (production) · SQLite (build) |
+| **Database** | PostgreSQL (production) · SQLite (dev) |
 | **RAG / Embeddings** | fastembed (ONNX Runtime) · FAISS · sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 |
-| **LLM** | Qwen/Qwen2.5-3B-Instruct via FastAPI · Streaming SSE |
-| **ML prédictions** | scikit-learn · xgboost · pandas · numpy |
-| **Tunnel LLM** | ngrok (domaine statique gratuit) |
-| **Déploiement** | Netlify (front) · Render (back + Postgres) · Google Colab T4 (LLM) |
+| **LLM** | Qwen/Qwen2.5-3B-Instruct via FastAPI · SSE Streaming |
+| **ML Predictions** | scikit-learn · xgboost · pandas · numpy |
+| **LLM Tunnel** | ngrok (static free domain) |
+| **Deployment** | Netlify (front) · Render (back + Postgres) · Google Colab T4 (LLM) |
 
 ---
 
-## Démarrage rapide en local
+## Quick Start
 
-### Prérequis
+### Prerequisites
 - Node.js 20+
 - Python 3.11
-- PostgreSQL 14+ (ou SQLite pour le dev)
-- Un token ngrok et un notebook Colab pour le LLM (optionnel — le chat affiche un message d'erreur clair sans LLM)
+- PostgreSQL 14+ (or SQLite for dev)
+- An ngrok token and a Colab notebook for the LLM (optional — the chat displays a clear error message without LLM)
 
 ### Backend
 
@@ -147,14 +147,14 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements/production.txt
 
-# Variables d'environnement (.env à la racine de backend/)
+# Environment variables (.env at backend/ root)
 export DJANGO_SETTINGS_MODULE=config.settings.development
 export DATABASE_URL=postgres://user:pass@localhost:5432/cropgpt
-export COLAB_LLM_URL=https://votre-tunnel.ngrok-free.app   # optionnel
+export COLAB_LLM_URL=https://your-tunnel.ngrok-free.app   # optional
 
 python manage.py migrate
 python manage.py createsuperuser
-python -m rag.embeddings --build      # construit l'index FAISS
+python -m rag.embeddings --build      # build the FAISS index
 python manage.py runserver 8000
 ```
 
@@ -166,68 +166,68 @@ echo "VITE_API_BASE_URL=http://127.0.0.1:8000" > .env.local
 npm run dev
 ```
 
-L'application est disponible sur http://localhost:5173.
+The application is available at http://localhost:5173.
 
-### LLM sur Google Colab
+### LLM on Google Colab
 
-Le notebook charge un modèle Qwen2.5-3B-Instruct sur GPU T4, l'expose via FastAPI et ouvre un tunnel ngrok. Endpoints attendus par le backend :
+The notebook loads a Qwen2.5-3B-Instruct model on GPU T4, exposes it via FastAPI, and opens an ngrok tunnel. Endpoints expected by the backend:
 
-- `POST /generate/stream` — réception de `{prompt, max_new_tokens, temperature}`, réponse SSE format `data: token:TEXT|ELAPSED|PROGRESS`
-- `GET /health` — vérification que le serveur tourne
+- `POST /generate/stream` — receives `{prompt, max_new_tokens, temperature}`, SSE response format `data: token:TEXT|ELAPSED|PROGRESS`
+- `GET /health` — check that the server is running
 
 ---
 
-## Déploiement
+## Deployment
 
-| Composant | Plateforme | Configuration |
+| Component | Platform | Configuration |
 |---|---|---|
-| Frontend | Netlify | `netlify.toml` à la racine — build `npm ci --legacy-peer-deps && npm run build`, publish `build/` |
-| Backend | Render | `render.yaml` — Docker Web Service, plan free, Postgres free |
-| LLM | Google Colab | Notebook FastAPI + pyngrok, lancé manuellement avant chaque démo |
+| Frontend | Netlify | `netlify.toml` at root — build `npm ci --legacy-peer-deps && npm run build`, publish `build/` |
+| Backend | Render | `render.yaml` — Docker Web Service, free plan, free Postgres |
+| LLM | Google Colab | FastAPI + pyngrok notebook, launched manually before each demo |
 
-Les variables d'environnement sensibles (`COLAB_LLM_URL`, `CORS_ALLOWED_ORIGINS`, `SECRET_KEY`, `DATABASE_URL`) sont gérées dans le dashboard Render. Les détails sont dans les fichiers `render.yaml` et `netlify.toml`.
-
----
-
-## Sources documentaires
-
-Le moteur RAG s'appuie sur des sources institutionnelles publiques :
-
-- **FAO** — Country Brief Madagascar, statistiques rizicoles
-- **FOFIFA** — Centre national de recherche appliquée au développement rural (variétés, SRI)
-- **MAEP** — Ministère de l'Agriculture, statistiques officielles
-- **CIRAD** — Recherche agronomique Sud, fertilité des sols
-- **Wikipedia** — Agriculture in Madagascar (cross-référence)
-
-La knowledge base locale (`backend/rag/data/knowledge_base/`) contient des fiches techniques structurées sur les variétés FOFIFA, les maladies et ravageurs du riz, et les rendements régionaux.
+Sensitive environment variables (`COLAB_LLM_URL`, `CORS_ALLOWED_ORIGINS`, `SECRET_KEY`, `DATABASE_URL`) are managed in the Render dashboard. Details are in `render.yaml` and `netlify.toml`.
 
 ---
 
-## Structure du dépôt
+## Document Sources
+
+The RAG engine relies on public institutional sources:
+
+- **FAO** — Country Brief Madagascar, rice statistics
+- **FOFIFA** — National center for applied rural development research (varieties, SRI)
+- **MAEP** — Ministry of Agriculture, official statistics
+- **CIRAD** — Southern agronomic research, soil fertility
+- **Wikipedia** — Agriculture in Madagascar (cross-reference)
+
+The local knowledge base (`backend/rag/data/knowledge_base/`) contains structured fact sheets on FOFIFA rice varieties, rice diseases and pests, and regional yields.
+
+---
+
+## Repository Structure
 
 ```
 .
 ├── backend/                  Django backend
-│   ├── config/               Settings + URLs racine
-│   ├── chat/                 Pipeline conversationnel + SSE
+│   ├── config/               Settings + root URLs
+│   ├── chat/                 Conversational pipeline + SSE
 │   │   └── pipeline/         normalizer · ontology · rag · llm
-│   ├── crops/                Catalogue cultures et variétés
-│   ├── predictions/          ML rendements (sklearn/xgboost)
+│   ├── crops/                Crop and variety catalog
+│   ├── predictions/          ML yield predictions (sklearn/xgboost)
 │   ├── users/                JWT auth
-│   ├── rag/                  Indexation FAISS + ontologie
+│   ├── rag/                  FAISS indexing + ontology
 │   └── requirements/         base.txt + production.txt
-├── src/                      Frontend React
-│   ├── api/                  Clients axios (auth, chat, crops, predictions)
+├── src/                      React frontend
+│   ├── api/                  Axios clients (auth, chat, crops, predictions)
 │   ├── components/
-│   │   ├── chat/             UI chat + streaming SSE
-│   │   ├── dashboard/        Force-graph régions
-│   │   └── madagascar3d/     Carte 3D Three.js
-│   ├── data/                 GeoJSON + data régions
+│   │   ├── chat/             Chat UI + SSE streaming
+│   │   ├── dashboard/        Force-graph regions
+│   │   └── madagascar3d/     3D Three.js map
+│   ├── data/                 GeoJSON + region data
 │   └── pages/
-├── render.yaml               Blueprint Render
+├── render.yaml               Render blueprint
 ├── netlify.toml              Build + redirects + headers
-├── Dockerfile.backend        Image production Django
-├── docker-compose.yml        Dev local (front + back + Postgres + Redis)
+├── Dockerfile.backend        Production Django image
+├── docker-compose.yml        Local dev (front + back + Postgres + Redis)
 └── .github/workflows/cd.yml  CI build validation
 ```
 
@@ -235,47 +235,47 @@ La knowledge base locale (`backend/rag/data/knowledge_base/`) contient des fiche
 
 ## Roadmap
 
-État au 2026-04-27.
+Status as of 2026-04-27.
 
-### Réalisé
-- [x] Pipeline conversationnel 4-étapes (normalizer → ontology → RAG → LLM)
-- [x] Streaming SSE token-par-token avec garde-fou hors-domaine
-- [x] Indexation FAISS via fastembed (ONNX, sans torch) — image Docker légère pour Render free tier
-- [x] Cartographie 3D Three.js des 22 régions
-- [x] Dashboard force-graph thématique (22 régions + ~50 sous-thèmes)
-- [x] Authentification JWT (access + refresh)
-- [x] Affichage clair des erreurs LLM (hors-ligne, timeout) côté UI
-- [x] Déploiement Netlify (front) + Render (back) + Colab (LLM)
+### Completed
+- [x] 4-step conversational pipeline (normalizer → ontology → RAG → LLM)
+- [x] Token-by-token SSE streaming with off-domain guardrail
+- [x] FAISS indexing via fastembed (ONNX, no torch) — lightweight Docker image for Render free tier
+- [x] 3D Three.js mapping of 22 regions
+- [x] Thematic force-graph dashboard (22 regions + ~50 sub-themes)
+- [x] JWT authentication (access + refresh)
+- [x] Clear LLM error display (offline, timeout) on the UI
+- [x] Netlify (front) + Render (back) + Colab (LLM) deployment
 
-### En cours
-- [ ] Refonte du dashboard : KPIs en haut, carte chloropleth Madagascar, panneau régional cliquable
-- [ ] Lisibilité du force-graph : focus au clic + couleurs par catégorie + arêtes fines
-- [ ] Domaine ngrok statique pour stabiliser `COLAB_LLM_URL` entre démos
-- [ ] Smoke tests CI contre l'environnement déployé
+### In Progress
+- [ ] Dashboard redesign: KPIs at top, Madagascar choropleth map, clickable regional panel
+- [ ] Force-graph readability: click-to-focus + category colors + thin edges
+- [ ] Static ngrok domain to stabilize `COLAB_LLM_URL` between demos
+- [ ] CI smoke tests against the deployed environment
 
-### Prévu
-- [ ] Alertes climatiques temps réel (intégration API météo Madagascar)
-- [ ] Calendrier agricole interactif par culture / par région
-- [ ] Mode hors-ligne pour utilisateurs ruraux (PWA + cache RAG local)
-- [ ] Support malgache complet (UI + tokenizer ontologique)
-- [ ] Module prédictions de rendement par parcelle (entrées : sol, climat, variété)
-- [ ] Comparateur interrégional côte-à-côte
-- [ ] Export PDF des fiches techniques
-- [ ] Tests e2e Playwright sur les parcours critiques (login, chat, prédiction)
+### Planned
+- [ ] Real-time weather alerts (Madagascar weather API integration)
+- [ ] Interactive crop calendar by crop / by region
+- [ ] Offline mode for rural users (PWA + local RAG cache)
+- [ ] Full Malagasy support (UI + ontological tokenizer)
+- [ ] Per-field yield prediction module (inputs: soil, climate, variety)
+- [ ] Side-by-side inter-regional comparison
+- [ ] PDF export of technical fact sheets
+- [ ] Playwright e2e tests on critical flows (login, chat, prediction)
 
 ---
 
-## Auteurs
+## Authors
 
-| | Rôle |
+| | Role |
 |---|---|
-| **Toby Rabetahafina** ([@toby7431](https://github.com/toby7431) · [@njakaniavo4789](https://github.com/njakaniavo4789)) | Conception produit, backend Django, pipeline RAG, intégration LLM, déploiement |
-| **Tatum Ln** ([@zafinii](https://github.com/zafinii)) | Frontend React, cartographie 3D Three.js, dashboard force-graph |
+| **Toby Rabetahafina** ([@toby7431](https://github.com/toby7431) · [@njakaniavo4789](https://github.com/njakaniavo4789)) | Product design, Django backend, RAG pipeline, LLM integration, deployment |
+| **Tatum Ln** ([@zafinii](https://github.com/zafinii)) | React frontend, 3D Three.js mapping, force-graph dashboard |
 
-Pour toute question : ouvrir une issue sur le dépôt ou contacter directement les auteurs via leurs profils GitHub.
+For any questions: open an issue on the repository or contact the authors directly via their GitHub profiles.
 
 ---
 
-## Licence
+## License
 
-Projet académique / démonstration — le code source est privé. Tous droits réservés aux auteurs.
+Academic / demonstration project — source code is private. All rights reserved by the authors.

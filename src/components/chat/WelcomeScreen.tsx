@@ -6,7 +6,7 @@ interface WelcomeScreenProps {
   onSelect: (text: string) => void;
 }
 
-const typingText = "Comment puis-je vous aider ?";
+const typingText = "How can I help you?";
 
 export function WelcomeScreen({ suggestions, onSelect }: WelcomeScreenProps) {
   const [displayedText, setDisplayedText] = useState("");
@@ -69,7 +69,7 @@ export function WelcomeScreen({ suggestions, onSelect }: WelcomeScreenProps) {
         textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
         margin: 0, marginBottom: 14,
       }}>
-        Assistant agricole · Madagascar
+        Agricultural assistant · Madagascar
       </p>
 
       <h1 style={{
@@ -98,7 +98,7 @@ export function WelcomeScreen({ suggestions, onSelect }: WelcomeScreenProps) {
         margin: 0, marginBottom: 48,
         fontFamily: 'var(--font-body)',
       }}>
-        De la plantation à la récolte — commençons ensemble.
+        From planting to harvest — let's get started.
       </p>
 
       {/* Suggestions — horizontal grid, statskog cards */}

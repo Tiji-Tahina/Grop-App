@@ -258,14 +258,14 @@ export function ForceGraphDashboard() {
           textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
           margin: 0, marginBottom: 8,
         }}>
-          Madagascar · Régions
+          Madagascar · Regions
         </p>
         <h1 style={{
           fontSize: 'clamp(36px, 4vw, 56px)', fontWeight: 700,
           letterSpacing: '-0.03em', lineHeight: 1, color: '#FFFFFF',
           margin: 0, fontFamily: 'var(--font-display)',
         }}>
-          22<span style={{ color: 'rgba(255,255,255,0.30)', fontWeight: 400 }}> régions</span>
+          22<span style={{ color: 'rgba(255,255,255,0.30)', fontWeight: 400 }}> regions</span>
         </h1>
       </div>
 
@@ -332,8 +332,8 @@ export function ForceGraphDashboard() {
             }}>
               {focusedNode
                 ? `${connectedRef.current ? connectedRef.current.size - 1 : 0} relations`
-                : selectedNode ? 'sélection active'
-                : 'graphe vivant'}
+                : selectedNode                 ? 'active selection'
+                : 'living graph'}
             </span>
           </div>
 
@@ -345,8 +345,8 @@ export function ForceGraphDashboard() {
             transition: 'right 0.32s cubic-bezier(0.4,0,0.2,1)',
           }}>
             {[
-              { color: '#4DFF91', label: 'Région' },
-              { color: '#C17F3A', label: 'PIB / Pop' },
+              { color: '#4DFF91', label: 'Region' },
+              { color: '#C17F3A', label: 'GDP / Pop' },
               { color: '#7FB069', label: 'Notes' },
             ].map(({ color, label }, i) => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
@@ -371,7 +371,7 @@ export function ForceGraphDashboard() {
               letterSpacing: '0.08em', textTransform: 'uppercase',
               pointerEvents: 'none', whiteSpace: 'nowrap',
             }}>
-              Cliquer · Glisser · Zoomer
+              Click · Drag · Zoom
             </div>
           )}
 

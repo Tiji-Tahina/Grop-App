@@ -8,7 +8,7 @@ class Conversation(models.Model):
         on_delete=models.CASCADE,
         related_name='conversations',
     )
-    title = models.CharField(max_length=200, default='Nouvelle conversation')
+    title = models.CharField(max_length=200, default='New conversation')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -23,7 +23,7 @@ class Message(models.Model):
     ROLE_USER = 'user'
     ROLE_ASSISTANT = 'assistant'
     ROLE_CHOICES = [
-        (ROLE_USER, 'Utilisateur'),
+        (ROLE_USER, 'User'),
         (ROLE_ASSISTANT, 'Assistant'),
     ]
 
@@ -34,10 +34,10 @@ class Message(models.Model):
     )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     content = models.TextField()
-    sources = models.JSONField(default=list, help_text='Sources RAG citées dans la réponse')
+    sources = models.JSONField(default=list, help_text='RAG sources cited in the response')
     pipeline_meta = models.JSONField(
         default=dict,
-        help_text='Métadonnées du pipeline (ontologie, rag_score, latence…)',
+        help_text='Pipeline metadata (ontology, rag_score, latency...)',
     )
     created_at = models.DateTimeField(auto_now_add=True)
 

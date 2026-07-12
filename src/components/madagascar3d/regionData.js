@@ -1,5 +1,5 @@
-// Métadonnées des 22 régions de Madagascar
-// Couleurs choropleth + données de référence pour l'UI
+// Metadata for the 22 regions of Madagascar
+// Choropleth colors + reference data for the UI
 
 export const REGION_COLORS = {
   'Alaotra-Mangoro':      '#63be7b',
@@ -51,7 +51,7 @@ export const REGION_INFO = {
   'Vatovavy-Fitovinany': { capital: 'Manakara',        area: 19165, population: 1442000 },
 };
 
-// Images Unsplash représentatives pour chaque région
+// Representative Unsplash images for each region
 export const REGION_IMAGES = {
   'Analamanga':          'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600&q=80',
   'Diana':               'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=600&q=80',
@@ -77,7 +77,7 @@ export const REGION_IMAGES = {
   'Vatovavy-Fitovinany': 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=600&q=80',
 };
 
-// Connexions principales entre régions pour l'overlay de lignes
+// Main connections between regions for the line overlay
 export const REGION_CONNECTIONS = [
   ['Analamanga', 'Vakinankaratra'],
   ['Analamanga', 'Alaotra-Mangoro'],
@@ -97,7 +97,7 @@ export const REGION_CONNECTIONS = [
   ['Betsiboka', 'Sofia'],
 ];
 
-// Mapping ADM2 (district) → ADM1 (région) parente
+// ADM2 (district) → ADM1 (region) parent mapping
 export const ADM2_PARENT = {
   '1er Arrondissement': 'Analamanga',  '2e Arrondissement': 'Analamanga',
   '3e Arrondissement': 'Analamanga',   '4e Arrondissement': 'Analamanga',
@@ -154,7 +154,7 @@ export const ADM2_PARENT = {
   'Nosy-Varika': 'Vatovavy-Fitovinany', 'Vohipeno': 'Vatovavy-Fitovinany',
 };
 
-// Données mock agricoles (à remplacer par appel API plus tard)
+// Mock agricultural data (to be replaced by API call later)
 export const REGION_STATS = Object.fromEntries(
   Object.keys(REGION_INFO).map(name => [name, {
     rendement_riz: Math.round(50 + Math.random() * 40),

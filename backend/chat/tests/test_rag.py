@@ -1,14 +1,14 @@
-"""Tests du pipeline RAG (Retrieval-Augmented Generation).
+"""Tests for the RAG pipeline (Retrieval-Augmented Generation).
 
-Ces tests vérifient le comportement de retrieve() dans les cas nominaux
-et les cas limites, indépendamment de la disponibilité de FAISS.
+These tests verify the behavior of retrieve() in nominal and edge cases,
+independently of FAISS availability.
 """
 import pytest
 
 
 class TestRAGRetrieve:
     def test_returns_empty_for_invalid_domain(self):
-        """Une question hors-domaine doit retourner un résultat vide."""
+        """An off-domain query must return an empty result."""
         from chat.pipeline import rag
         result = rag.retrieve({'is_valid': False})
         assert result['retrieved_docs'] == []
@@ -17,7 +17,7 @@ class TestRAGRetrieve:
         assert result['has_data'] is False
 
     def test_returns_data_for_valid_rice_query(self):
-        """Une question valide sur le riz doit retourner du contexte."""
+        """A valid rice query must return context."""
         from chat.pipeline import rag
         result = rag.retrieve({
             'is_valid': True,
@@ -31,7 +31,7 @@ class TestRAGRetrieve:
         assert result['confidence_level'] in ('high', 'medium', 'low')
 
     def test_confidence_level_values_are_valid(self):
-        """Le niveau de confiance doit toujours être l'une des 4 valeurs acceptées."""
+        """Confidence level must always be one of the 4 accepted values."""
         from chat.pipeline import rag
         valid_levels = {'high', 'medium', 'low', 'none'}
         for tags in [[], ['yield_prediction'], ['varieties'], ['pest_disease']]:
@@ -45,7 +45,7 @@ class TestRAGRetrieve:
             assert result['confidence_level'] in valid_levels
 
     def test_static_fallback_yields_prediction(self):
-        """Tag yield_prediction → données statiques sur les rendements."""
+        """Tag yield_prediction → static yield data."""
         from chat.pipeline import rag
         result = rag.retrieve({
             'is_valid': True,
@@ -58,7 +58,7 @@ class TestRAGRetrieve:
         assert 't/ha' in result['rag_context'] or 'rendement' in result['rag_context'].lower()
 
     def test_static_fallback_varieties(self):
-        """Tag varieties → données sur les variétés FOFIFA."""
+        """Tag varieties → FOFIFA variety data."""
         from chat.pipeline import rag
         result = rag.retrieve({
             'is_valid': True,
@@ -71,7 +71,7 @@ class TestRAGRetrieve:
         assert 'FOFIFA' in result['rag_context'] or 'Makalioka' in result['rag_context']
 
     def test_result_has_required_keys(self):
-        """Le résultat doit toujours contenir les clés attendues par views.py."""
+        """Result must always contain the keys expected by views.py."""
         from chat.pipeline import rag
         required_keys = {'retrieved_docs', 'rag_context', 'confidence_level', 'has_data'}
         result = rag.retrieve({
@@ -84,7 +84,7 @@ class TestRAGRetrieve:
         assert required_keys.issubset(result.keys())
 
     def test_empty_context_tags_returns_general_data(self):
-        """Sans tags spécifiques → données générales sur la riziculture malgache."""
+        """Without specific tags → general Malagasy rice cultivation data."""
         from chat.pipeline import rag
         result = rag.retrieve({
             'is_valid': True,
@@ -96,7 +96,7 @@ class TestRAGRetrieve:
         assert result['has_data'] is True
 
     def test_ontology_facts_elevate_confidence(self):
-        """La présence de faits ontologiques doit donner confidence=high."""
+        """Presence of ontology facts must yield confidence=high."""
         from chat.pipeline import rag
         result = rag.retrieve({
             'is_valid': True,

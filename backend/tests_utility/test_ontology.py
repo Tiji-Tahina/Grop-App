@@ -1,13 +1,13 @@
 import sys, os; sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 """
-Test du chargeur d'ontologie CropGPT.
-Lancer depuis backend/ :
+Test the CropGPT ontology loader.
+Run from backend/:
     python test_ontology.py
 """
 import sys
 sys.path.insert(0, '.')
 
-# ── Forcer UTF-8 sur Windows ───────────────────────────────────────────────────
+# ── Force UTF-8 on Windows ──────────────────────────────────────────────────
 if sys.stdout.encoding != 'utf-8':
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
@@ -26,7 +26,7 @@ FAIL = "✗"
 
 def test(name, condition, detail=""):
     icon = PASS if condition else FAIL
-    status = "OK" if condition else "ECHEC"
+    status = "OK" if condition else "FAILED"
     print(f"  {icon} [{status}] {name}")
     if detail:
         print(f"         {detail}")
@@ -35,36 +35,36 @@ def test(name, condition, detail=""):
 results = []
 
 # ─────────────────────────────────────────────────────────────────────────────
-print("\n=== 1. CHARGEMENT DU GRAPHE ===")
+print("\n=== 1. GRAPH LOADING ===")
 g = get_graph()
-r = test("Graphe chargé", g is not None)
+r = test("Graph loaded", g is not None)
 results.append(r)
 if g:
-    r = test("Triplets > 1000", len(g) > 1000, f"{len(g)} triplets")
+    r = test("Triples > 1000", len(g) > 1000, f"{len(g)} triples")
     results.append(r)
 
 # ─────────────────────────────────────────────────────────────────────────────
-print("\n=== 2. KEYWORDS DOMAINE ===")
+print("\n=== 2. DOMAIN KEYWORDS ===")
 kw = get_domain_keywords()
-r = test("Keywords FR présents", len(kw.get("fr", [])) > 50,
-         f"{len(kw['fr'])} labels FR")
+r = test("FR keywords present", len(kw.get("fr", [])) > 50,
+         f"{len(kw['fr'])} FR labels")
 results.append(r)
-r = test("Keywords MG présents", len(kw.get("mg", [])) > 20,
-         f"{len(kw['mg'])} labels MG")
+r = test("MG keywords present", len(kw.get("mg", [])) > 20,
+         f"{len(kw['mg'])} MG labels")
 results.append(r)
-r = test("Keywords EN présents", len(kw.get("en", [])) > 50,
-         f"{len(kw['en'])} labels EN")
+r = test("EN keywords present", len(kw.get("en", [])) > 50,
+         f"{len(kw['en'])} EN labels")
 results.append(r)
 
-# Quelques mots-clés attendus
+# Some expected keywords
 expected_fr = ["riz", "irrigation", "sol", "variété", "hybride"]
 for w in expected_fr:
     found = any(w in label for label in kw["fr"])
-    r = test(f"  FR contient '{w}'", found)
+    r = test(f"  FR contains '{w}'", found)
     results.append(r)
 
 # ─────────────────────────────────────────────────────────────────────────────
-print("\n=== 3. MAPPAGE CLASSE → TAG RAG ===")
+print("\n=== 3. CLASS → RAG TAG MAPPING ===")
 cases = [
     ("Bemasoha Rice Hybrid",       "varieties"),
     ("Fiaramanitra Rice Hybrid",   "varieties"),
@@ -73,75 +73,75 @@ cases = [
 for label, expected_tag in cases:
     tag = get_class_tag(label)
     r = test(f"'{label}' → tag={expected_tag}", tag == expected_tag,
-             f"obtenu: {tag}")
+             f"got: {tag}")
     results.append(r)
 
 # ─────────────────────────────────────────────────────────────────────────────
 print("\n=== 4. PEDIGREE ===")
 
-# Variété sans parents
+# Variety without parents
 p = get_pedigree("Makalioka Rice Variety")
-r = test("Makalioka trouvé dans graphe", p["found"])
+r = test("Makalioka found in graph", p["found"])
 results.append(r)
-r = test("Makalioka code pedigree présent", bool(p["pedigree_code"]),
+r = test("Makalioka pedigree code present", bool(p["pedigree_code"]),
          f"code: {p['pedigree_code']}")
 results.append(r)
 
-# Hybride F1
+# F1 hybrid
 p = get_pedigree("Bemasoha Rice Hybrid")
-r = test("Bemasoha est un hybride", p["is_hybrid"])
+r = test("Bemasoha is a hybrid", p["is_hybrid"])
 results.append(r)
-r = test("Bemasoha a 2 parents", len(p["parents"]) == 2,
+r = test("Bemasoha has 2 parents", len(p["parents"]) == 2,
          f"parents: {p['parents']}")
 results.append(r)
-r = test("Bemasoha génération F1", p["generation"] == 1,
-         f"génération: {p['generation']}")
+r = test("Bemasoha generation F1", p["generation"] == 1,
+         f"generation: {p['generation']}")
 results.append(r)
-r = test("Bemasoha développé par FOFIFA", p["bred_by"] == "FOFIFA",
+r = test("Bemasoha bred by FOFIFA", p["bred_by"] == "FOFIFA",
          f"bred_by: {p['bred_by']}")
 results.append(r)
 
-# Hybride F2
+# F2 hybrid
 p = get_pedigree("Fiaramanitra Rice Hybrid")
-r = test("Fiaramanitra génération F2", p["generation"] == 2,
+r = test("Fiaramanitra generation F2", p["generation"] == 2,
          f"parents: {p['parents']}")
 results.append(r)
 
-# Variété inexistante
+# Non-existent variety
 p = get_pedigree("VariétéInexistante")
-r = test("Entité inconnue → found=False", not p["found"])
+r = test("Unknown entity → found=False", not p["found"])
 results.append(r)
 
 # ─────────────────────────────────────────────────────────────────────────────
-print("\n=== 5. CONCEPTS LIÉS (expansion FAISS) ===")
+print("\n=== 5. RELATED CONCEPTS (FAISS expansion) ===")
 related = get_related_concepts("Makalioka Rice Variety")
-r = test("Makalioka a des concepts liés", len(related) > 0,
+r = test("Makalioka has related concepts", len(related) > 0,
          f"{len(related)} concepts: {related[:3]}")
 results.append(r)
 
 # ─────────────────────────────────────────────────────────────────────────────
-print("\n=== 6. BLOC FAITS LLM ===")
+print("\n=== 6. LLM FACTS BLOCK ===")
 facts = get_facts_block("Bemasoha Rice Hybrid")
-r = test("Bloc non vide", len(facts) > 50)
+r = test("Block not empty", len(facts) > 50)
 results.append(r)
-r = test("Bloc contient 'Parents'", "Parents" in facts)
+r = test("Block contains 'Parents'", "Parents" in facts)
 results.append(r)
-r = test("Bloc contient 'FOFIFA'", "FOFIFA" in facts)
+r = test("Block contains 'FOFIFA'", "FOFIFA" in facts)
 results.append(r)
-r = test("Bloc contient 'pedigree'", "pedigree" in facts.lower() or "Pedigree" in facts)
+r = test("Block contains 'pedigree'", "pedigree" in facts.lower() or "Pedigree" in facts)
 results.append(r)
-print(f"\n  Aperçu du bloc :\n{'─'*50}")
+print(f"\n  Block preview:\n{'─'*50}")
 for line in facts.split("\n"):
     print(f"  {line}")
 print(f"{'─'*50}")
 
 # ─────────────────────────────────────────────────────────────────────────────
-print("\n=== RÉSULTAT FINAL ===")
+print("\n=== FINAL RESULT ===")
 passed = sum(results)
 total  = len(results)
-print(f"  {passed}/{total} tests réussis")
+print(f"  {passed}/{total} tests passed")
 if passed == total:
-    print("  Ontologie opérationnelle — prête à brancher dans le pipeline RAG.")
+    print("  Ontology operational — ready to plug into the RAG pipeline.")
 else:
-    print(f"  {total - passed} test(s) échoué(s) — voir détails ci-dessus.")
+    print(f"  {total - passed} test(s) failed — see details above.")
 print()

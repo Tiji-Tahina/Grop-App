@@ -1,18 +1,18 @@
 """
-Récupération de données carte depuis ClickHouse pour `map_action.data`.
+Map data retrieval from ClickHouse for `map_action.data`.
 
-Pendant `ch_facts.py` produit du TEXTE plat injecté dans le prompt LLM, ce
-module produit un `DataPayload` Pydantic structuré que le front consomme
-pour peindre la carte.
+While `ch_facts.py` produces plain text injected into the LLM prompt, this
+module produces a structured `DataPayload` Pydantic object consumed by the
+frontend to render the map.
 
-Branchement : appelé par `chat/pipeline/intent.py` après validation Pydantic
-du `MapAction` produit par les règles + LLM.
+Wiring: called by `chat/pipeline/intent.py` after Pydantic validation
+of the `MapAction` produced by the rules + LLM.
 
-Stratégie V1 (table `cropgpt.agri_stats` actuelle) :
-    Filtres SQL : crop, year, regions
-    Filtres ignorés (warning) : variety, season
-    Métriques : yield, production, price, area (dérivée production/rendement)
-    Niveau de data : country ou region (district/commune = V2)
+V1 strategy (current `cropgpt.agri_stats` table):
+    SQL filters: crop, year, regions
+    Ignored filters (warning): variety, season
+    Metrics: yield, production, price, area (derived from production/yield)
+    Data level: country or region (district/commune = V2)
 """
 
 import logging
@@ -35,9 +35,9 @@ from .olap_engine import engine
 logger = logging.getLogger(__name__)
 
 
-# ─── Mapping slugs URL-safe ↔ noms région DB ───────────────────────────────
-# Slugs : kebab-case ASCII (utilisés dans `MapAction`, dans l'URL, dans le GeoJSON front)
-# Noms DB : casse Title avec accents/apostrophes (utilisés dans `cropgpt.agri_stats`)
+# ─── URL-safe slug ↔ DB region name mapping ───────────────────────────────
+# Slugs: kebab-case ASCII (used in `MapAction`, in URLs, in the frontend GeoJSON)
+# DB names: Title case with accents/apostrophes (used in `cropgpt.agri_stats`)
 
 SLUG_TO_DB_REGION: dict[str, str] = {
     "diana": "Diana",
@@ -66,21 +66,21 @@ SLUG_TO_DB_REGION: dict[str, str] = {
 DB_REGION_TO_SLUG: dict[str, str] = {v: k for k, v in SLUG_TO_DB_REGION.items()}
 
 
-# ─── Mapping métrique map_action → SQL + unité ─────────────────────────────
+# ─── map_action metric → SQL + unit mapping ─────────────────────────────
 
 METRIC_SQL: dict[Metric, tuple[str, str]] = {
     "yield":      ("avg(rendement_kg_ha)",                                          "kg/ha"),
     "production": ("sum(production_t)",                                              "tonnes"),
     "price":      ("avg(prix_ar_kg)",                                                "Ar/kg"),
-    # area dérivée : production_t × 1000 / rendement_kg_ha = surface en hectares
+    # area derived: production_t × 1000 / rendement_kg_ha = area in hectares
     "area":       ("sum(production_t * 1000.0 / nullIf(rendement_kg_ha, 0))",       "ha"),
 }
 
-# Colonnes auxiliaires toujours retournées pour enrichir le tooltip front.
-# Format : (cle_tooltip_exposee_au_front, alias_SQL_safe, expression_SQL).
-# IMPORTANT : l'alias SQL ne DOIT PAS matcher un nom de colonne de la table,
-# sinon ClickHouse interprete avg(col) AS col comme un avg(avg(...)) et
-# leve "Aggregate function inside another aggregate function" (code 184).
+# Auxiliary columns always returned to enrich the frontend tooltip.
+# Format: (tooltip_key_exposed_to_frontend, safe_SQL_alias, SQL_expression).
+# IMPORTANT: the SQL alias MUST NOT match a table column name,
+# otherwise ClickHouse interprets avg(col) AS col as avg(avg(...)) and
+# raises "Aggregate function inside another aggregate function" (code 184).
 TOOLTIP_AUX_COLS: list[tuple[str, str, str]] = [
     ("rendement_kg_ha", "tt_rendement",  "avg(rendement_kg_ha)"),
     ("production_t",    "tt_production", "sum(production_t)"),
@@ -88,25 +88,25 @@ TOOLTIP_AUX_COLS: list[tuple[str, str, str]] = [
 ]
 
 
-# ─── API publique ──────────────────────────────────────────────────────────
+# ─── Public API ──────────────────────────────────────────────────────────
 
 
 def fetch_map_data(map_action: MapAction) -> DataPayload | ComparisonData | None:
-    """Calcule les données carte à partir d'un MapAction validé.
+    """Compute map data from a validated MapAction.
 
-    Retourne :
-        - `DataPayload`     pour les ops slice / dice / drill_down / clear
-        - `ComparisonData`  pour op=compare
-        - `None`            pour op=highlight (pas de data)
-                            ou si la métrique manque
+    Returns:
+        - `DataPayload`     for ops slice / dice / drill_down / clear
+        - `ComparisonData`  for op=compare
+        - `None`            for op=highlight (no data)
+                            or if the metric is missing
 
-    Effet de bord : peut compléter `map_action.explain.subtitle` pour
-    signaler à l'utilisateur les filtres ignorés (variety, season).
+    Side effect: may populate `map_action.explain.subtitle` to
+    inform the user about ignored filters (variety, season).
     """
     if map_action.op == "highlight":
         return None
     if map_action.metric is None:
-        logger.warning("fetch_map_data appelé sans metric (op=%s)", map_action.op)
+        logger.warning("fetch_map_data called without metric (op=%s)", map_action.op)
         return None
 
     if map_action.op == "compare":
@@ -114,13 +114,13 @@ def fetch_map_data(map_action: MapAction) -> DataPayload | ComparisonData | None
     return _fetch_simple(map_action)
 
 
-# ─── Implémentation : requête simple ───────────────────────────────────────
+# ─── Implementation: simple query ───────────────────────────────────────
 
 
 def _fetch_simple(map_action: MapAction) -> DataPayload:
-    """Une seule requête SQL groupée par région."""
+    """Single SQL query grouped by region."""
     metric: Metric = map_action.metric  # type: ignore[assignment]
-    level: DataLevel = "region"  # V1 : toujours region (country agrégé serait 1 ligne)
+    level: DataLevel = "region"  # V1: always region (aggregated country would be 1 row)
     rows = _execute(map_action.filters, metric, group_by=["region"])
     areas = _rows_to_areas(rows, region_col_index=0, value_col_index=1)
     sql_formula, unit = METRIC_SQL[metric]
@@ -129,8 +129,8 @@ def _fetch_simple(map_action: MapAction) -> DataPayload:
 
 
 def _fetch_comparison(map_action: MapAction) -> ComparisonData:
-    """Deux requêtes parallèles selon l'axe de comparaison."""
-    assert map_action.comparison is not None  # garanti par le validator
+    """Two parallel queries based on the comparison axis."""
+    assert map_action.comparison is not None  # guaranteed by the validator
     assert map_action.metric is not None
     metric: Metric = map_action.metric
 
@@ -150,11 +150,11 @@ def _fetch_comparison(map_action: MapAction) -> ComparisonData:
     )
 
 
-# ─── Construction et exécution de la requête SQL ──────────────────────────
+# ─── SQL query building and execution ──────────────────────────────────
 
 
 def _execute(filters: MapActionFilters, metric: Metric, group_by: list[str]) -> list[list[Any]]:
-    """Construit les params engine + exécute. Retourne les rows brutes."""
+    """Build engine params and execute. Returns raw rows."""
     sql_formula, _ = METRIC_SQL[metric]
     metrics_sql = [f"{sql_formula} as value"]
     metrics_sql.extend(f"{expr} as {alias}" for _, alias, expr in TOOLTIP_AUX_COLS)
@@ -169,16 +169,16 @@ def _execute(filters: MapActionFilters, metric: Metric, group_by: list[str]) -> 
     try:
         result = engine.execute_query(params)
     except Exception as exc:
-        logger.warning("ClickHouse indisponible pour map_facts : %s", exc)
+        logger.warning("ClickHouse unavailable for map_facts: %s", exc)
         return []
     return result.get("data", [])
 
 
 def _build_where(filters: MapActionFilters) -> dict[str, Any]:
-    """Traduit `MapActionFilters` en dict pour `engine.execute_query['filters']`.
+    """Convert `MapActionFilters` into a dict for `engine.execute_query['filters']`.
 
-    `variety` et `season` sont volontairement ignorés en V1 (la table
-    `agri_stats` n'a pas ces colonnes). L'utilisateur est averti via
+    `variety` and `season` are intentionally ignored in V1 (the table
+    `agri_stats` does not have these columns). The user is notified via
     `_annotate_ignored_filters`.
     """
     where: dict[str, Any] = {}
@@ -197,18 +197,18 @@ def _build_where(filters: MapActionFilters) -> dict[str, Any]:
 
 
 def _normalize_crop(crop: str) -> str:
-    """Aligne la casse/accent culture sur ce qui est dans la DB."""
+    """Match the crop case/accents to what is in the DB."""
     return CULTURE_NORMALIZE.get(crop.lower().strip(), crop)
 
 
-# ─── Mapping rows → AreaData ──────────────────────────────────────────────
+# ─── rows → AreaData mapping ──────────────────────────────────────────────
 
 
 def _rows_to_areas(rows: list[list[Any]], region_col_index: int, value_col_index: int) -> list[AreaData]:
-    """Transforme les rows ClickHouse en list[AreaData] avec rang calculé.
+    """Transform ClickHouse rows into list[AreaData] with computed rank.
 
-    Format des rows attendu : [region, value, rendement_kg_ha, production_t, prix_ar_kg]
-    Les colonnes auxiliaires alimentent le `tooltip` pour le hover front.
+    Expected row format: [region, value, rendement_kg_ha, production_t, prix_ar_kg]
+    Auxiliary columns populate the `tooltip` for frontend hover.
     """
     areas: list[AreaData] = []
     for row in rows:
@@ -216,24 +216,24 @@ def _rows_to_areas(rows: list[list[Any]], region_col_index: int, value_col_index
         slug = DB_REGION_TO_SLUG.get(db_region, _slugify_unknown(db_region))
         value = _safe_float(row[value_col_index])
         tooltip: dict[str, Any] = {}
-        # Aux cols : indices 2, 3, 4 si présents (rendement, production, prix)
+        # Aux cols: indices 2, 3, 4 if present (yield, production, price)
         for i, (key, _alias, _expr) in enumerate(TOOLTIP_AUX_COLS, start=value_col_index + 1):
             if i < len(row):
                 tooltip[key] = _safe_float(row[i])
         areas.append(AreaData(slug=slug, name=db_region, value=value, tooltip=tooltip))
 
-    # Tri décroissant + rang (None pour les valeurs manquantes)
+    # Sort descending + rank (None for missing values)
     valued = [a for a in areas if a.value is not None]
     valued.sort(key=lambda a: a.value or 0, reverse=True)
     for rank, area in enumerate(valued, start=1):
         area.rank = rank
-    # On garde l'ordre par valeur décroissante puis null à la fin
+    # Keep order by descending value then nulls at the end
     nulls = [a for a in areas if a.value is None]
     return valued + nulls
 
 
 def _rows_to_comparison_areas(rows: list[list[Any]]) -> list[ComparisonAreaData]:
-    """Version allégée pour les payloads de comparaison (pas de tooltip ni de name)."""
+    """Lightweight version for comparison payloads (no tooltip or name)."""
     out: list[ComparisonAreaData] = []
     for row in rows:
         slug = DB_REGION_TO_SLUG.get(row[0], _slugify_unknown(row[0]))
@@ -251,7 +251,7 @@ def _rows_to_comparison_areas(rows: list[list[Any]]) -> list[ComparisonAreaData]
 
 
 def _safe_float(v: Any) -> float | None:
-    """Convertit en float, retourne None pour les valeurs manquantes ou non-numériques."""
+    """Convert to float, return None for missing or non-numeric values."""
     if v is None:
         return None
     try:
@@ -264,7 +264,7 @@ def _safe_float(v: Any) -> float | None:
 
 
 def _slugify_unknown(db_value: str) -> str:
-    """Fallback : si une région DB n'est pas dans le mapping, on slugifie naïvement."""
+    """Fallback: if a DB region is not in the mapping, naively slugify it."""
     return (
         db_value.lower()
         .replace("'", "-")
@@ -276,35 +276,35 @@ def _slugify_unknown(db_value: str) -> str:
 def _filters_from_comparison_side(
     base: MapActionFilters, side_overrides: dict[str, Any]
 ) -> MapActionFilters:
-    """Fusionne les filtres communs du map_action racine avec les overrides du côté."""
+    """Merge the base map_action common filters with the side overrides."""
     merged = base.model_dump()
     merged.update({k: v for k, v in side_overrides.items() if v is not None})
     return MapActionFilters.model_validate(merged)
 
 
 def _annotate_ignored_filters(map_action: MapAction) -> None:
-    """Ajoute un warning dans `explain.subtitle` si variety ou season sont utilisés.
+    """Add a warning to `explain.subtitle` if variety or season are used.
 
-    V1 : ces filtres sont acceptés à la validation mais ignorés par le SQL
-    (la table n'a pas les colonnes). On le signale poliment à l'utilisateur.
+    V1: these filters are accepted at validation but ignored by SQL
+    (the table does not have the columns). We politely inform the user.
     """
     notes: list[str] = []
     if map_action.filters.variety:
-        notes.append(f"variété « {map_action.filters.variety} » non encore filtrable (résultats sur l'ensemble {map_action.filters.crop or 'cultures'})")
+        notes.append(f"variety « {map_action.filters.variety} » not yet filterable (results cover all {map_action.filters.crop or 'crops'})")
     if map_action.filters.season:
-        notes.append(f"saison « {map_action.filters.season} » non encore filtrable")
+        notes.append(f"season « {map_action.filters.season} » not yet filterable")
 
     if not notes:
         return
 
     warning = " — ".join(notes)
     if map_action.explain is None:
-        # On ne crée pas un Explain ex-nihilo : c'est au LLM de fournir le titre.
-        # Le warning sera perdu mais c'est exceptionnel (LLM doit toujours produire explain).
-        logger.info("Filtres ignorés sans explain pour rattacher le warning : %s", warning)
+        # We don't create an Explain from scratch: it's up to the LLM to provide the title.
+        # The warning will be lost but this is exceptional (LLM must always produce explain).
+        logger.info("Ignored filters without explain to attach warning to: %s", warning)
         return
 
     if map_action.explain.subtitle:
-        map_action.explain.subtitle = f"{map_action.explain.subtitle} — Note : {warning}"
+        map_action.explain.subtitle = f"{map_action.explain.subtitle} — Note: {warning}"
     else:
-        map_action.explain.subtitle = f"Note : {warning}"
+        map_action.explain.subtitle = f"Note: {warning}"

@@ -11,7 +11,7 @@ import { useChatStream } from './useChatStream';
 
 function ModeToggle({ mode, setMode }: { mode: string; setMode: (m: string) => void }) {
   const tabs = [
-    { key: 'paysan', label: 'Paysan' },
+    { key: 'paysan', label: 'Farmer' },
     { key: 'expert', label: 'Expert' },
   ];
   return (
@@ -83,9 +83,9 @@ export function AgriculturalChat() {
   };
 
   const agriculturalSuggestions = [
-    { label: 'Variétés riz sol rouge Analamanga', subtitle: 'Conseils de plantation' },
-    { label: 'Maladies du riz par région', subtitle: 'Diagnostic & traitement' },
-    { label: 'Prévisions météo agricoles', subtitle: 'Climat & saisons' },
+    { label: 'Red soil rice varieties Analamanga', subtitle: 'Planting tips' },
+    { label: 'Rice diseases by region', subtitle: 'Diagnosis & treatment' },
+    { label: 'Agricultural weather forecasts', subtitle: 'Climate & seasons' },
   ];
 
   return (
@@ -102,7 +102,7 @@ export function AgriculturalChat() {
               textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
               margin: 0, marginBottom: 6,
             }}>
-              Chat · Assistant agricole IA
+              Chat · AI agricultural assistant
             </p>
           </div>
           <ModeToggle mode={userMode} setMode={setUserMode} />
@@ -119,7 +119,7 @@ export function AgriculturalChat() {
             textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
             margin: 0,
           }}>
-            Conversation en cours
+            Conversation in progress
           </p>
           <ModeToggle mode={userMode} setMode={setUserMode} />
         </div>
@@ -193,11 +193,11 @@ export function AgriculturalChat() {
               <PromptInputTextarea
                 value={inputValue}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputValue(e.target.value)}
-                placeholder="Posez votre question agricole…"
+                placeholder="Ask your agricultural question..."
                 className="text-[var(--text-primary)] placeholder:text-[rgba(255,255,255,0.40)] text-[15px]"
               />
               <PromptInputActions>
-                <PromptInputAction tooltip="Dictée vocale">
+                <PromptInputAction tooltip="Voice input">
                   <button
                     type="button"
                     style={{
@@ -213,7 +213,7 @@ export function AgriculturalChat() {
                     <Mic size={16} />
                   </button>
                 </PromptInputAction>
-                <PromptInputAction tooltip="Envoyer · Entrée">
+                <PromptInputAction tooltip="Send · Enter">
                   <button
                     type="submit"
                     disabled={!inputValue.trim() || isStreaming}
@@ -246,7 +246,7 @@ export function AgriculturalChat() {
                   background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.55)',
                   letterSpacing: '0.02em', textTransform: 'none', marginRight: 6,
                 }}>↵</kbd>
-                envoyer
+                send
                 <span style={{ margin: '0 10px', opacity: 0.4 }}>·</span>
                 <kbd style={{
                   fontFamily: 'var(--font-mono)', fontSize: 10,
@@ -254,9 +254,9 @@ export function AgriculturalChat() {
                   background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.55)',
                   letterSpacing: '0.02em', textTransform: 'none', marginRight: 6,
                 }}>⇧↵</kbd>
-                nouvelle ligne
+                new line
               </span>
-              <span>{userMode === 'expert' ? 'Mode expert' : 'Mode paysan'}</span>
+              <span>{userMode === 'expert' ? 'Expert mode' : 'Farmer mode'}</span>
             </div>
           </form>
         </div>

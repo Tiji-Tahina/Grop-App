@@ -24,21 +24,21 @@ const glass = (extra = {}) => ({
 
 const BIOME_LABELS = {
   tropical: 'Tropical',
-  rainforest: 'Forêt pluviale',
+  rainforest: 'Rainforest',
   highland: 'Hauts Plateaux',
   savanna: 'Savane',
-  spiny: 'Forêt épineuse',
+  spiny: 'Spiny Forest',
   mangrove: 'Mangrove',
   transition: 'Transition',
   dry: 'Aride',
 };
 
 const CLIMATE_LABELS = {
-  wet: 'Humide',
-  humid: 'Semi-humide',
-  highland: 'Altitude',
-  dry: 'Sec',
-  arid: 'Aride',
+  wet: 'Wet',
+  humid: 'Semi-humid',
+  highland: 'Highland',
+  dry: 'Dry',
+  arid: 'Arid',
 };
 
 export function RegionSidebar({ node, onClose }) {
@@ -77,7 +77,7 @@ export function RegionSidebar({ node, onClose }) {
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
             <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 600 }}>
-              RÉGION · MADAGASCAR
+              REGION · MADAGASCAR
             </span>
             <h3 style={{ fontSize: 21, fontWeight: 800, color: '#fff', margin: '3px 0 0', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
               {node.label}
@@ -125,7 +125,7 @@ export function RegionSidebar({ node, onClose }) {
             <span style={{ fontSize: 12, fontWeight: 700, color: node.positive ? '#22c55e' : '#ef4444' }}>
               {node.growth}
             </span>
-            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)' }}>/an</span>
+            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)' }}>/yr</span>
           </div>
         </motion.div>
 
@@ -133,7 +133,7 @@ export function RegionSidebar({ node, onClose }) {
         <motion.div custom={2} variants={blockVariants} initial="hidden" animate="visible"
           style={{ ...glass(), padding: '14px 15px' }}>
           <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4, marginBottom: 7 }}>
-            <Activity size={9} /> PIB estimé
+            <Activity size={9} /> Estimated GDP
           </div>
           <div style={{ fontSize: 16, fontWeight: 800, color: accent, lineHeight: 1.2 }}>{node.gdp}</div>
           <div style={{ marginTop: 8, height: 3, background: 'rgba(77, 255, 145, 0.08)', borderRadius: 99, overflow: 'hidden' }}>
@@ -147,12 +147,12 @@ export function RegionSidebar({ node, onClose }) {
         </motion.div>
       </div>
 
-      {/* Sparkline tendance */}
+      {/* Sparkline trend */}
       {node.sparkline && (
         <motion.div custom={3} variants={blockVariants} initial="hidden" animate="visible"
           style={{ ...glass(), padding: '13px 15px' }}>
           <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600, marginBottom: 8 }}>
-            Tendance économique 7 ans
+            7-year economic trend
           </div>
           <svg viewBox="0 0 300 48" style={{ width: '100%', height: 48 }}>
             <defs>
@@ -192,7 +192,7 @@ export function RegionSidebar({ node, onClose }) {
       <motion.div custom={4} variants={blockVariants} initial="hidden" animate="visible"
         style={{ ...glass(), padding: '13px 15px' }}>
         <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4, marginBottom: 8 }}>
-          <Leaf size={9} /> Cultures principales
+          <Leaf size={9} /> Main Crops
         </div>
         <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
           {cropList.map(c => (
@@ -210,13 +210,13 @@ export function RegionSidebar({ node, onClose }) {
       <motion.div custom={5} variants={blockVariants} initial="hidden" animate="visible"
         style={{ ...glass(), padding: '13px 15px' }}>
         <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600, marginBottom: 10 }}>
-          Territoire
+          Territory
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
           {[
-            { label: 'Superficie', value: node.surface },
+            { label: 'Area', value: node.surface },
             { label: 'Biome',      value: BIOME_LABELS[node.biome]   ?? node.biome   ?? '—' },
-            { label: 'Climat',     value: CLIMATE_LABELS[node.climate] ?? node.climate ?? '—' },
+            { label: 'Climate',     value: CLIMATE_LABELS[node.climate] ?? node.climate ?? '—' },
           ].map(({ label, value }) => (
             <div key={label}>
               <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', marginBottom: 3 }}>{label}</div>
@@ -230,10 +230,10 @@ export function RegionSidebar({ node, onClose }) {
       <motion.div custom={6} variants={blockVariants} initial="hidden" animate="visible"
         style={{ ...glass({ flexShrink: 0 }), padding: '13px 15px', marginBottom: 4 }}>
         <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4, marginBottom: 8 }}>
-          <BookOpen size={9} /> Note d'analyse
+          <BookOpen size={9} /> Analysis Note
         </div>
         <div style={{ fontSize: 10, color: '#4DFF91', marginBottom: 6, opacity: 0.65, fontFamily: 'monospace' }}>
-          [[{node.label}]] · analyse régionale
+          [[{node.label}]] · regional analysis
         </div>
         <div style={{
           fontSize: 12, color: 'rgba(255,255,255,0.68)', lineHeight: 1.8,

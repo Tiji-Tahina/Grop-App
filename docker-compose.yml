@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  # ─── Base de données ──────────────────────────────────────────────
+  # ─── Database ──────────────────────────────────────────────
   db:
     image: postgres:16-alpine
     restart: unless-stopped
@@ -63,7 +63,7 @@ services:
     ports:
       - "80:80"
 
-  # ─── Celery Worker (tâches async : scraping, indexation) ─────────
+  # ─── Celery Worker (async tasks: scraping, indexing) ─────────
   celery:
     build:
       context: .

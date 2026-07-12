@@ -15,22 +15,22 @@ from data_werehouse.olap_engine import engine
 def predict(request):
     """
     POST /api/predictions/predict/
-    Lance une prédiction de rendement pour une culture.
+    Launches a yield prediction for a crop.
     """
     serializer = PredictRequestSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     data = serializer.validated_data
 
-    # Vérifier que la culture appartient à l'utilisateur
+    # Verify that the crop belongs to the user
     try:
         crop = Crop.objects.select_related('farm').get(
             pk=data['crop_id'],
             farm__owner=request.user,
         )
     except Crop.DoesNotExist:
-        return Response({'error': 'Culture introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'Crop not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-    # Construire les features
+    # Build features
     features = {
         'region': crop.farm.region,
         'altitude_m': crop.farm.altitude_m or 800,
@@ -49,12 +49,12 @@ def predict(request):
     if 'error' in result:
         return Response({'error': result['error']}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Récupérer le modèle actif (optionnel)
+    # Retrieve the active model (optional)
     active_model = MLModelVersion.objects.filter(
         crop_type=crop.crop_type, is_active=True
     ).first()
 
-    # Sauvegarder la prédiction
+    # Save the prediction
     prediction = Prediction.objects.create(
         farm=crop.farm,
         crop=crop,
@@ -84,7 +84,7 @@ class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
 def olap_query(request):
     """
     POST /api/predictions/analytics/
-    Point d'entrée unique pour toutes les opérations OLAP (Slice, Dice, etc.)
+    Single entry point for all OLAP operations (Slice, Dice, etc.)
     """
     try:
         results = engine.execute_query(request.data)

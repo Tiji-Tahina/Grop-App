@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MapLoadingSkeleton({ forced = false }) {
   const { active, progress } = useProgress();
-  // On affiche le skeleton si forcé (ex: pendant le lazy-load du bundle JS)
-  // ou si useProgress détecte un chargement d'assets 3D.
+  // Show skeleton if forced (e.g., during JS bundle lazy-load)
+  // or if useProgress detects a 3D asset loading.
   const show = forced || active;
 
   return (
@@ -23,7 +23,7 @@ export default function MapLoadingSkeleton({ forced = false }) {
         >
           {/* Skeleton / Animation */}
           <div style={{ position: 'relative', width: 140, height: 140, marginBottom: 40 }}>
-            {/* Cercle extérieur rotatif */}
+            {/* Rotating outer circle */}
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
@@ -33,7 +33,7 @@ export default function MapLoadingSkeleton({ forced = false }) {
                 borderRadius: '50%',
               }}
             />
-            {/* Cercle intérieur rotatif (sens inverse) */}
+            {/* Rotating inner circle (counter-clockwise) */}
             <motion.div
               animate={{ rotate: -360 }}
               transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
@@ -45,7 +45,7 @@ export default function MapLoadingSkeleton({ forced = false }) {
                 borderRadius: '50%',
               }}
             />
-            {/* Pulsation centrale */}
+            {/* Central pulse */}
             <motion.div
               animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.35, 0.15] }}
               transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
@@ -55,7 +55,7 @@ export default function MapLoadingSkeleton({ forced = false }) {
                 borderRadius: '50%',
               }}
             />
-            {/* Pourcentage au centre */}
+            {/* Center percentage */}
             <div style={{
               position: 'absolute', inset: 0,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -72,14 +72,14 @@ export default function MapLoadingSkeleton({ forced = false }) {
             letterSpacing: '0.18em', textTransform: 'uppercase',
             margin: 0, marginBottom: 12, fontFamily: 'var(--font-display)'
           }}>
-            Chargement de la Carte 3D
+            Loading 3D Map
           </h2>
           <p style={{
             fontSize: 11, color: 'rgba(255, 255, 255, 0.45)',
             letterSpacing: '0.06em', margin: 0,
             maxWidth: 320, textAlign: 'center', lineHeight: 1.6
           }}>
-            Initialisation de l'environnement topographique et des données agraires...
+            Initializing topographic environment and agricultural data...
           </p>
         </motion.div>
       )}

@@ -1,12 +1,12 @@
 """
-Étape 3 du pipeline : récupération de documents pertinents (RAG).
+Step 3 of the pipeline: document retrieval (RAG).
 
-Gère 3 cas :
-  - Score élevé  (> 0.70) : données fiables trouvées
-  - Score moyen  (0.40-0.70) : données partielles
-  - Score faible (< 0.40) : rien de pertinent → fallback + disclaimer
+Handles 3 cases:
+  - High score  (> 0.70): reliable data found
+  - Medium score (0.40-0.70): partial data
+  - Low score  (< 0.40): nothing relevant → fallback + disclaimer
 
-Input  : dict enrichi de l'ontologie { enriched_text, context_tags, … }
+Input  : enriched dict from ontology { enriched_text, context_tags, ... }
 Output : dict { retrieved_docs, rag_context, confidence_level, has_data }
 """
 import logging
@@ -16,22 +16,22 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
-# Seuils de confiance basés sur la distance L2 FAISS
-# Distance L2 faible = vecteurs proches = contenu similaire
-SCORE_HIGH   = 0.70   # Données très pertinentes
-SCORE_MEDIUM = 0.40   # Données partiellement pertinentes
-# En dessous de SCORE_MEDIUM → données non fiables
+# Confidence thresholds based on FAISS L2 distance
+# Low L2 distance = close vectors = similar content
+SCORE_HIGH   = 0.70   # Highly relevant data
+SCORE_MEDIUM = 0.40   # Partially relevant data
+# Below SCORE_MEDIUM → unreliable data
 
 
 def _load_vector_store():
-    """Charge le vector store FAISS s'il existe, sinon retourne None."""
+    """Loads the FAISS vector store if it exists, otherwise returns None."""
     try:
         import faiss
         import pickle
 
         store_path = Path(settings.RAG_VECTOR_STORE_PATH)
         if not store_path.exists():
-            logger.warning("Vector store introuvable : %s", store_path)
+            logger.warning("Vector store not found: %s", store_path)
             return None, None
 
         index = faiss.read_index(str(store_path / 'index.faiss'))
@@ -39,37 +39,37 @@ def _load_vector_store():
             metadata = pickle.load(f)
         return index, metadata
     except ImportError:
-        logger.warning("FAISS non installé — RAG désactivé.")
+        logger.warning("FAISS not installed — RAG disabled.")
         return None, None
 
 
 def _distance_to_score(distance: float) -> float:
-    """Convertit une distance L2 FAISS en score de similarité [0-1]."""
+    """Converts an FAISS L2 distance to a similarity score [0-1]."""
     return float(1 / (1 + distance))
 
 
 def retrieve(ontology_result: dict, top_k: int = None) -> dict:
     """
-    Récupère les documents pertinents et évalue leur confiance.
+    Retrieves relevant documents and evaluates their confidence.
 
     Returns:
-        dict avec :
-          retrieved_docs    : liste des documents trouvés
-          rag_context       : texte à injecter dans le prompt LLM
+        dict with:
+          retrieved_docs    : list of found documents
+          rag_context       : text to inject into the LLM prompt
           confidence_level  : 'high' | 'medium' | 'low' | 'none'
-          has_data          : bool — si des données utilisables ont été trouvées
-          disclaimer        : message à afficher à l'utilisateur si nécessaire
+          has_data          : bool — whether usable data was found
+          disclaimer        : message to display to user if necessary
     """
     if top_k is None:
         top_k = settings.RAG_TOP_K
 
-    # Question hors domaine → déjà bloquée par l'ontologie
+    # Question out of domain → already blocked by ontology
     if not ontology_result.get('is_valid'):
         return _empty_result()
 
     index, metadata = _load_vector_store()
 
-    # Vector store non disponible (dev sans index)
+    # Vector store unavailable (dev without index)
     if index is None:
         return _fallback_static(ontology_result.get('context_tags', []),
                                 ontology_result.get('ontology_facts', ''))
@@ -79,14 +79,14 @@ def retrieve(ontology_result: dict, top_k: int = None) -> dict:
 
         from rag.embeddings import embed_query
 
-        # ── Expansion de requête via l'ontologie ──────────────────────────────
+        # ── Query expansion via ontology ──────────────────────────────
         base_query = ontology_result['enriched_text']
         expanded_query = _expand_query(base_query, ontology_result.get('matched_keywords', []))
 
-        # fastembed renvoie un np.ndarray par texte ; on en fait un batch [1, dim]
+        # fastembed returns an np.ndarray per text; we batch it into [1, dim]
         query_vec = np.array([embed_query(expanded_query)], dtype='float32')
 
-        # Récupérer plus de candidats pour filtrer ensuite
+        # Retrieve more candidates to filter afterwards
         n_candidates = min(top_k * 3, index.ntotal)
         distances, indices = index.search(query_vec, n_candidates)
 
@@ -99,26 +99,26 @@ def retrieve(ontology_result: dict, top_k: int = None) -> dict:
             doc['score'] = score
             docs.append(doc)
 
-        # Trier par score décroissant
+        # Sort by descending score
         docs.sort(key=lambda d: d['score'], reverse=True)
 
-        # Garder seulement top_k
+        # Keep only top_k
         docs = docs[:top_k]
 
         return _build_result(docs, ontology_result.get('context_tags', []),
                              ontology_result.get('ontology_facts', ''))
 
     except Exception as e:
-        logger.error("Erreur RAG retrieval : %s", e)
+        logger.error("RAG retrieval error: %s", e)
         return _fallback_static(ontology_result.get('context_tags', []),
                                 ontology_result.get('ontology_facts', ''))
 
 
 def _expand_query(base_query: str, matched_keywords: list) -> str:
     """
-    Enrichit la requête FAISS avec les concepts liés trouvés dans l'ontologie.
-    Ex : "Makalioka" → ajoute "Riz, Variété de Culture, Hybride, FOFIFA"
-    Améliore le rappel sémantique sans changer la question originale.
+    Enriches the FAISS query with related concepts found in the ontology.
+    E.g., "Makalioka" → adds "Rice, Crop Variety, Hybrid, FOFIFA"
+    Improves semantic recall without changing the original question.
     """
     if not matched_keywords:
         return base_query
@@ -126,7 +126,7 @@ def _expand_query(base_query: str, matched_keywords: list) -> str:
         from rag.ontology_graph import get_related_concepts
         extra_terms = []
         seen = set()
-        for kw in matched_keywords[:5]:  # limiter pour la perf
+        for kw in matched_keywords[:5]:  # limit for performance
             related = get_related_concepts(kw)
             for term in related[:3]:
                 if term not in seen and term.lower() not in base_query.lower():
@@ -134,24 +134,24 @@ def _expand_query(base_query: str, matched_keywords: list) -> str:
                     seen.add(term)
         if extra_terms:
             expanded = base_query + ' ' + ' '.join(extra_terms)
-            logger.debug("Requête FAISS élargie : +%d termes", len(extra_terms))
+            logger.debug("FAISS query expanded: +%d terms", len(extra_terms))
             return expanded
     except Exception as e:
-        logger.debug("Expansion ontologie échouée : %s", e)
+        logger.debug("Ontology expansion failed: %s", e)
     return base_query
 
 
 def _build_result(docs: list, context_tags: list, ontology_facts: str = '') -> dict:
     """
-    Évalue la qualité des résultats et construit la réponse appropriée.
-    C'est ici que se gère le cas "rien trouvé" ou "données insuffisantes".
+    Evaluates the quality of results and builds the appropriate response.
+    This is where the "nothing found" or "insufficient data" cases are handled.
     """
     if not docs:
         return _no_data_result(context_tags, ontology_facts)
 
     best_score = docs[0]['score']
 
-    # ── CAS 1 : Données de haute qualité ──────────────────────────────
+    # ── CASE 1: High-quality data ──────────────────────────────
     if best_score >= SCORE_HIGH:
         good_docs = [d for d in docs if d['score'] >= SCORE_MEDIUM]
         rag_context = _format_context(good_docs, ontology_facts)
@@ -163,7 +163,7 @@ def _build_result(docs: list, context_tags: list, ontology_facts: str = '') -> d
             'disclaimer': None,
         }
 
-    # ── CAS 2 : Données partiellement pertinentes ──────────────────────
+    # ── CASE 2: Partially relevant data ──────────────────────
     if best_score >= SCORE_MEDIUM:
         rag_context = _format_context(docs, ontology_facts)
         return {
@@ -172,49 +172,49 @@ def _build_result(docs: list, context_tags: list, ontology_facts: str = '') -> d
             'confidence_level': 'medium',
             'has_data': True,
             'disclaimer': (
-                "⚠️ Les informations disponibles dans ma base de données sont "
-                "partiellement liées à votre question. Je réponds du mieux possible "
-                "mais je vous recommande de vérifier auprès d'un technicien MAEP local."
+                "⚠️ The information available in my database is "
+                "partially related to your question. I'm answering to the best of my ability "
+                "but I recommend verifying with a local MAEP technician."
             ),
         }
 
-    # ── CAS 3 : Score faible — rien de pertinent ──────────────────────
+    # ── CASE 3: Low score — nothing relevant ──────────────────────
     return _no_data_result(context_tags, ontology_facts)
 
 
 def _no_data_result(context_tags: list, ontology_facts: str = '') -> dict:
     """
-    Gère le cas où le RAG ne trouve rien d'utile.
-    Tente le fallback sur la knowledge base statique.
+    Handles the case where RAG finds nothing useful.
+    Attempts fallback to the static knowledge base.
     """
-    logger.info("Score RAG trop faible — fallback knowledge base statique")
+    logger.info("RAG score too low — falling back to static knowledge base")
     fallback = _fallback_static(context_tags, ontology_facts)
 
     if fallback['has_data']:
-        # Si des faits ontologiques sont présents → données spécifiques trouvées,
-        # pas de disclaimer trompeur
+        # If ontological facts are present → specific data found,
+        # no misleading disclaimer
         if ontology_facts:
             fallback['confidence_level'] = 'high'
             fallback['disclaimer'] = None
         else:
             fallback['confidence_level'] = 'low'
             fallback['disclaimer'] = (
-                "ℹ️ Je n'ai pas trouvé de données spécifiques à votre question dans ma base. "
-                "Je réponds avec des informations générales sur la riziculture malgache. "
-                "Pour des conseils précis à votre situation, consultez le MAEP ou un technicien FOFIFA."
+                "ℹ️ I didn't find specific data for your question in my database. "
+                "I'll answer with general information about Malagasy rice cultivation. "
+                "For advice specific to your situation, consult MAEP or a FOFIFA technician."
             )
         return fallback
 
-    # Vraiment rien — retourner un résultat vide avec instructions au LLM
+    # Truly nothing — return an empty result with instructions to the LLM
     return {
         'retrieved_docs': [],
         'rag_context': '',
         'confidence_level': 'none',
         'has_data': False,
         'disclaimer': (
-            "⚠️ Je n'ai pas de données spécifiques sur ce sujet dans ma base de connaissances. "
-            "Je vais répondre avec mes connaissances générales, mais cette réponse "
-            "doit être vérifiée auprès d'experts locaux (MAEP, FOFIFA, techniciens agricoles)."
+            "⚠️ I don't have specific data on this topic in my knowledge base. "
+            "I'll answer with my general knowledge, but this response "
+            "should be verified with local experts (MAEP, FOFIFA, agricultural technicians)."
         ),
     }
 
@@ -230,18 +230,18 @@ def _empty_result() -> dict:
 
 
 def _format_context(docs: list, ontology_facts: str = '') -> str:
-    """Formate les documents récupérés + les faits ontologiques pour le LLM."""
+    """Formats retrieved documents + ontological facts for the LLM."""
     parts = []
 
-    # Faits ontologiques en premier (pedigree, catégorie) si disponibles
+    # Ontological facts first (pedigree, category) if available
     if ontology_facts:
         parts.append(ontology_facts)
 
     for doc in docs:
-        source_label = doc.get('title', 'Source inconnue')
+        source_label = doc.get('title', 'Unknown source')
         score_pct = int(doc.get('score', 0) * 100)
         parts.append(
-            f"[Source: {source_label} — pertinence {score_pct}%]\n"
+            f"[Source: {source_label} — relevance {score_pct}%]\n"
             f"{doc.get('content', '')}"
         )
     return '\n\n---\n\n'.join(parts)
@@ -249,10 +249,10 @@ def _format_context(docs: list, ontology_facts: str = '') -> str:
 
 def _fallback_static(context_tags: list, ontology_facts: str = '') -> dict:
     """
-    Contexte statique de secours basé sur les tags ontologiques.
-    Utilisé quand FAISS n'est pas disponible ou le score est trop faible.
-    Ces données viennent de la knowledge base intégrée dans le code
-    (dernière ligne de défense avant "je ne sais pas").
+    Static fallback context based on ontological tags.
+    Used when FAISS is not available or the score is too low.
+    These data come from the knowledge base embedded in the code
+    (last line of defense before "I don't know").
     """
     fallbacks = {
         'yield_prediction': (
@@ -300,7 +300,7 @@ def _fallback_static(context_tags: list, ontology_facts: str = '') -> dict:
 
     context_parts = []
 
-    # Faits ontologiques en tête si disponibles
+    # Ontological facts first if available
     if ontology_facts:
         context_parts.append(ontology_facts)
 

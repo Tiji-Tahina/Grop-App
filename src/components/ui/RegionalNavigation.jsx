@@ -6,8 +6,8 @@ import Madagascar2DMap from '../madagascar2d/Madagascar2DMap';
 import { useMapActionBus, normalizeSlugForFront } from '../../contexts/MapActionContext';
 
 /* ============================================================
-   22 régions de Madagascar — statistiques.
-   Slugs alignés sur GADM 4.1 (= ceux de src/data/madagascarPaths.json).
+   22 regions of Madagascar — statistics.
+   Slugs aligned with GADM 4.1 (= those in src/data/madagascarPaths.json).
    ============================================================ */
 const REGIONS = [
   { id: 'diana',                name: 'Diana',                capital: 'Antsiranana',     population: 890000,  superficie: 19256, densite: 46.2, productionRiz: 41000, productionManioc: 35000, productionMais: 16000 },
@@ -34,11 +34,11 @@ const REGIONS = [
   { id: 'androy',               name: 'Androy',               capital: 'Ambovombe',       population: 480000,  superficie: 19317, densite: 24.8, productionRiz: 15000, productionManioc: 12000, productionMais: 6500  },
 ];
 
-const fmt = (n) => new Intl.NumberFormat('fr-FR').format(n);
+const fmt = (n) => new Intl.NumberFormat('en-US').format(n);
 
 /* ============================================================
    Region row — statskog year-selector pattern
-   Active = grand & blanc, autres = petits & dim
+   Active = large & white, others = small & dimmed
    ============================================================ */
 function RegionRow({ region, active, onClick, onHover, onLeave }) {
   return (
@@ -67,7 +67,7 @@ function RegionRow({ region, active, onClick, onHover, onLeave }) {
 }
 
 /* ============================================================
-   Hero stat — chiffre giant statskog
+   Giant stat number — statskog pattern
    ============================================================ */
 function HeroStat({ label, value, suffix }) {
   return (
@@ -100,11 +100,11 @@ function HeroStat({ label, value, suffix }) {
 }
 
 /* ============================================================
-   Main layout — 3 colonnes statskog
+   Main layout — 3-column statskog
    ============================================================ */
 export default function RegionalNavigation({ onRegionChange }) {
   // selectedId = currently focused region (drives map zoom + right panel)
-  // null = vue d'ensemble : carte montre les 22 régions
+  // null = overview: map shows all 22 regions
   const [selectedId, setSelectedId] = useState(null);
   const [hoveredId, setHoveredId] = useState(null);
 
@@ -119,10 +119,10 @@ export default function RegionalNavigation({ onRegionChange }) {
     onRegionChange?.(id);
   }, [onRegionChange]);
 
-  // ─── Bridge MapAction → carte ──────────────────────────────────────────
-  // Le chat publie un MapAction sur le bus (cf. MapActionContext). On l'applique
-  // au selectedId selon l'op. V1 : navigation seule (pas de coloriage par valeur,
-  // pas de mode compare split-screen — réservés à une future itération UI).
+  // ─── Bridge MapAction → map ──────────────────────────────────────────
+  // The chat publishes a MapAction on the bus (see MapActionContext). We apply it
+  // to selectedId based on the op. V1: navigation only (no value-based coloring,
+  // no compare split-screen mode — reserved for a future UI iteration).
   const { lastAction } = useMapActionBus();
   useEffect(() => {
     if (!lastAction) return;
@@ -138,7 +138,7 @@ export default function RegionalNavigation({ onRegionChange }) {
     } else if ((op === 'slice' || op === 'dice') && filters?.regions?.length === 1) {
       target = normalizeSlugForFront(filters.regions[0]);
     }
-    // op=compare ou slice/dice multi-régions : pas de selectedId à appliquer ici
+    // op=compare or multi-region slice/dice: no selectedId to apply here
 
     if (target !== undefined) {
       setSelectedId(target);
@@ -162,7 +162,7 @@ export default function RegionalNavigation({ onRegionChange }) {
           textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.42)',
           margin: 0, marginBottom: 24,
         }}>
-          Carte 3D · Régions
+          3D Map · Regions
         </p>
 
         <div style={{
@@ -219,7 +219,7 @@ export default function RegionalNavigation({ onRegionChange }) {
             color: '#FFFFFF', margin: 0,
             fontFamily: 'var(--font-display)',
           }}>
-            {selectedId ? panelRegion.name : <>22<span style={{ color: 'rgba(255,255,255,0.30)', fontWeight: 400 }}> régions</span></>}
+            {selectedId ? panelRegion.name : <>22<span style={{ color: 'rgba(255,255,255,0.30)', fontWeight: 400 }}> regions</span></>}
           </h1>
         </div>
 
@@ -244,7 +244,7 @@ export default function RegionalNavigation({ onRegionChange }) {
               textTransform: 'uppercase', color: 'rgba(255, 255, 255, 0.55)',
               margin: 0, marginBottom: 6, textAlign: 'right',
             }}>
-              {selectedId ? 'Région sélectionnée' : 'Vue d\'ensemble'}
+              {selectedId ? 'Selected region' : 'Overview'}
             </p>
             <p style={{
               fontSize: 12, color: 'rgba(255, 255, 255, 0.55)',
@@ -255,9 +255,9 @@ export default function RegionalNavigation({ onRegionChange }) {
             </p>
 
             <div style={{ textAlign: 'right' }}>
-              <HeroStat label="Population" value={fmt(panelRegion.population)} suffix="hab" />
-              <HeroStat label="Superficie" value={fmt(panelRegion.superficie)} suffix="km²" />
-              <HeroStat label="Densité" value={panelRegion.densite.toFixed(1)} suffix="hab/km²" />
+              <HeroStat label="Population" value={fmt(panelRegion.population)} suffix="pop" />
+              <HeroStat label="Area" value={fmt(panelRegion.superficie)} suffix="km²" />
+              <HeroStat label="Density" value={panelRegion.densite.toFixed(1)} suffix="pop/km²" />
             </div>
           </motion.aside>
         </AnimatePresence>
@@ -277,9 +277,9 @@ export default function RegionalNavigation({ onRegionChange }) {
               background: '#4DFF91', display: 'inline-block',
               animation: 'biolum 2.4s ease-in-out infinite',
             }} />
-            {selectedId ? 'Cliquer hors région · revenir' : 'Survoler · cliquer une région'}
+            {selectedId ? 'Click outside region · go back' : 'Hover · click a region'}
           </span>
-          <span>{fmt(panelRegion.productionRiz)} t · riz</span>
+          <span>{fmt(panelRegion.productionRiz)} t · rice</span>
         </div>
       </main>
     </div>

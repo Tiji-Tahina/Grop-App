@@ -1,5 +1,5 @@
 """
-Settings de développement — DEBUG activé, SQLite, CORS large.
+Development settings — DEBUG enabled, SQLite, wide CORS.
 """
 
 from dotenv import load_dotenv
@@ -24,5 +24,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
-# En dev, les emails s'affichent dans la console
+# In dev, emails are displayed in the console
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

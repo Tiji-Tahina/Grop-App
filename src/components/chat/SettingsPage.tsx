@@ -71,9 +71,9 @@ export function SettingsPage() {
     setNameLoading(true);
     try {
       await authAPI.updateProfile({ name }, getAccessToken());
-      setNameMsg({ type: 'success', text: 'Nom mis à jour avec succès.' });
+      setNameMsg({ type: 'success', text: 'Name updated successfully.' });
     } catch (err) {
-      setNameMsg({ type: 'error', text: err.response?.data?.error || 'Erreur lors de la mise à jour.' });
+      setNameMsg({ type: 'error', text: err.response?.data?.error || 'Error during update.' });
     } finally {
       setNameLoading(false);
     }
@@ -83,16 +83,16 @@ export function SettingsPage() {
     e.preventDefault();
     setPwdMsg(null);
     if (newPwd !== confirmPwd) {
-      setPwdMsg({ type: 'error', text: 'Les nouveaux mots de passe ne correspondent pas.' });
+      setPwdMsg({ type: 'error', text: 'The new passwords do not match.' });
       return;
     }
     setPwdLoading(true);
     try {
       await authAPI.updateProfile({ current_password: currentPwd, new_password: newPwd }, getAccessToken());
-      setPwdMsg({ type: 'success', text: 'Mot de passe mis à jour avec succès.' });
+      setPwdMsg({ type: 'success', text: 'Password updated successfully.' });
       setCurrentPwd(''); setNewPwd(''); setConfirmPwd('');
     } catch (err) {
-      setPwdMsg({ type: 'error', text: err.response?.data?.error || 'Erreur lors de la mise à jour.' });
+      setPwdMsg({ type: 'error', text: err.response?.data?.error || 'Error during update.' });
     } finally {
       setPwdLoading(false);
     }
@@ -102,18 +102,18 @@ export function SettingsPage() {
     <div className="flex-1 overflow-y-auto" style={{ background: 'transparent', position: 'relative' }}>
       <FluidBackground />
       <div style={{ background: 'transparent', padding: '24px 32px', position: 'relative', zIndex: 1 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>Paramètres</h2>
-        <p style={{ color: 'var(--text-secondary)', marginTop: 4, fontSize: 14 }}>Gérez les informations de votre compte</p>
+        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>Settings</h2>
+        <p style={{ color: 'var(--text-secondary)', marginTop: 4, fontSize: 14 }}>Manage your account information</p>
       </div>
 
       <div style={{ padding: '0 32px 32px', maxWidth: 720, position: 'relative', zIndex: 1 }}>
-        {/* Section : Informations du profil - sans card, sans logo */}
+        {/* Section: Profile information - no card, no logo */}
         <div style={{ marginBottom: 32, animation: 'fade-in-up 0.4s ease-out' }}>
-          <h3 style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 16 }}>Informations du profil</h3>
+          <h3 style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 16 }}>Profile Information</h3>
           
           <form onSubmit={handleNameSubmit}>
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 6 }}>Adresse email</label>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 6 }}>Email address</label>
               <input
                 type="email"
                 value={email}
@@ -124,17 +124,17 @@ export function SettingsPage() {
                   color: 'var(--text-muted)', cursor: 'not-allowed', outline: 'none',
                 }}
               />
-              <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>L'adresse email ne peut pas être modifiée.</p>
+              <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>Email address cannot be changed.</p>
             </div>
 
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 6 }}>Nom complet</label>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 6 }}>Full name</label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
                 required
-                placeholder="Votre nom"
+                placeholder="Your name"
                 style={{
                   width: '100%', padding: '12px 16px', borderRadius: 12,
                   background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
@@ -156,32 +156,32 @@ export function SettingsPage() {
               }}
             >
               <Save size={16} />
-              {nameLoading ? 'Enregistrement...' : 'Enregistrer les modifications'}
+              {nameLoading ? 'Saving...' : 'Save changes'}
             </button>
           </form>
         </div>
 
-        {/* Section : Sécurité - sans card, sans logo */}
+        {/* Section: Security - no card, no logo */}
         <div style={{ animation: 'fade-in-up 0.4s ease-out', animationDelay: '0.1s', animationFillMode: 'both' }}>
-          <h3 style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 16 }}>Changer le mot de passe</h3>
+          <h3 style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 16 }}>Change password</h3>
 
           <form onSubmit={handlePwdSubmit}>
             <PwdField
-              label="Mot de passe actuel"
+              label="Current password"
               value={currentPwd}
               onChange={setCurrentPwd}
               show={showCurrentPwd}
               setShow={setShowCurrentPwd}
             />
             <PwdField
-              label="Nouveau mot de passe"
+              label="New password"
               value={newPwd}
               onChange={setNewPwd}
               show={showNewPwd}
               setShow={setShowNewPwd}
             />
             <PwdField
-              label="Confirmer le nouveau mot de passe"
+              label="Confirm new password"
               value={confirmPwd}
               onChange={setConfirmPwd}
               show={showConfirmPwd}
@@ -201,7 +201,7 @@ export function SettingsPage() {
               }}
             >
               <Lock size={16} />
-              {pwdLoading ? 'Mise à jour...' : 'Mettre à jour le mot de passe'}
+              {pwdLoading ? 'Updating...' : 'Update password'}
             </button>
           </form>
         </div>

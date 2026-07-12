@@ -8,14 +8,14 @@ import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-route
 import { MapActionProvider } from './contexts/MapActionContext';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import Login from "./composant/login";
-import Register from "./composant/register";
+import Login from "./components-legacy/login";
+import Register from "./components-legacy/register";
 import { getAccessToken, clearTokens, authAPI } from "./api/auth";
 import { FluidBackground } from './components/ui/FluidBackground';
 
 // Lazy-loaded heavy pages — keep login fast.
 // three.js, globe.gl, d3 are only fetched when the user opens the matching page.
-const GlobeAnalysis      = lazy(() => import('./composant/GlobeAnalysis'));
+const GlobeAnalysis      = lazy(() => import('./components-legacy/GlobeAnalysis'));
 const AgriculturalChat   = lazy(() => import('./components/chat').then(m => ({ default: m.AgriculturalChat })));
 const RegionalNavigation = lazy(() => import('./components/ui/RegionalNavigation'));
 const ForecastPage       = lazy(() => import('./pages/ForecastPage').then(m => ({ default: m.ForecastPage })));
@@ -119,7 +119,7 @@ function MarkdownMessage({ content }) {
   );
 }
 
-/* Animations globales injectées en JS pour éviter un fichier CSS séparé */
+/* Global animations injected via JS to avoid a separate CSS file */
 const _chatStyles = `
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
   @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
@@ -145,8 +145,8 @@ function MainLayout() {
   const [darkMode, setDarkMode] = useState(true);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const [userInfo, setUserInfo] = useState({ name: 'Agriculteur', email: '', isAdmin: false });
-  const [userMode, setUserMode] = useState('expert'); // 'expert' ou 'paysan'
+  const [userInfo, setUserInfo] = useState({ name: 'Farmer', email: '', isAdmin: false });
+  const [userMode, setUserMode] = useState('expert'); // 'expert' or 'farmer'
   
   // Streaming state
   const [isStreaming, setIsStreaming] = useState(false);
@@ -164,8 +164,8 @@ useEffect(() => {
       .catch(() => {});
   }, []);
 
-  // Précharger le modèle 3D quand le réseau est libre, sans tirer @react-three/drei
-  // dans le bundle du login. L'import dynamique cohabite avec le chunk vendor-three.
+  // Preload the 3D model when the network is idle, without pulling @react-three/drei
+  // into the login bundle. Dynamic import coexists with the vendor-three chunk.
   useEffect(() => {
     const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1500));
     idle(() => {
@@ -211,20 +211,20 @@ useEffect(() => {
     const text = inputValue.trim();
     if (!text) return;
 
-    // Afficher le message utilisateur immediatement
+    // Display user message immediately
     setMessages(prev => [...prev, { text, sender: 'user' }]);
     setInputValue('');
 
-    // Indicateur streaming
+    // Streaming indicator
     setIsStreaming(true);
     setStreamingTime(0);
     setStreamingProgress(0);
     
-    // Creer abort controller
+    // Create abort controller
     const controller = new AbortController();
     setAbortController(controller);
 
-    // Message placeholder pour streaming
+    // Message placeholder for streaming
     const messageId = Date.now();
     setMessages(prev => [...prev, { 
       text: '', 
@@ -254,7 +254,7 @@ useEffect(() => {
         setIsStreaming(false);
         setMessages(prev => prev.map(m => 
           m.messageId === messageId ? { 
-            text: `Erreur ${response.status}`, 
+            text: `Error ${response.status}`, 
             sender: 'ai',
             loading: false,
           } : m
@@ -342,7 +342,7 @@ useEffect(() => {
               setMessages(prev => prev.map(m =>
                 m.messageId === messageId ? {
                   ...m,
-                  text: fullText || 'Reponse vide.',
+                  text: fullText || 'Empty response.',
                   sender: 'ai',
                   loading: false,
                   isStreaming: false,
@@ -352,7 +352,7 @@ useEffect(() => {
               setIsStreaming(false);
               setMessages(prev => prev.map(m =>
                 m.messageId === messageId ? {
-                  text: `Erreur: ${parts[3] || parts[1]}`,
+                  text: `Error: ${parts[3] || parts[1]}`,
                   sender: 'ai',
                   loading: false,
                 } : m
@@ -366,7 +366,7 @@ useEffect(() => {
       if (err.name === 'AbortError') {
         setMessages(prev => prev.map(m => 
           m.messageId === messageId ? { 
-            text: fullText + '\n\n[Generation arretee]', 
+            text: fullText + '\n\n[Generation stopped]', 
             sender: 'ai',
             loading: false,
           } : m
@@ -374,7 +374,7 @@ useEffect(() => {
       } else {
         setMessages(prev => prev.map(m => 
           m.messageId === messageId ? { 
-            text: 'Erreur de connexion.', 
+            text: 'Connection error.', 
             sender: 'ai',
             loading: false,
           } : m
@@ -423,12 +423,12 @@ useEffect(() => {
         {/* Nav Items */}
         <div style={{ flex: 1, padding: collapsed ? '0' : '8px 20px', display: 'flex', flexDirection: 'column', gap: 0 }}>
           <SidebarItem icon={<Home size={20} strokeWidth={1.5} />} label="Dashboard" collapsed={collapsed} active={currentPage === 'dashboard'} onClick={() => setCurrentPage('dashboard')} />
-          <SidebarItem icon={<Map size={20} strokeWidth={1.5} />} label="Carte 3D" collapsed={collapsed} active={currentPage === 'map3d'} onClick={() => setCurrentPage('map3d')} />
+          <SidebarItem icon={<Map size={20} strokeWidth={1.5} />} label="3D Map" collapsed={collapsed} active={currentPage === 'map3d'} onClick={() => setCurrentPage('map3d')} />
           <SidebarItem icon={<MessageSquare size={20} strokeWidth={1.5} />} label="Chat" collapsed={collapsed} active={currentPage === 'chat'} onClick={() => setCurrentPage('chat')} />
-          <SidebarItem icon={<CloudRain size={20} strokeWidth={1.5} />} label="Prévisions" collapsed={collapsed} active={currentPage === 'forecast'} onClick={() => setCurrentPage('forecast')} />
-          <SidebarItem icon={<Settings size={20} strokeWidth={1.5} />} label="Paramètres" collapsed={collapsed} active={currentPage === 'settings'} onClick={() => setCurrentPage('settings')} />
+          <SidebarItem icon={<CloudRain size={20} strokeWidth={1.5} />} label="Forecasts" collapsed={collapsed} active={currentPage === 'forecast'} onClick={() => setCurrentPage('forecast')} />
+          <SidebarItem icon={<Settings size={20} strokeWidth={1.5} />} label="Settings" collapsed={collapsed} active={currentPage === 'settings'} onClick={() => setCurrentPage('settings')} />
           {userInfo.isAdmin && (
-            <SidebarItem icon={<Users size={20} strokeWidth={1.5} />} label="Utilisateurs" collapsed={collapsed} active={currentPage === 'users'} onClick={() => setCurrentPage('users')} />
+            <SidebarItem icon={<Users size={20} strokeWidth={1.5} />} label="Users" collapsed={collapsed} active={currentPage === 'users'} onClick={() => setCurrentPage('users')} />
           )}
         </div>
 
@@ -451,14 +451,14 @@ useEffect(() => {
               onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.85)'}
               onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.42)'}
             >
-              <span>Thème</span>
+              <span>Theme</span>
               {darkMode ? <Moon size={13} strokeWidth={1.5} /> : <Sun size={13} strokeWidth={1.5} />}
             </button>
           )}
           {collapsed && (
             <button
               onClick={() => setDarkMode(!darkMode)}
-              title={darkMode ? 'Mode clair' : 'Mode sombre'}
+              title={darkMode ? 'Light mode' : 'Dark mode'}
               style={{
                 padding: 8, borderRadius: 8,
                 background: 'transparent', border: 'none',
@@ -480,7 +480,7 @@ useEffect(() => {
               <p style={{
                 fontSize: 10, color: 'var(--text-muted)',
                 letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500,
-              }}>{userInfo.isAdmin ? 'Admin' : 'Connecté'}</p>
+              }}>{userInfo.isAdmin ? 'Admin' : 'Connected'}</p>
             </div>
           )}
           
@@ -488,7 +488,7 @@ useEffect(() => {
           <div style={{ display: 'flex', gap: 4, justifyContent: collapsed ? 'center' : 'flex-end' }}>
             <button
               onClick={handleLogout}
-              title="Déconnexion"
+              title="Logout"
               style={{
                 padding: 8, borderRadius: 8,
                 background: 'transparent', border: 'none',
@@ -505,7 +505,7 @@ useEffect(() => {
       {/* Toggle Button — outside nav so overflow:hidden doesn't clip it */}
       <motion.button
         onClick={() => setCollapsed(!collapsed)}
-        title={collapsed ? 'Étendre' : 'Réduire'}
+        title={collapsed ? 'Expand' : 'Collapse'}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         style={{
@@ -573,7 +573,7 @@ function PageLoader() {
       letterSpacing: '0.18em',
       textTransform: 'uppercase',
     }}>
-      Chargement…
+      Loading…
     </div>
   );
 }
@@ -601,7 +601,7 @@ export default function App() {
   );
 }
 
-// Défini en dehors de SettingsPage pour éviter la perte de focus à chaque frappe
+// Defined outside SettingsPage to prevent losing focus on every keystroke
 function PwdField({ label, value, onChange, show, setShow }) {
   return (
     <div style={{ marginBottom: 24 }}>
@@ -714,9 +714,9 @@ function SettingsPage() {
     setNameLoading(true);
     try {
       await authAPI.updateProfile({ name }, getAccessToken());
-      setNameMsg({ type: 'success', text: 'Nom mis à jour avec succès.' });
+      setNameMsg({ type: 'success', text: 'Name updated successfully.' });
     } catch (err) {
-      setNameMsg({ type: 'error', text: err.response?.data?.error || 'Erreur lors de la mise à jour.' });
+      setNameMsg({ type: 'error', text: err.response?.data?.error || 'Error during update.' });
     } finally {
       setNameLoading(false);
     }
@@ -726,16 +726,16 @@ function SettingsPage() {
     e.preventDefault();
     setPwdMsg(null);
     if (newPwd !== confirmPwd) {
-      setPwdMsg({ type: 'error', text: 'Les nouveaux mots de passe ne correspondent pas.' });
+      setPwdMsg({ type: 'error', text: 'The new passwords do not match.' });
       return;
     }
     setPwdLoading(true);
     try {
       await authAPI.updateProfile({ current_password: currentPwd, new_password: newPwd }, getAccessToken());
-      setPwdMsg({ type: 'success', text: 'Mot de passe mis à jour avec succès.' });
+      setPwdMsg({ type: 'success', text: 'Password updated successfully.' });
       setCurrentPwd(''); setNewPwd(''); setConfirmPwd('');
     } catch (err) {
-      setPwdMsg({ type: 'error', text: err.response?.data?.error || 'Erreur lors de la mise à jour.' });
+      setPwdMsg({ type: 'error', text: err.response?.data?.error || 'Error during update.' });
     } finally {
       setPwdLoading(false);
     }
@@ -767,7 +767,7 @@ function SettingsPage() {
           textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
           margin: 0, marginBottom: 10,
         }}>
-          Paramètres · Compte
+          Account Settings
         </p>
         <h2 style={{
           fontSize: 'clamp(40px, 5vw, 64px)',
@@ -778,7 +778,7 @@ function SettingsPage() {
           color: '#FFFFFF',
           margin: 0,
         }}>
-          {name || 'Bonjour'}
+          {name || 'Hello'}
         </h2>
         <p style={{
           color: 'rgba(255,255,255,0.55)',
@@ -786,20 +786,20 @@ function SettingsPage() {
           margin: 0, marginTop: 12,
           fontFamily: 'var(--font-body)',
         }}>
-          {email || 'Gérez les informations de votre compte.'}
+          {email || 'Manage your account information.'}
         </p>
       </div>
 
       <div style={{ padding: '32px 56px 64px', maxWidth: 720, margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
 
-        {/* ─── Section : Informations du profil ─── */}
+        {/* ─── Section : Profile information ─── */}
         <div className="settings-section" style={{ marginBottom: 56 }}>
           <p style={{
             fontSize: 10, fontWeight: 600, letterSpacing: '0.16em',
             textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
             margin: 0, marginBottom: 6,
           }}>
-            Profil
+            Profile
           </p>
           <h3 style={{
             fontSize: 22, fontWeight: 700, color: '#FFFFFF',
@@ -807,10 +807,10 @@ function SettingsPage() {
             letterSpacing: '-0.02em',
             fontFamily: 'var(--font-display)',
           }}>
-            Informations
+            Information
           </h3>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: 0, marginBottom: 28 }}>
-            Modifiez votre nom d'affichage. L'adresse email est définitive.
+            Modify your display name. The email address is permanent.
           </p>
 
           <form onSubmit={handleNameSubmit}>
@@ -821,7 +821,7 @@ function SettingsPage() {
                 textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
                 marginBottom: 8,
               }}>
-                Adresse email
+                Email address
               </label>
               <input
                 type="email"
@@ -848,14 +848,14 @@ function SettingsPage() {
                 textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
                 marginBottom: 8,
               }}>
-                Nom complet
+                Full name
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
                 required
-                placeholder="Votre nom"
+                placeholder="Your name"
                 style={{
                   width: '100%', padding: '10px 0',
                   background: 'transparent',
@@ -881,7 +881,7 @@ function SettingsPage() {
               >
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
                   <Save size={14} strokeWidth={2.5} />
-                  {nameLoading ? 'Enregistrement' : 'Enregistrer'}
+                  {nameLoading ? 'Saving' : 'Save'}
                 </span>
                 {!nameLoading && <ChevronRight size={14} strokeWidth={2.5} />}
               </button>
@@ -889,7 +889,7 @@ function SettingsPage() {
           </form>
         </div>
 
-        {/* ─── Section : Sécurité ─── */}
+        {/* ─── Section : Security ─── */}
         <div className="settings-section" style={{
           paddingTop: 48,
           borderTop: '1px solid var(--border-subtle)',
@@ -899,7 +899,7 @@ function SettingsPage() {
             textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)',
             margin: 0, marginBottom: 6,
           }}>
-            Sécurité
+            Security
           </p>
           <h3 style={{
             fontSize: 22, fontWeight: 700, color: '#FFFFFF',
@@ -907,21 +907,21 @@ function SettingsPage() {
             letterSpacing: '-0.02em',
             fontFamily: 'var(--font-display)',
           }}>
-            Mot de passe
+            Password
           </h3>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', margin: 0, marginBottom: 28 }}>
-            Minimum 8 caractères.
+            Minimum 8 characters.
           </p>
 
           <form onSubmit={handlePwdSubmit}>
             <div className="settings-field">
-              <PwdField label="Mot de passe actuel" value={currentPwd} onChange={setCurrentPwd} show={showCurrentPwd} setShow={setShowCurrentPwd} />
+              <PwdField label="Current password" value={currentPwd} onChange={setCurrentPwd} show={showCurrentPwd} setShow={setShowCurrentPwd} />
             </div>
             <div className="settings-field">
-              <PwdField label="Nouveau mot de passe" value={newPwd} onChange={setNewPwd} show={showNewPwd} setShow={setShowNewPwd} />
+              <PwdField label="New password" value={newPwd} onChange={setNewPwd} show={showNewPwd} setShow={setShowNewPwd} />
             </div>
             <div className="settings-field">
-              <PwdField label="Confirmer le nouveau mot de passe" value={confirmPwd} onChange={setConfirmPwd} show={showConfirmPwd} setShow={setShowConfirmPwd} />
+              <PwdField label="Confirm new password" value={confirmPwd} onChange={setConfirmPwd} show={showConfirmPwd} setShow={setShowConfirmPwd} />
             </div>
 
             <SettingsAlert msg={pwdMsg} />
@@ -936,7 +936,7 @@ function SettingsPage() {
               >
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
                   <Lock size={14} strokeWidth={2.5} />
-                  {pwdLoading ? 'Mise à jour' : 'Mettre à jour'}
+                  {pwdLoading ? 'Updating' : 'Update password'}
                 </span>
                 {!pwdLoading && <ChevronRight size={14} strokeWidth={2.5} />}
               </button>
@@ -1055,7 +1055,7 @@ function UsersPage() {
   useEffect(() => {
     authAPI.getUsers(getAccessToken())
       .then(res => { setUsers(res.data); setLoading(false); })
-      .catch(() => { setError('Impossible de charger les utilisateurs.'); setLoading(false); });
+      .catch(() => { setError('Unable to load users.'); setLoading(false); });
   }, []);
 
   const filtered = users.filter(u =>
@@ -1069,7 +1069,7 @@ function UsersPage() {
 
   const formatDate = iso => {
     if (!iso) return '—';
-    return new Date(iso).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+    return new Date(iso).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
   };
 
   return (
@@ -1077,8 +1077,8 @@ function UsersPage() {
       <FluidBackground />
       {/* Header */}
       <div style={{ background: 'transparent', padding: '24px 32px', position: 'relative', zIndex: 1 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>Gestion des Utilisateurs</h2>
-        <p style={{ color: 'var(--text-secondary)', marginTop: 4, fontSize: 14 }}>{total} utilisateur{total !== 1 ? 's' : ''} inscrit{total !== 1 ? 's' : ''}</p>
+        <h2 style={{ fontSize: 28, fontWeight: 600, color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>User Management</h2>
+        <p style={{ color: 'var(--text-secondary)', marginTop: 4, fontSize: 14 }}>{total} registered user{total !== 1 ? 's' : ''}</p>
       </div>
 
       <div style={{ padding: '0 40px 40px', position: 'relative', zIndex: 1 }}>
@@ -1090,9 +1090,9 @@ function UsersPage() {
           borderBottom: '1px solid var(--border-subtle)',
         }}>
           {[
-            { label: 'Total utilisateurs', value: total },
-            { label: 'Administrateurs',    value: admins },
-            { label: 'Comptes actifs',     value: actifs },
+            { label: 'Total users', value: total },
+            { label: 'Administrators',    value: admins },
+            { label: 'Active accounts',     value: actifs },
           ].map((s, i) => (
             <div key={i} style={{
               padding: '32px 0',
@@ -1122,7 +1122,7 @@ function UsersPage() {
               <Search size={14} style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
               <input
                 type="text"
-                placeholder="Rechercher..."
+                placeholder="Search..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 style={{
@@ -1137,22 +1137,22 @@ function UsersPage() {
             <span style={{
               fontSize: 10, color: 'var(--text-muted)', marginLeft: 'auto',
               letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500,
-            }}>{filtered.length} résultat{filtered.length !== 1 ? 's' : ''}</span>
+            }}>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
           </div>
 
           {/* Table */}
           {loading ? (
-            <div style={{ padding: 64, textAlign: 'center', color: 'var(--text-muted)' }}>Chargement...</div>
+            <div style={{ padding: 64, textAlign: 'center', color: 'var(--text-muted)' }}>Loading...</div>
           ) : error ? (
             <div style={{ padding: 64, textAlign: 'center', color: '#EF4444' }}>{error}</div>
           ) : filtered.length === 0 ? (
-            <div style={{ padding: 64, textAlign: 'center', color: 'var(--text-muted)' }}>Aucun utilisateur trouvé.</div>
+            <div style={{ padding: 64, textAlign: 'center', color: 'var(--text-muted)' }}>No users found.</div>
           ) : (
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                    {['Utilisateur','Email','Rôle','Statut','Inscrit le'].map(h => (
+                    {['User','Email','Role','Status','Registered on'].map(h => (
                       <th key={h} style={{
                         textAlign: 'left', padding: '14px 0 14px 0',
                         paddingRight: 24, fontSize: 10, fontWeight: 600,
@@ -1175,7 +1175,7 @@ function UsersPage() {
                           textTransform: 'uppercase',
                           color: user.is_staff ? '#D4944A' : 'rgba(255,255,255,0.6)',
                         }}>
-                          {user.is_staff ? 'Admin' : 'Utilisateur'}
+                          {user.is_staff ? 'Admin' : 'User'}
                         </span>
                       </td>
                       <td style={{ padding: '18px 24px 18px 0' }}>
@@ -1190,7 +1190,7 @@ function UsersPage() {
                             fontSize: 11, fontWeight: 500, letterSpacing: '0.10em',
                             textTransform: 'uppercase',
                             color: user.is_active ? 'rgba(255,255,255,0.85)' : 'var(--text-muted)',
-                          }}>{user.is_active ? 'Actif' : 'Inactif'}</span>
+                          }}>{user.is_active ? 'Active' : 'Inactive'}</span>
                         </span>
                       </td>
                       <td style={{ padding: '18px 24px 18px 0', fontSize: 13, color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>{formatDate(user.created_at)}</td>
@@ -1215,13 +1215,13 @@ function ThinkingIndicator() {
           animationDelay:`${i*0.15}s`,animationDuration:'0.8s'
         }}/>
       ))}
-      <span style={{marginLeft:4}}>CropGPT réfléchit...</span>
+      <span style={{marginLeft:4}}>CropGPT is thinking...</span>
     </div>
   );
 }
 
 // ============================================
-// COMPOSANTS CHAT AGRI-NEXUS
+// AGRI-NEXUS CHAT COMPONENTS
 // ============================================
 
 function RAGScoreGauge({ score, totalSources }) {
@@ -1283,7 +1283,7 @@ function SourcesPanel({ sources }) {
           {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
           Sources ({sources.length})
         </span>
-        {expanded ? <span style={{ color: '#64748B' }}>Masquer</span> : null}
+        {expanded ? <span style={{ color: '#64748B' }}>Hide</span> : null}
       </button>
       
       {expanded && (
@@ -1347,7 +1347,7 @@ function ModeToggle({ mode, setMode }) {
         onClick={() => setMode('paysan')}
       >
         <Sprout size={14} />
-        Paysan
+        Farmer
       </button>
       <button
         className={`mode-toggle-btn ${mode === 'expert' ? 'active' : ''}`}
@@ -1361,16 +1361,16 @@ function ModeToggle({ mode, setMode }) {
 }
 
 // ============================================
-// PAGE DE CHAT PRINCIPALE
+// MAIN CHAT PAGE
 // ============================================
 
 function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, handleStopStreaming }) {
   const [userMode, setUserMode] = useState('expert');
   
   const suggestedPrompts = [
-    { icon: <Sprout size={20} />, title: "Meilleures cultures pour Madagascar", subtitle: "Conseils de plantation" },
-    { icon: <CloudRain size={20} />, title: "Prévisions météo agricoles", subtitle: "Climat & Saisons" },
-    { icon: <Leaf size={20} />, title: "Techniques de culture durable", subtitle: "Agriculture bio" }
+    { icon: <Sprout size={20} />, title: "Best crops for Madagascar", subtitle: "Planting tips" },
+    { icon: <CloudRain size={20} />, title: "Agricultural weather forecasts", subtitle: "Climate & Seasons" },
+    { icon: <Leaf size={20} />, title: "Sustainable farming techniques", subtitle: "Organic agriculture" }
   ];
 
   return (
@@ -1386,10 +1386,10 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
       }}>
         <div>
           <h2 style={{ fontSize: 24, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>
-            Assistant Agricole IA
+            AI Agricultural Assistant
           </h2>
           <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 4 }}>
-            Votre guide pour l'agriculture à Madagascar
+            Your guide to agriculture in Madagascar
           </p>
         </div>
         <ModeToggle mode={userMode} setMode={setUserMode} />
@@ -1399,7 +1399,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
       <div className="flex-1 overflow-y-auto px-8 py-6">
         {messages.length === 0 ? (
           <div className="welcome-screen">
-            {/* Welcome Avatar avec Glow */}
+            {/* Welcome Avatar with Glow */}
             <div style={{
               width: 80,
               height: 80,
@@ -1423,11 +1423,11 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
               }} />
             </div>
 
-            <h1 className="welcome-title">Bonjour, Agriculteur</h1>
-            <h2 className="welcome-subtitle">Comment puis-je vous aider?</h2>
+            <h1 className="welcome-title">Hello, Farmer</h1>
+            <h2 className="welcome-subtitle">How can I help you?</h2>
             <p style={{ color: 'var(--text-secondary)', marginBottom: 32, maxWidth: 400 }}>
-              Prêt à vous assister dans vos activités agricoles, de la plantation
-              à la récolte. Commençons ensemble!
+              Ready to assist you with your agricultural activities, from planting
+              to harvest. Let's get started!
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, maxWidth: 600, marginTop: 16 }}>
@@ -1463,7 +1463,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
               const isStreaming = message.loading || message.isStreaming;
 
               if (isUser) {
-                /* ── Message utilisateur ── */
+                /* ── User message ── */
                 return (
                   <div key={index} style={{display:'flex',justifyContent:'flex-end',padding:'12px 0'}}>
                     <div style={{
@@ -1482,7 +1482,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                 );
               }
 
-              /* ── Message IA ── */
+              /* ── AI message ── */
               return (
                 <div key={index} style={{
                   display:'flex',
@@ -1492,7 +1492,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                   borderBottom: '1px solid var(--border-subtle)',
                   animation: 'fade-in-up 0.3s ease-out'
                 }}>
-                  {/* Avatar CropGPT avec Glow */}
+                  {/* CropGPT Avatar with Glow */}
                   <div style={{
                     width:40,
                     height:40,
@@ -1516,10 +1516,10 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                     }} />
                   </div>
 
-                  {/* Contenu */}
+                    {/* Content */}
                   <div style={{flex:1,minWidth:0}}>
 
-                    {/* Header: Nom + RAG Badge */}
+                    {/* Header: Name + RAG Badge */}
                     <div style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -1544,12 +1544,12 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
 
                     {isStreaming ? (
                       <div>
-                        {/* ── Bloc Terminal Thinking (Nouveau Style Futuriste) ── */}
+                        {/* ── Terminal Thinking Block (New Futuristic Style) ── */}
                         {message.thinkingSteps?.length > 0 && (
                           <TerminalThinking steps={message.thinkingSteps} />
                         )}
 
-                        {/* Texte en cours de génération */}
+                        {/* Text being generated */}
                         {message.text ? (
                           <div>
                             <MarkdownMessage content={message.text} />
@@ -1563,7 +1563,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                           <ThinkingIndicator />
                         ) : null}
 
-                        {/* Timer discret */}
+                        {/* Subtle timer */}
                         <div style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -1587,13 +1587,13 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                                 cursor: 'pointer',
                               }}
                             >
-                              Arrêter
+                              Stop
                             </button>
                           )}
                         </div>
                       </div>
                     ) : message.isOffTopic ? (
-                      /* ── Message hors-sujet ── */
+                      /* ── Off-topic message ── */
                       <div className="off-topic-alert" style={{
                         padding: 12,
                       }}>
@@ -1601,7 +1601,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                         <span>{message.text}</span>
                       </div>
                     ) : (
-                      /* ── Réponse complète ── */
+                      /* ── Response complete ── */
                       <div>
                         <MarkdownMessage content={message.text || ''} />
                         
@@ -1612,11 +1612,11 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
                       </div>
                     )}
 
-                    {/* Méta-données (tokens) — discret sous la réponse */}
+                    {/* Metadata (tokens) — subtle under the response */}
                     {!isStreaming && message.meta && (
                       <div style={{display:'flex',gap:12,marginTop:8,fontSize:'0.75rem',color:'#d1d5db'}}>
-                        {message.meta.input_tokens > 0 && <span>{message.meta.input_tokens} tok entrée</span>}
-                        {message.meta.output_tokens > 0 && <span>{message.meta.output_tokens} tok sortie</span>}
+                        {message.meta.input_tokens > 0 && <span>{message.meta.input_tokens} tok input</span>}
+                        {message.meta.output_tokens > 0 && <span>{message.meta.output_tokens} tok output</span>}
                         {message.meta.tps > 0 && <span>{message.meta.tps} tok/s</span>}
                       </div>
                     )}
@@ -1628,7 +1628,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
         )}
       </div>
 
-      {/* Chat Input - Style Futuriste */}
+      {/* Chat Input - Futuristic Style */}
       <div style={{
         background: 'var(--bg-surface)',
         borderTop: '1px solid var(--border-subtle)',
@@ -1656,7 +1656,7 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-            placeholder="Posez votre question agricole..."
+            placeholder="Ask your agricultural question..."
             className="chat-input"
           />
           <button
@@ -1678,28 +1678,28 @@ function ChatPage({ messages, inputValue, setInputValue, handleSendMessage, hand
    DASHBOARD — force graph (data lives in madagascarGraphData.js)
 ═══════════════════════════════════════════════════════════════════ */
 const REGIONS_STATS_UNUSED = {
-  "Diana":               { capital:"Antsiranana",           pop:"696 K",   growth:"+3.8%", positive:true,  surface:"13 124 km²", sparkline:[38,40,42,44,43,46,48], note:"Porte d'entrée nord. Tourisme balnéaire et zone franche industrielle en développement rapide.", crops:"Cacao · Vanille · Café", accent:"#3b82f6" },
-  "Sava":                { capital:"Sambava",                pop:"1.1 M",   growth:"+4.5%", positive:true,  surface:"25 518 km²", sparkline:[50,52,55,53,58,60,63], note:"Capital mondial de la vanille. Exportations en forte croissance depuis 2022.", crops:"Vanille · Girofle · Letchi", accent:"#8e24aa" },
-  "Analanjirofo":        { capital:"Fenoarivo-Atsinanana",  pop:"1.0 M",   growth:"+3.2%", positive:true,  surface:"21 930 km²", sparkline:[42,44,43,46,45,48,50], note:"Région côtière est, biodiversité exceptionnelle. Pêche artisanale en expansion.", crops:"Girofle · Café · Letchi", accent:"#f4511e" },
-  "Sofia":               { capital:"Antsohihy",              pop:"1.3 M",   growth:"+2.9%", positive:true,  surface:"50 875 km²", sparkline:[35,36,38,37,40,39,42], note:"Seconde plus grande région. Agriculture vivrière dominante, fort potentiel rizicole.", crops:"Riz · Coton · Maïs", accent:"#00897b" },
-  "Boeny":               { capital:"Mahajanga",              pop:"873 K",   growth:"+3.1%", positive:true,  surface:"31 046 km²", sparkline:[40,41,43,42,45,44,47], note:"Deuxième port de Madagascar. Hub commercial et touristique de la côte nord-ouest.", crops:"Riz · Canne à sucre · Arachide", accent:"#8b5cf6" },
-  "Betsiboka":           { capital:"Maevatanana",            pop:"364 K",   growth:"+1.8%", positive:true,  surface:"29 993 km²", sparkline:[20,21,22,21,23,22,24], note:"Région enclavée, bassin versant du fleuve Betsiboka. Projets d'irrigation en cours.", crops:"Riz · Maïs · Manioc", accent:"#06b6d4" },
-  "Melaky":              { capital:"Maintirano",             pop:"296 K",   growth:"+1.5%", positive:true,  surface:"66 236 km²", sparkline:[18,19,19,20,20,21,22], note:"Région la plus grande, très peu dense. Réserves pétrolières explorées depuis 2010.", crops:"Maïs · Manioc · Coton", accent:"#84cc16" },
-  "Bongolava":           { capital:"Tsiroanomandidy",        pop:"456 K",   growth:"+2.3%", positive:true,  surface:"16 688 km²", sparkline:[25,26,27,26,28,28,30], note:"Hauts plateaux centraux. Élevage bovin extensif et cultures de contre-saison.", crops:"Riz · Maïs · Élevage bovin", accent:"#a78bfa" },
-  "Itasy":               { capital:"Miarinarivo",            pop:"703 K",   growth:"+2.7%", positive:true,  surface:"6 658 km²",  sparkline:[38,39,40,42,41,43,45], note:"Région la plus petite et la plus densément peuplée des hauts plateaux. Artisanat.", crops:"Riz · Pomme de terre · Légumes", accent:"#34d399" },
-  "Analamanga":          { capital:"Antananarivo",           pop:"3.6 M",   growth:"+4.2%", positive:true,  surface:"16 911 km²", sparkline:[70,73,76,75,79,82,86], note:"Centre économique et politique. Hub technologique, secteur tertiaire en pleine expansion.", crops:"Riz · Légumes · Fruits", accent:"#10b981" },
-  "Alaotra-Mangoro":     { capital:"Ambatondrazaka",         pop:"1.1 M",   growth:"+3.4%", positive:true,  surface:"31 948 km²", sparkline:[48,50,52,51,54,56,58], note:"Grenier à riz de Madagascar. Lac Alaotra, plus grande zone rizicole du pays.", crops:"Riz · Café · Élevage", accent:"#eab308" },
-  "Atsinanana":          { capital:"Toamasina",              pop:"1.3 M",   growth:"+3.6%", positive:true,  surface:"21 934 km²", sparkline:[52,54,56,55,58,60,63], note:"Premier port de Madagascar. Corridor économique vers Antananarivo, hub logistique.", crops:"Girofle · Café · Cacao", accent:"#6366f1" },
-  "Vakinankaratra":      { capital:"Antsirabe",              pop:"1.8 M",   growth:"+3.0%", positive:true,  surface:"16 599 km²", sparkline:[56,58,60,59,62,64,67], note:"Deuxième ville, capitale industrielle. Brasseries, textile et tourisme thermal.", crops:"Riz · Pomme de terre · Blé", accent:"#14b8a6" },
-  "Amoron'i Mania":      { capital:"Ambositra",              pop:"730 K",   growth:"+2.1%", positive:true,  surface:"16 141 km²", sparkline:[33,34,35,34,36,36,38], note:"Capitale de l'artisanat malgache, notamment la marqueterie en bois précieux.", crops:"Riz · Maïs · Patate douce", accent:"#f59e0b" },
-  "Menabe":              { capital:"Morondava",              pop:"620 K",   growth:"+2.4%", positive:true,  surface:"46 121 km²", sparkline:[28,29,30,30,32,31,33], note:"Allée des baobabs, site touristique majeur. Pêche artisanale et production de sel.", crops:"Maïs · Manioc · Coton", accent:"#4DFF91" },
-  "Haute Matsiatra":     { capital:"Fianarantsoa",           pop:"1.2 M",   growth:"+2.8%", positive:true,  surface:"21 080 km²", sparkline:[45,46,48,47,50,50,52], note:"Capitale culturelle du Sud. Vignobles, enseignement supérieur et patrimoine colonial.", crops:"Riz · Maïs · Vigne", accent:"#7c3aed" },
-  "Vatovavy-Fitovinany": { capital:"Manakara",               pop:"1.2 M",   growth:"+1.9%", positive:true,  surface:"19 136 km²", sparkline:[38,39,40,39,41,41,43], note:"Côte est, canal des Pangalanes. Café Robusta et girofle de qualité premium.", crops:"Café · Girofle · Riz", accent:"#e879f9" },
-  "Ihorombe":            { capital:"Ihosy",                  pop:"304 K",   growth:"+1.6%", positive:true,  surface:"26 391 km²", sparkline:[16,17,17,18,18,19,20], note:"Porte du sud. Élevage zébu intensif et mines de chromite prometteuses.", crops:"Maïs · Manioc · Élevage", accent:"#fb7185" },
-  "Atsimo-Atsinanana":   { capital:"Vangaindrano",           pop:"830 K",   growth:"-0.2%", positive:false, surface:"18 863 km²", sparkline:[30,29,30,28,29,28,29], note:"Côte sud-est isolée. Accès difficile, déforestation critique, aide humanitaire active.", crops:"Riz · Manioc · Patate douce", accent:"#fbbf24" },
-  "Atsimo-Andrefana":    { capital:"Toliara",                pop:"1.9 M",   growth:"+2.1%", positive:true,  surface:"66 236 km²", sparkline:[35,36,37,36,38,38,40], note:"Potentiel touristique (barrière de corail) et minier (ilménite, saphir) élevé.", crops:"Maïs · Manioc · Haricot", accent:"#65a30d" },
-  "Androy":              { capital:"Ambovombe",              pop:"740 K",   growth:"-0.8%", positive:false, surface:"19 317 km²", sparkline:[22,21,22,20,21,20,20], note:"Région la plus aride, régulièrement touchée par la sécheresse. Programme KERE actif.", crops:"Manioc · Maïs · Élevage", accent:"#f97316" },
-  "Anosy":               { capital:"Tôlanaro",               pop:"604 K",   growth:"+2.6%", positive:true,  surface:"25 695 km²", sparkline:[28,29,30,30,32,33,34], note:"Fort Dauphin, port minéralier QMM. Biodiversité unique : forêts épineuses endémiques.", crops:"Manioc · Riz · Maïs", accent:"#2dd4bf" },
+  "Diana":               { capital:"Antsiranana",           pop:"696 K",   growth:"+3.8%", positive:true,  surface:"13 124 km²", sparkline:[38,40,42,44,43,46,48], note:"Northern gateway. Coastal tourism and rapidly developing industrial free trade zone.", crops:"Cacao · Vanille · Café", accent:"#3b82f6" },
+  "Sava":                { capital:"Sambava",                pop:"1.1 M",   growth:"+4.5%", positive:true,  surface:"25 518 km²", sparkline:[50,52,55,53,58,60,63], note:"World capital of vanilla. Strong export growth since 2022.", crops:"Vanille · Girofle · Letchi", accent:"#8e24aa" },
+  "Analanjirofo":        { capital:"Fenoarivo-Atsinanana",  pop:"1.0 M",   growth:"+3.2%", positive:true,  surface:"21 930 km²", sparkline:[42,44,43,46,45,48,50], note:"Eastern coastal region, exceptional biodiversity. Expanding artisanal fishing.", crops:"Girofle · Café · Letchi", accent:"#f4511e" },
+  "Sofia":               { capital:"Antsohihy",              pop:"1.3 M",   growth:"+2.9%", positive:true,  surface:"50 875 km²", sparkline:[35,36,38,37,40,39,42], note:"Second largest region. Dominated by subsistence agriculture, strong rice-growing potential.", crops:"Riz · Coton · Maïs", accent:"#00897b" },
+  "Boeny":               { capital:"Mahajanga",              pop:"873 K",   growth:"+3.1%", positive:true,  surface:"31 046 km²", sparkline:[40,41,43,42,45,44,47], note:"Madagascar's second port. Commercial and tourism hub of the northwest coast.", crops:"Riz · Canne à sucre · Arachide", accent:"#8b5cf6" },
+  "Betsiboka":           { capital:"Maevatanana",            pop:"364 K",   growth:"+1.8%", positive:true,  surface:"29 993 km²", sparkline:[20,21,22,21,23,22,24], note:"Landlocked region, Betsiboka river basin. Irrigation projects underway.", crops:"Riz · Maïs · Manioc", accent:"#06b6d4" },
+  "Melaky":              { capital:"Maintirano",             pop:"296 K",   growth:"+1.5%", positive:true,  surface:"66 236 km²", sparkline:[18,19,19,20,20,21,22], note:"Largest region, very sparsely populated. Oil reserves explored since 2010.", crops:"Maïs · Manioc · Coton", accent:"#84cc16" },
+  "Bongolava":           { capital:"Tsiroanomandidy",        pop:"456 K",   growth:"+2.3%", positive:true,  surface:"16 688 km²", sparkline:[25,26,27,26,28,28,30], note:"Central highlands. Extensive cattle farming and off-season crops.", crops:"Riz · Maïs · Élevage bovin", accent:"#a78bfa" },
+  "Itasy":               { capital:"Miarinarivo",            pop:"703 K",   growth:"+2.7%", positive:true,  surface:"6 658 km²",  sparkline:[38,39,40,42,41,43,45], note:"Smallest and most densely populated highland region. Crafts.", crops:"Riz · Pomme de terre · Légumes", accent:"#34d399" },
+  "Analamanga":          { capital:"Antananarivo",           pop:"3.6 M",   growth:"+4.2%", positive:true,  surface:"16 911 km²", sparkline:[70,73,76,75,79,82,86], note:"Economic and political center. Tech hub, rapidly expanding tertiary sector.", crops:"Riz · Légumes · Fruits", accent:"#10b981" },
+  "Alaotra-Mangoro":     { capital:"Ambatondrazaka",         pop:"1.1 M",   growth:"+3.4%", positive:true,  surface:"31 948 km²", sparkline:[48,50,52,51,54,56,58], note:"Madagascar's rice granary. Lake Alaotra, the country's largest rice-growing area.", crops:"Riz · Café · Élevage", accent:"#eab308" },
+  "Atsinanana":          { capital:"Toamasina",              pop:"1.3 M",   growth:"+3.6%", positive:true,  surface:"21 934 km²", sparkline:[52,54,56,55,58,60,63], note:"Madagascar's main port. Economic corridor to Antananarivo, logistics hub.", crops:"Girofle · Café · Cacao", accent:"#6366f1" },
+  "Vakinankaratra":      { capital:"Antsirabe",              pop:"1.8 M",   growth:"+3.0%", positive:true,  surface:"16 599 km²", sparkline:[56,58,60,59,62,64,67], note:"Second city, industrial capital. Breweries, textiles and thermal tourism.", crops:"Riz · Pomme de terre · Blé", accent:"#14b8a6" },
+  "Amoron'i Mania":      { capital:"Ambositra",              pop:"730 K",   growth:"+2.1%", positive:true,  surface:"16 141 km²", sparkline:[33,34,35,34,36,36,38], note:"Capital of Malagasy craftsmanship, especially precious wood marquetry.", crops:"Riz · Maïs · Patate douce", accent:"#f59e0b" },
+  "Menabe":              { capital:"Morondava",              pop:"620 K",   growth:"+2.4%", positive:true,  surface:"46 121 km²", sparkline:[28,29,30,30,32,31,33], note:"Avenue of the Baobabs, major tourist site. Artisanal fishing and salt production.", crops:"Maïs · Manioc · Coton", accent:"#4DFF91" },
+  "Haute Matsiatra":     { capital:"Fianarantsoa",           pop:"1.2 M",   growth:"+2.8%", positive:true,  surface:"21 080 km²", sparkline:[45,46,48,47,50,50,52], note:"Cultural capital of the South. Vineyards, higher education and colonial heritage.", crops:"Riz · Maïs · Vigne", accent:"#7c3aed" },
+  "Vatovavy-Fitovinany": { capital:"Manakara",               pop:"1.2 M",   growth:"+1.9%", positive:true,  surface:"19 136 km²", sparkline:[38,39,40,39,41,41,43], note:"East coast, Pangalanes canal. Premium quality Robusta coffee and cloves.", crops:"Café · Girofle · Riz", accent:"#e879f9" },
+  "Ihorombe":            { capital:"Ihosy",                  pop:"304 K",   growth:"+1.6%", positive:true,  surface:"26 391 km²", sparkline:[16,17,17,18,18,19,20], note:"Gateway to the south. Intensive zebu cattle farming and promising chromite mines.", crops:"Maïs · Manioc · Élevage", accent:"#fb7185" },
+  "Atsimo-Atsinanana":   { capital:"Vangaindrano",           pop:"830 K",   growth:"-0.2%", positive:false, surface:"18 863 km²", sparkline:[30,29,30,28,29,28,29], note:"Isolated southeast coast. Difficult access, critical deforestation, active humanitarian aid.", crops:"Riz · Manioc · Patate douce", accent:"#fbbf24" },
+  "Atsimo-Andrefana":    { capital:"Toliara",                pop:"1.9 M",   growth:"+2.1%", positive:true,  surface:"66 236 km²", sparkline:[35,36,37,36,38,38,40], note:"High tourism potential (coral reef) and mining potential (ilmenite, sapphire).", crops:"Maïs · Manioc · Haricot", accent:"#65a30d" },
+  "Androy":              { capital:"Ambovombe",              pop:"740 K",   growth:"-0.8%", positive:false, surface:"19 317 km²", sparkline:[22,21,22,20,21,20,20], note:"Driest region, regularly hit by drought. Active KERE program.", crops:"Manioc · Maïs · Élevage", accent:"#f97316" },
+  "Anosy":               { capital:"Tôlanaro",               pop:"604 K",   growth:"+2.6%", positive:true,  surface:"25 695 km²", sparkline:[28,29,30,30,32,33,34], note:"Fort Dauphin, QMM mineral port. Unique biodiversity: endemic spiny forests.", crops:"Manioc · Riz · Maïs", accent:"#2dd4bf" },
 };
 
 /* ─── Sparkline ─── */

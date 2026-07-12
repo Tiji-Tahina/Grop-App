@@ -1,30 +1,30 @@
 """
-Schémas Pydantic du contrat `map_action` (v1).
+Pydantic schemas for the `map_action` contract (v1).
 
-Ces modèles définissent ce que le LLM + règles produisent et ce que le front
-applique sur la carte. La validation est purement structurelle : elle ne vérifie
-PAS l'existence d'un slug région dans l'ontologie, ni la compatibilité variété/
-culture. Ces validations sémantiques se font dans `pipeline/intent.py`.
+These models define what the LLM + rules produce and what the frontend
+applies on the map. Validation is purely structural: it does NOT check
+whether a region slug exists in the ontology, nor variety/crop
+compatibility. These semantic validations are done in `pipeline/intent.py`.
 
-Six opérations supportées :
-    slice        — filtre une seule dimension (« régions favorables au riz »)
-    dice         — filtre plusieurs dimensions (« riz Makalioka 2024 »)
-    compare      — deux jeux côte à côte (« riz vs manioc en 2024 »)
-    drill_down   — focus visuel sur une région (« détaille Alaotra-Mangoro »)
-    highlight    — met en avant sans filtrer (« où est Itasy ? »)
-    clear        — retour à la vue par défaut (« vue nationale »)
+Six supported operations:
+    slice        — filters a single dimension ("regions favorable for rice")
+    dice         — filters multiple dimensions ("Makalioka rice 2024")
+    compare      — two side-by-side datasets ("rice vs cassava in 2024")
+    drill_down   — visual focus on a region ("detail Alaotra-Mangoro")
+    highlight    — highlights without filtering ("where is Itasy?")
+    clear        — returns to default view ("national view")
 
-Périmètre V1 du data warehouse (table `cropgpt.agri_stats`) :
-    Métriques natives : yield, production, price, area (dérivée)
-    Dimensions filtrables en SQL : crop, year, regions
-    Dimensions acceptées mais IGNORÉES (V1.5) : variety, season
-        → l'utilisateur reçoit un warning dans `explain.subtitle`
-    Dimensions REJETÉES (V2 — nécessitent migration DB) :
+V1 data warehouse scope (table `cropgpt.agri_stats`):
+    Native metrics: yield, production, price, area (derived)
+    Filterable dimensions in SQL: crop, year, regions
+    Accepted but IGNORED dimensions (V1.5): variety, season
+        → user receives a warning in `explain.subtitle`
+    REJECTED dimensions (V2 — require DB migration):
         climate.* filters, metric=climate_match, zoom data district/commune
 
-Sept blocs de payload :
+Seven payload blocks:
     op / filters / metric / view / data / comparison / explain
-    + map_action_version (toujours 1 pour cette version)
+    + map_action_version (always 1 for this version)
 """
 from __future__ import annotations
 
@@ -34,43 +34,43 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
-# ─── Énumérations stables ──────────────────────────────────────────────────
+# ─── Stable enumerations ──────────────────────────────────────────────────
 
 Op = Literal["slice", "dice", "compare", "drill_down", "highlight", "clear"]
 
-# V1 : pas de climate_match (nécessite table climat séparée — V2)
+# V1: no climate_match (requires separate climate table — V2)
 Metric = Literal["yield", "production", "area", "price"]
 
-# Le `view.zoom_level` peut demander district/commune (focus visuel),
-# mais les `data.level` ne peuvent être délivrées qu'à country/region en V1.
+# The `view.zoom_level` may request district/commune (visual focus),
+# but `data.level` can only be delivered at country/region in V1.
 ZoomLevel = Literal["country", "region", "district", "commune"]
 DataLevel = Literal["country", "region"]
 
 ComparisonAxis = Literal["crop", "year", "variety", "region"]
 
-# Hiérarchie des niveaux pour valider la cohérence data ↔ view
+# Level hierarchy for validating data ↔ view consistency
 _LEVEL_RANK = {"country": 0, "region": 1, "district": 2, "commune": 3}
 
 
-# ─── Bornes temporelles ────────────────────────────────────────────────────
+# ─── Temporal bounds ────────────────────────────────────────────────────
 
 YEAR_MIN = 2000
 
 
 def _year_max() -> int:
-    """Année courante + 1 (autorise un horizon de forecast)."""
+    """Current year + 1 (allows a forecast horizon)."""
     return date.today().year + 1
 
 
-# ─── Modèles internes (ordre : feuilles avant racines) ─────────────────────
+# ─── Internal models (order: leaves before roots) ─────────────────────
 
 
 class MapActionFilters(BaseModel):
-    """Contraintes du cube OLAP. Toujours présent, peut avoir tous champs null.
+    """OLAP cube constraints. Always present, all fields may be null.
 
-    `variety` et `season` sont acceptés mais ignorés par le warehouse en V1
-    (la table `cropgpt.agri_stats` n'a pas ces colonnes). `intent.py` ajoute
-    un warning dans `explain.subtitle` quand l'un d'eux est utilisé.
+    `variety` and `season` are accepted but ignored by the warehouse in V1
+    (the `cropgpt.agri_stats` table does not have these columns). `intent.py` adds
+    a warning in `explain.subtitle` when one of them is used.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -91,12 +91,12 @@ class MapActionFilters(BaseModel):
     @model_validator(mode="after")
     def _variety_implies_crop(self) -> "MapActionFilters":
         if self.variety is not None and self.crop is None:
-            raise ValueError("variety défini sans crop")
+            raise ValueError("variety defined without crop")
         return self
 
 
 class MapActionView(BaseModel):
-    """Niveau de zoom et focus géographique. Toujours présent."""
+    """Zoom level and geographic focus. Always present."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -107,12 +107,12 @@ class MapActionView(BaseModel):
     @model_validator(mode="after")
     def _scope_required_when_zoomed(self) -> "MapActionView":
         if self.zoom_level != "country" and not self.scope_region:
-            raise ValueError(f"zoom_level={self.zoom_level} requiert scope_region")
+            raise ValueError(f"zoom_level={self.zoom_level} requires scope_region")
         return self
 
 
 class AreaData(BaseModel):
-    """Une zone (région, district, commune) avec sa valeur."""
+    """An area (region, district, commune) with its value."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -124,12 +124,12 @@ class AreaData(BaseModel):
 
 
 class DataPayload(BaseModel):
-    """Valeurs à peindre sur la carte — produites par le warehouse, jamais par le LLM.
+    """Values to paint on the map — produced by the warehouse, never by the LLM.
 
-    En V1, `level` est limité à country/region (la table `agri_stats` n'a
-    pas de colonne district ou commune). Le `view.zoom_level` peut être
-    plus fin (drill_down visuel) ; la cohérence est vérifiée au niveau
-    racine de MapAction.
+    In V1, `level` is limited to country/region (the `agri_stats` table has
+    no district or commune column). The `view.zoom_level` may be
+    finer (visual drill_down); consistency is checked at the root
+    level of MapAction.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -141,7 +141,7 @@ class DataPayload(BaseModel):
 
 
 class ComparisonSide(BaseModel):
-    """Un côté d'une comparaison (gauche ou droite)."""
+    """One side of a comparison (left or right)."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -150,7 +150,7 @@ class ComparisonSide(BaseModel):
 
 
 class ComparisonAreaData(BaseModel):
-    """Version allégée de AreaData pour les payloads de comparaison."""
+    """Lightweight version of AreaData for comparison payloads."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -160,7 +160,7 @@ class ComparisonAreaData(BaseModel):
 
 
 class ComparisonData(BaseModel):
-    """Données parallèles des deux côtés à comparer."""
+    """Parallel data for both sides to compare."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -171,7 +171,7 @@ class ComparisonData(BaseModel):
 
 
 class Comparison(BaseModel):
-    """Bloc spécial pour op=compare uniquement."""
+    """Special block for op=compare only."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -182,7 +182,7 @@ class Comparison(BaseModel):
 
 
 class Explain(BaseModel):
-    """Texte court pour la légende et l'en-tête de la carte."""
+    """Short text for the map legend and header."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -190,11 +190,11 @@ class Explain(BaseModel):
     subtitle: str | None = None
 
 
-# ─── Modèle racine ─────────────────────────────────────────────────────────
+# ─── Root model ─────────────────────────────────────────────────────────
 
 
 class MapAction(BaseModel):
-    """Contrat complet entre le pipeline d'intention et la carte (v1)."""
+    """Full contract between the intent pipeline and the map (v1)."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -211,21 +211,21 @@ class MapAction(BaseModel):
     def _compare_consistency(self) -> "MapAction":
         if self.op == "compare":
             if self.comparison is None:
-                raise ValueError("op=compare exige le bloc comparison")
+                raise ValueError("op=compare requires the comparison block")
             if self.data is not None:
-                raise ValueError("op=compare interdit le bloc data (les data sont dans comparison.data)")
+                raise ValueError("op=compare forbids the data block (data is in comparison.data)")
         else:
             if self.comparison is not None:
-                raise ValueError(f"op={self.op} interdit le bloc comparison")
+                raise ValueError(f"op={self.op} forbids the comparison block")
         return self
 
     @model_validator(mode="after")
     def _data_level_matches_view(self) -> "MapAction":
-        # data.level doit être au plus aussi fin que view.zoom_level
-        # (data peut être plus grossier — V1 sert region pour un view=district : drill_down visuel)
+        # data.level must be at most as fine as view.zoom_level
+        # (data can be coarser — V1 serves region for view=district: visual drill_down)
         if self.data is not None and _LEVEL_RANK[self.data.level] > _LEVEL_RANK[self.view.zoom_level]:
             raise ValueError(
-                f"data.level ({self.data.level}) plus fin que view.zoom_level ({self.view.zoom_level})"
+                f"data.level ({self.data.level}) finer than view.zoom_level ({self.view.zoom_level})"
             )
         return self
 
@@ -233,6 +233,6 @@ class MapAction(BaseModel):
     def _data_metric_matches_root(self) -> "MapAction":
         if self.data is not None and self.metric is not None and self.data.metric != self.metric:
             raise ValueError(
-                f"data.metric ({self.data.metric}) ≠ metric racine ({self.metric})"
+                f"data.metric ({self.data.metric}) ≠ root metric ({self.metric})"
             )
         return self

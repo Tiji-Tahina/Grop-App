@@ -1,14 +1,14 @@
 """
-Récupération de faits factuels depuis ClickHouse pour enrichir le prompt LLM.
+Factual data retrieval from ClickHouse to enrich the LLM prompt.
 
-Branché par chat/views.py entre l'étape RAG et l'appel au LLM.
-Quand l'ontologie a détecté qu'une question concerne un rendement, un prix
-ou une production agricole, ce module va chercher les chiffres réels dans
-le data warehouse au lieu de laisser le LLM halluciner ou se rabattre sur
-les `_fallback_static` hardcodés.
+Wired in chat/views.py between the RAG step and the LLM call.
+When the ontology detects that a question concerns yield, price,
+or agricultural production, this module fetches real numbers from
+the data warehouse instead of letting the LLM hallucinate or fall back
+on hardcoded `_fallback_static` values.
 
-Sécurité : credentials CH restent côté serveur (Render). Le résultat
-retourné est du texte plat, prêt à être injecté dans le prompt envoyé à Colab.
+Security: CH credentials stay server-side (Render). The returned
+result is plain text, ready to be injected into the prompt sent to Colab.
 """
 
 import logging
@@ -49,7 +49,7 @@ REGION_NORMALIZE.update({
     'vatovavy-fitovinany': 'Vatovavy-Fitovinany',
 })
 
-# Mapping context_tag → métriques SQL pertinentes
+# context_tag → relevant SQL metrics mapping
 TAG_TO_METRICS = {
     'yield_prediction': ['avg(rendement_kg_ha) as rendement_moyen',
                          'max(rendement_kg_ha) as rendement_max'],
@@ -57,16 +57,16 @@ TAG_TO_METRICS = {
                          'min(prix_ar_kg) as prix_min',
                          'max(prix_ar_kg) as prix_max'],
 }
-# Tags qui justifient un lookup CH (les autres = pas de chiffres pertinents)
+# Tags that justify a CH lookup (others = no relevant figures)
 CH_RELEVANT_TAGS = set(TAG_TO_METRICS.keys())
 
-# Limites de sécurité (CH free tier, et pour ne pas exploser le prompt)
+# Safety limits (CH free tier, and to avoid blowing up the prompt)
 MAX_ROWS = 8
-DEFAULT_YEARS = 3  # 3 dernières années pour rester pertinent
+DEFAULT_YEARS = 3  # Last 3 years to stay relevant
 
 
 def _detect_entities(matched_keywords: Iterable[str]) -> tuple[list, list]:
-    """Sépare les keywords en (cultures, régions) connues du data warehouse."""
+    """Separate keywords into known (crops, regions) from the data warehouse."""
     cultures, regions = [], []
     for kw in matched_keywords or []:
         kl = kw.lower().strip()
@@ -79,14 +79,14 @@ def _detect_entities(matched_keywords: Iterable[str]) -> tuple[list, list]:
 
 def fetch_facts(context_tags: list, matched_keywords: list) -> str:
     """
-    Interroge ClickHouse selon les tags et entités détectés.
-    Retourne un bloc de texte prêt à injecter dans le prompt LLM,
-    ou une chaîne vide si aucun fait pertinent n'est trouvé.
+    Query ClickHouse based on detected tags and entities.
+    Returns a text block ready to inject into the LLM prompt,
+    or an empty string if no relevant facts are found.
 
-    Comportement défensif :
-    - Si CH non configuré ou injoignable → retourne '' (le RAG prend le relais)
-    - Aucun tag pertinent (yield_prediction / market) → retourne ''
-    - Aucune entité reconnue → query agrégée tous-pays
+    Defensive behavior:
+    - CH not configured or unreachable → returns '' (RAG takes over)
+    - No relevant tags (yield_prediction / market) → returns ''
+    - No recognized entities → aggregated all-country query
     """
     relevant_tags = [t for t in (context_tags or []) if t in CH_RELEVANT_TAGS]
     if not relevant_tags:
@@ -97,7 +97,7 @@ def fetch_facts(context_tags: list, matched_keywords: list) -> str:
     metrics = []
     for tag in relevant_tags:
         metrics.extend(TAG_TO_METRICS[tag])
-    metrics = list(dict.fromkeys(metrics))  # dédup en gardant l'ordre
+    metrics = list(dict.fromkeys(metrics))  # dedup while preserving order
 
     filters = {}
     if cultures:
@@ -121,7 +121,7 @@ def fetch_facts(context_tags: list, matched_keywords: list) -> str:
             'groupBy': group_by,
         })
     except Exception as e:
-        logger.warning("ClickHouse indisponible pour ch_facts : %s", e)
+        logger.warning("ClickHouse unavailable for ch_facts: %s", e)
         return ''
 
     rows = result.get('data', [])[:MAX_ROWS]
@@ -133,15 +133,15 @@ def fetch_facts(context_tags: list, matched_keywords: list) -> str:
 
 
 def _format_facts(cols: list, rows: list, cultures: list, regions: list) -> str:
-    """Formate les chiffres CH en bloc texte lisible par le LLM."""
+    """Format CH figures into a text block readable by the LLM."""
     header_parts = []
     if cultures:
-        header_parts.append(f"culture(s) : {', '.join(cultures)}")
+        header_parts.append(f"crop(s): {', '.join(cultures)}")
     if regions:
-        header_parts.append(f"région(s) : {', '.join(regions)}")
-    header = ' — '.join(header_parts) if header_parts else 'toutes cultures, toutes régions'
+        header_parts.append(f"region(s): {', '.join(regions)}")
+    header = ' — '.join(header_parts) if header_parts else 'all crops, all regions'
 
-    lines = [f"DONNÉES OFFICIELLES (Data Warehouse Madagascar — {header}) :"]
+    lines = [f"OFFICIAL DATA (Madagascar Data Warehouse — {header}):"]
     for row in rows:
         cells = []
         for col, val in zip(cols, row):

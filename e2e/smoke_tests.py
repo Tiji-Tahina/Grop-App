@@ -1,14 +1,14 @@
-"""Smoke tests — exécutés contre l'environnement staging après déploiement.
+"""Smoke tests — executed against the staging environment after deployment.
 
-Ces tests font de vraies requêtes HTTP contre STAGING_URL pour valider
-que le service est opérationnel avant de promouvoir en production.
+These tests make real HTTP requests against STAGING_URL to validate
+that the service is operational before promoting to production.
 
-Variables d'environnement requises (secrets GitHub) :
-  STAGING_URL          URL de base ex. https://grop-app-staging.onrender.com
-  STAGING_TEST_USER    Email du compte de test sur staging
-  STAGING_TEST_PASS    Mot de passe du compte de test
+Required environment variables (GitHub secrets):
+  STAGING_URL          Base URL e.g. https://grop-app-staging.onrender.com
+  STAGING_TEST_USER    Test account email on staging
+  STAGING_TEST_PASS    Test account password
 
-Lancement local :
+Local run:
   STAGING_URL=http://localhost:8000 \
   STAGING_TEST_USER=test@cropgpt.mg \
   STAGING_TEST_PASS=testpass123 \
@@ -21,37 +21,37 @@ import requests
 BASE_URL = os.environ.get("STAGING_URL", "").rstrip("/")
 TEST_USER = os.environ.get("STAGING_TEST_USER", "")
 TEST_PASS = os.environ.get("STAGING_TEST_PASS", "")
-TIMEOUT = 30  # secondes
+TIMEOUT = 30  # seconds
 
 staging_required = pytest.mark.skipif(
     not BASE_URL,
-    reason="STAGING_URL non défini — smoke tests ignorés"
+    reason="STAGING_URL not set — smoke tests skipped"
 )
 
 
 @pytest.fixture(scope="module")
 def access_token():
-    """Obtient un token JWT valide pour les tests authentifiés."""
+    """Obtain a valid JWT token for authenticated tests."""
     if not (BASE_URL and TEST_USER and TEST_PASS):
-        pytest.skip("Credentials staging manquants")
+        pytest.skip("Staging credentials missing")
     resp = requests.post(
         f"{BASE_URL}/api/auth/login/",
         json={"email": TEST_USER, "password": TEST_PASS},
         timeout=TIMEOUT,
     )
-    assert resp.status_code == 200, f"Login échoué ({resp.status_code}): {resp.text[:200]}"
+    assert resp.status_code == 200, f"Login failed ({resp.status_code}): {resp.text[:200]}"
     return resp.json()["access"]
 
 
 @staging_required
 class TestStagingHealth:
     def test_health_endpoint_returns_200(self):
-        """GET /api/health/ doit retourner 200 — service UP."""
+        """GET /api/health/ must return 200 — service UP."""
         resp = requests.get(f"{BASE_URL}/api/health/", timeout=TIMEOUT)
-        assert resp.status_code == 200, f"Health check échoué : {resp.status_code}"
+        assert resp.status_code == 200, f"Health check failed: {resp.status_code}"
 
     def test_health_response_structure(self):
-        """La réponse health doit contenir un champ status."""
+        """Health response must contain a status field."""
         resp = requests.get(f"{BASE_URL}/api/health/", timeout=TIMEOUT)
         if resp.status_code == 200:
             data = resp.json()
@@ -61,21 +61,21 @@ class TestStagingHealth:
 @staging_required
 class TestStagingAuth:
     def test_login_returns_access_token(self):
-        """POST /api/auth/login/ avec bons identifiants → token JWT."""
+        """POST /api/auth/login/ with valid credentials → JWT token."""
         if not (TEST_USER and TEST_PASS):
-            pytest.skip("Credentials staging non configurés")
+            pytest.skip("Staging credentials not configured")
         resp = requests.post(
             f"{BASE_URL}/api/auth/login/",
             json={"email": TEST_USER, "password": TEST_PASS},
             timeout=TIMEOUT,
         )
-        assert resp.status_code == 200, f"Login échoué : {resp.text[:200]}"
+        assert resp.status_code == 200, f"Login failed: {resp.text[:200]}"
         data = resp.json()
         assert "access" in data
         assert len(data["access"]) > 20
 
     def test_protected_endpoint_requires_auth(self):
-        """GET /api/chat/conversations/ sans token → 401."""
+        """GET /api/chat/conversations/ without token → 401."""
         resp = requests.get(f"{BASE_URL}/api/chat/conversations/", timeout=TIMEOUT)
         assert resp.status_code == 401
 
@@ -83,7 +83,7 @@ class TestStagingAuth:
 @staging_required
 class TestStagingChat:
     def test_chat_off_topic_blocked_by_guardrail(self, access_token):
-        """Un message hors-sujet doit être rejeté par le guardrail."""
+        """An off-topic message must be rejected by the guardrail."""
         resp = requests.post(
             f"{BASE_URL}/api/chat/",
             json={"message": "Qui a gagné la Coupe du Monde 2022 ?"},
@@ -95,22 +95,22 @@ class TestStagingChat:
         assert data["meta"]["guardrail"] is True
 
     def test_chat_agricultural_message_accepted(self, access_token):
-        """Un message agricole doit passer le guardrail et retourner une réponse."""
+        """An agricultural message must pass the guardrail and return a reply."""
         resp = requests.post(
             f"{BASE_URL}/api/chat/",
             json={"message": "Quelles variétés de riz pour les hauts plateaux ?"},
             headers={"Authorization": f"Bearer {access_token}"},
-            timeout=60,  # LLM peut être lent
+            timeout=60,  # LLM may be slow
         )
-        # 200 = réponse OK, 503 = LLM Colab indisponible (acceptable en staging)
-        assert resp.status_code in (200, 503), f"Statut inattendu : {resp.status_code}"
+        # 200 = OK response, 503 = Colab LLM unavailable (acceptable in staging)
+        assert resp.status_code in (200, 503), f"Unexpected status: {resp.status_code}"
         if resp.status_code == 200:
             data = resp.json()
             assert "reply" in data
             assert len(data["reply"]) > 0
 
     def test_chat_creates_conversation_id(self, access_token):
-        """Un nouveau chat doit créer une conversation avec un ID."""
+        """A new chat must create a conversation with an ID."""
         resp = requests.post(
             f"{BASE_URL}/api/chat/",
             json={"message": "Comment planter le riz SRI ?"},

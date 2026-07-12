@@ -11,7 +11,7 @@ export type ThinkingBarProps = {
   className?: string
 }
 
-export function ThinkingBar({ text = "Analyse en cours", stopLabel = "Répondre maintenant", onStop, onClick, className }: ThinkingBarProps) {
+export function ThinkingBar({ text = "Analyzing", stopLabel = "Answer now", onStop, onClick, className }: ThinkingBarProps) {
   return (
     <div
       onClick={onClick}

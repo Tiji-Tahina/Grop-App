@@ -49,9 +49,9 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 # ─── Deploy contexts ──────────────────────────────────────────
-# Tous les contextes Netlify pointent sur le seul backend Render
-# déployé (staging = environnement unique de démo client).
-# Note : netlify.toml override les variables du dashboard Netlify.
+# All Netlify contexts point to the single Render backend
+# deployed (staging = single client demo environment).
+# Note: netlify.toml overrides Netlify dashboard variables.
 
 [context.production.environment]
   VITE_API_BASE_URL = "https://grop-app-backend-staging.onrender.com"

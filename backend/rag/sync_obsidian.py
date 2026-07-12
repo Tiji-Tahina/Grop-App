@@ -3,55 +3,55 @@ import json
 import logging
 from pathlib import Path
 
-# Configuration des logs
+# Log configuration
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
-# Chemins absolus
+# Absolute paths
 OBSIDIAN_VAULT = "/home/zafinii/Documents/raginy/Gropidian"
 PROJECT_KB = Path(__file__).parent / "data" / "knowledge_base"
 
 def clean_text(text):
-    """Nettoyage basique du texte Markdown pour le RAG."""
-    # On peut ajouter ici des filtres pour enlever les tags Obsidian spécifiques si besoin
+    """Basic Markdown text cleanup for RAG."""
+    # Filters for removing specific Obsidian tags can be added here if needed
     return text.strip()
 
 def sync():
     """
-    Parcourt le vault Obsidian et convertit les fichiers .md en .json 
-    dans le dossier de connaissances du projet.
+    Traverse the Obsidian vault and convert .md files to .json
+    in the project's knowledge directory.
     """
-    logger.info(f"🚀 Début de la synchronisation depuis : {OBSIDIAN_VAULT}")
-    
+    logger.info(f"🚀 Starting synchronization from: {OBSIDIAN_VAULT}")
+
     if not os.path.exists(OBSIDIAN_VAULT):
-        logger.error(f"Le dossier Obsidian est introuvable : {OBSIDIAN_VAULT}")
+        logger.error(f"Obsidian folder not found: {OBSIDIAN_VAULT}")
         return
 
-    # S'assurer que le dossier de destination existe
+    # Ensure the destination folder exists
     PROJECT_KB.mkdir(parents=True, exist_ok=True)
 
     count = 0
     for root, dirs, files in os.walk(OBSIDIAN_VAULT):
-        # Ignorer les dossiers cachés d'Obsidian et les templates
+        # Skip hidden Obsidian folders and templates
         if any(part.startswith('.') for part in Path(root).parts) or "Template" in root:
             continue
-            
+
         for file in files:
             if file.endswith(".md"):
                 file_path = Path(root) / file
-                
-                # Création d'un identifiant unique (chemin relatif sans extension)
+
+                # Create a unique identifier (relative path without extension)
                 rel_path = file_path.relative_to(OBSIDIAN_VAULT)
                 doc_id = f"obsidian_{str(rel_path.with_suffix('')).lower().replace(' ', '_').replace('/', '_')}"
-                
+
                 try:
                     with open(file_path, 'r', encoding='utf-8') as f:
                         content = f.read()
-                    
+
                     if len(content.strip()) < 10:
                         continue
 
-                    # Mapping des dossiers vers des topics CropGPT
+                    # Map folders to CropGPT topics
                     folder_name = file_path.parent.name.lower()
                     topics = []
                     if "varieties" in folder_name: topics.append("varieties")
@@ -61,7 +61,7 @@ def sync():
                     if "environment" in folder_name: topics.append("climate")
                     if "statistics" in folder_name: topics.append("yield_prediction")
 
-                    # Structure du document JSON pour CropGPT
+                    # JSON document structure for CropGPT
                     data = {
                         "id": doc_id,
                         "title": file_path.stem,
@@ -71,20 +71,20 @@ def sync():
                         "topics": topics if topics else ["general"],
                         "content": clean_text(content)
                     }
-                    
-                    # Sauvegarde dans le projet
+
+                    # Save to the project
                     output_path = PROJECT_KB / f"{doc_id}.json"
                     with open(output_path, 'w', encoding='utf-8') as f:
                         json.dump(data, f, ensure_ascii=False, indent=2)
-                    
-                    count += 1
-                    logger.debug(f"Synchronisé : {file_path.name}")
-                
-                except Exception as e:
-                    logger.error(f"Erreur lors du traitement de {file}: {e}")
 
-    logger.info(f"✅ Terminé ! {count} notes Obsidian ont été synchronisées.")
-    logger.info(f"👉 Prochaine étape : python3 -m rag.embeddings --build")
+                    count += 1
+                    logger.debug(f"Synced: {file_path.name}")
+
+                except Exception as e:
+                    logger.error(f"Error processing {file}: {e}")
+
+    logger.info(f"✅ Done! {count} Obsidian notes have been synchronized.")
+    logger.info(f"👉 Next step: python3 -m rag.embeddings --build")
 
 if __name__ == "__main__":
     sync()

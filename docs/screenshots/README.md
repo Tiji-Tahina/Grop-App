@@ -1,25 +1,25 @@
-# Captures pour le README
+# Screenshots for README
 
-Dépose ici les captures référencées par le README à la racine. Les chemins attendus sont :
+Place the screenshots referenced by the root README here. Expected paths:
 
-| Fichier | Page à capturer |
+| File | Page to Capture |
 |---|---|
-| `chat.png` | Page de chat principale avec une conversation ouverte (idéalement avec une réponse streamée et ses sources visibles) |
-| `map3d.png` | Carte 3D Three.js des 22 régions de Madagascar |
-| `dashboard.png` | Dashboard force-graph thématique |
-| `streaming.png` | Vue d'une réponse en cours de streaming, avec les étapes "thinking" et le score RAG |
+| `chat.png` | Main chat page with an open conversation (ideally with a streamed response and its sources visible) |
+| `map3d.png` | 3D Three.js map of Madagascar's 22 regions |
+| `dashboard.png` | Thematic force-graph dashboard |
+| `streaming.png` | View of a response being streamed, with the "thinking" steps and RAG score |
 
-## Conseils de capture
+## Capture Tips
 
-- Format **PNG** (pas JPEG : les UI à fort contraste compressent mal)
-- Résolution **viewport 1440×900** ou plus, dpr 2 si possible
-- Largeur affichée : ~800-1200 px sur GitHub
-- Privilégier des **données réelles** (pas de Lorem Ipsum) — donne confiance au lecteur
-- Ne pas capturer de **données utilisateur sensibles** (logs JWT, mots de passe, emails persos)
+- Format: **PNG** (not JPEG: high-contrast UIs compress poorly)
+- Resolution: **viewport 1440x900** or higher, dpr 2 if possible
+- Displayed width: ~800-1200 px on GitHub
+- Use **real data** (not Lorem Ipsum) — builds reader confidence
+- Do not capture **sensitive user data** (JWT logs, passwords, personal emails)
 
-## Outils suggérés
+## Suggested Tools
 
-- macOS : Cmd+Shift+4 (zone) ou Cmd+Shift+5 (vidéo)
-- Linux : `flameshot` ou `gnome-screenshot`
-- Browser DevTools : Lighthouse → "Capture screenshot" pour des résolutions exactes
-- GIF animés (pour les démos de chat streaming) : [LICEcap](https://www.cockos.com/licecap/) ou [Peek](https://github.com/phw/peek)
+- macOS: Cmd+Shift+4 (area) or Cmd+Shift+5 (video)
+- Linux: `flameshot` or `gnome-screenshot`
+- Browser DevTools: Lighthouse → "Capture screenshot" for exact resolutions
+- Animated GIFs (for chat streaming demos): [LICEcap](https://www.cockos.com/licecap/) or [Peek](https://github.com/phw/peek)

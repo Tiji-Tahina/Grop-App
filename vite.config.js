@@ -9,9 +9,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  // Le projet contient le backend Python à coté du front. Sans cette liste,
-  // chokidar tente de watcher backend/venv/ (~50k fichiers pandas/numpy/...)
-  // et plante avec ENOSPC sur les linux par défaut.
+  // The project contains the Python backend alongside the frontend. Without this list,
+  // chokidar tries to watch backend/venv/ (~50k pandas/numpy/... files)
+  // and crashes with ENOSPC on default Linux.
   server: {
     watch: {
       ignored: [

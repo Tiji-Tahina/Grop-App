@@ -60,8 +60,8 @@ function getStepIcon(category: 'research' | 'analysis' | 'solution', isComplete:
 
 function getStepLabel(category: 'research' | 'analysis' | 'solution'): string {
   switch (category) {
-    case 'research': return 'Recherche';
-    case 'analysis': return 'Analyse';
+    case 'research': return 'Research';
+    case 'analysis': return 'Analysis';
     case 'solution': return 'Solution';
   }
 }
@@ -70,30 +70,30 @@ function getStepDescription(step: string): string[] {
   const lower = step.toLowerCase();
   if (lower.includes('analyse de la question')) {
     return [
-      'Extraction des mots-clés de la question',
-      'Identification de l\'intention utilisateur',
-      'Détection de la langue (français / malgache)',
+      'Extracting question keywords',
+      'Identifying user intent',
+      'Detecting language (French / Malagasy)',
     ];
   }
   if (lower.includes('validation') || lower.includes('domaine')) {
     return [
-      'Vérification que la question relève du domaine agricole',
-      'Comparaison avec les concepts de l\'ontologie OWL',
-      'Rejet des questions hors domaine (guardrail)',
+      'Verifying agricultural domain relevance',
+      'Comparing with OWL ontology concepts',
+      'Rejecting off-topic questions (guardrail)',
     ];
   }
   if (lower.includes('recherche') || lower.includes('base documentaire')) {
     return [
-      'Recherche vectorielle dans la base FAISS',
-      'Calcul de similarité sémantique (embeddings)',
-      'Sélection des documents les plus pertinents',
+      'Vector search in FAISS database',
+      'Computing semantic similarity (embeddings)',
+      'Selecting most relevant documents',
     ];
   }
   if (lower.includes('génération') || lower.includes('réponse')) {
     return [
-      'Construction du prompt avec contexte RAG',
-      'Injection des faits ontologiques',
-      'Génération streaming de la réponse',
+      'Building prompt with RAG context',
+      'Injecting ontological facts',
+      'Streaming response generation',
     ];
   }
   return [step];
@@ -148,8 +148,8 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
         {message.isStreaming && message.thinkingSteps.length > 0 && !message.text && (
           <div style={{ marginBottom: 12 }}>
             <ThinkingBar
-              text="Analyse en cours"
-              stopLabel="Répondre maintenant"
+              text="Analyzing"
+              stopLabel="Answer now"
               onStop={onStop}
             />
           </div>
@@ -169,7 +169,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
                       color: researchComplete ? 'var(--text-secondary)' : researchActive ? 'var(--primary-400)' : 'var(--text-muted)',
                       fontWeight: researchActive ? 500 : 400,
                     }}>
-                      Recherche : Compréhension de la question agricole
+                      Research: Understanding the agricultural question
                     </span>
                   </ChainOfThoughtTrigger>
                   <ChainOfThoughtContent>
@@ -194,7 +194,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
                       color: analysisComplete ? 'var(--text-secondary)' : analysisActive ? 'var(--earth-400, #D4A64B)' : 'var(--text-muted)',
                       fontWeight: analysisActive ? 500 : 400,
                     }}>
-                      Analyse : Identification des données pertinentes
+                      Analysis: Identifying relevant data
                     </span>
                   </ChainOfThoughtTrigger>
                   <ChainOfThoughtContent>
@@ -219,7 +219,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
                       color: solutionComplete ? 'var(--text-secondary)' : solutionActive ? 'var(--agri-400)' : 'var(--text-muted)',
                       fontWeight: solutionActive ? 500 : 400,
                     }}>
-                      Solution : Génération de la réponse agricole
+                      Solution: Generating the agricultural response
                     </span>
                   </ChainOfThoughtTrigger>
                   <ChainOfThoughtContent>
@@ -260,8 +260,8 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
           }}>
             <AlertCircle size={18} style={{ flexShrink: 0, marginTop: 1 }} />
             <div style={{ fontSize: 14, lineHeight: 1.5 }}>
-              <strong style={{ display: 'block', marginBottom: 4 }}>
-                Erreur du modèle
+               <strong style={{ display: 'block', marginBottom: 4 }}>
+                Model error
               </strong>
               <span>{message.text}</span>
             </div>
@@ -293,7 +293,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
         {!message.isStreaming && message.mapAction && (
           <button
             onClick={() => mapBus.goToMap()}
-            title={message.mapAction.explain?.title || 'Voir le résultat sur la carte'}
+            title={message.mapAction.explain?.title || 'View result on map'}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
               marginTop: 12, padding: '8px 14px',
@@ -314,7 +314,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
             }}
           >
             <MapIcon size={14} strokeWidth={2} />
-            Voir sur la carte
+            View on map
           </button>
         )}
 
@@ -328,7 +328,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
           >
             <button
               onClick={handleCopy}
-              title={copied ? 'Copié !' : 'Copier'}
+              title={copied ? 'Copied!' : 'Copy'}
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 padding: 6, borderRadius: 6, border: 'none', cursor: 'pointer',
@@ -338,14 +338,14 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
             >
               <Copy size={14} />
             </button>
-            <button title="Utile" style={{
+            <button title="Helpful" style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               padding: 6, borderRadius: 6, border: 'none', cursor: 'pointer',
               background: 'transparent', color: 'var(--text-muted)', transition: 'all 0.2s',
             }}>
               <ThumbsUp size={14} />
             </button>
-            <button title="Pas utile" style={{
+            <button title="Not helpful" style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               padding: 6, borderRadius: 6, border: 'none', cursor: 'pointer',
               background: 'transparent', color: 'var(--text-muted)', transition: 'all 0.2s',
@@ -366,7 +366,7 @@ export function AssistantMessage({ message, isStreaming, onStop, mode }: Assista
                 border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: 6, cursor: 'pointer',
               }}
             >
-              Arrêter
+              Stop
             </button>
           </div>
         )}

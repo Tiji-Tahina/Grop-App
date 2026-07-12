@@ -39,12 +39,12 @@ CROP_TYPES = [
 ]
 
 SOIL_TYPES = [
-    ('laterite', 'Latérite'),
+    ('laterite', 'Laterite'),
     ('alluvial', 'Alluvial'),
-    ('volcanic', 'Volcanique'),
-    ('sandy', 'Sableux'),
-    ('clay', 'Argileux'),
-    ('loam', 'Limon'),
+    ('volcanic', 'Volcanic'),
+    ('sandy', 'Sandy'),
+    ('clay', 'Clay'),
+    ('loam', 'Silt'),
 ]
 
 
@@ -56,10 +56,10 @@ class Farm(models.Model):
     )
     name = models.CharField(max_length=200)
     region = models.CharField(max_length=50, choices=MADAGASCAR_REGIONS)
-    area_hectares = models.FloatField(help_text='Surface en hectares')
+    area_hectares = models.FloatField(help_text='Area in hectares')
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    altitude_m = models.IntegerField(null=True, blank=True, help_text='Altitude en mètres')
+    altitude_m = models.IntegerField(null=True, blank=True, help_text='Altitude in meters')
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -73,15 +73,15 @@ class Farm(models.Model):
 
 class Crop(models.Model):
     STATUS_CHOICES = [
-        ('planned', 'Planifié'),
-        ('growing', 'En croissance'),
-        ('harvested', 'Récolté'),
-        ('failed', 'Échec'),
+        ('planned', 'Planned'),
+        ('growing', 'Growing'),
+        ('harvested', 'Harvested'),
+        ('failed', 'Failed'),
     ]
 
     farm = models.ForeignKey(Farm, on_delete=models.CASCADE, related_name='crops')
     crop_type = models.CharField(max_length=30, choices=CROP_TYPES)
-    variety = models.CharField(max_length=100, blank=True, help_text='Variété spécifique ex: FOFIFA 154')
+    variety = models.CharField(max_length=100, blank=True, help_text='Specific variety ex: FOFIFA 154')
     soil_type = models.CharField(max_length=30, choices=SOIL_TYPES)
     planted_at = models.DateField()
     expected_harvest = models.DateField()
@@ -99,9 +99,9 @@ class Crop(models.Model):
 
 
 class SoilData(models.Model):
-    """Données d'analyse de sol associées à une parcelle."""
+    """Soil analysis data associated with a field."""
     farm = models.ForeignKey(Farm, on_delete=models.CASCADE, related_name='soil_data')
-    ph = models.FloatField(null=True, blank=True, help_text='pH du sol (0-14)')
+    ph = models.FloatField(null=True, blank=True, help_text='Soil pH (0-14)')
     nitrogen_ppm = models.FloatField(null=True, blank=True)
     phosphorus_ppm = models.FloatField(null=True, blank=True)
     potassium_ppm = models.FloatField(null=True, blank=True)
@@ -114,4 +114,4 @@ class SoilData(models.Model):
         ordering = ['-sampled_at']
 
     def __str__(self):
-        return f"Sol {self.farm.name} — {self.sampled_at}"
+        return f"Soil {self.farm.name} — {self.sampled_at}"

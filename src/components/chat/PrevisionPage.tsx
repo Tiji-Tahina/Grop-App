@@ -14,7 +14,7 @@ type Culture = {
 
 type Saison = { id: string; label: string };
 
-// ── Données ────────────────────────────────────────────────────────────────────
+// ── Data ──────────────────────────────────────────────────────────────────────
 const CULTURES: Culture[] = [
   { id: 'riz',         label: 'Riz',           emoji: '🌾', color: '#10b981' },
   { id: 'mais',        label: 'Maïs',          emoji: '🌽', color: '#f59e0b' },
@@ -29,9 +29,9 @@ const CULTURES: Culture[] = [
 ];
 
 const SAISONS: Saison[] = [
-  { id: 'saison_pluie',  label: 'Saison des pluies (Nov–Avr)' },
-  { id: 'saison_seche',  label: 'Saison sèche (Mai–Oct)' },
-  { id: 'contre_saison', label: 'Contre-saison' },
+  { id: 'saison_pluie',  label: 'Rainy season (Nov–Apr)' },
+  { id: 'saison_seche',  label: 'Dry season (May–Oct)' },
+  { id: 'contre_saison', label: 'Off-season' },
 ];
 
 const REGIONS = Object.keys(REGION_INFO).sort();
@@ -160,7 +160,7 @@ function RegionChip({
   );
 }
 
-// ── Résultat prévision ─────────────────────────────────────────────────────────
+// ── Forecast result ─────────────────────────────────────────────────────────
 function PrevisionResult({
   cultures,
   regions,
@@ -170,7 +170,7 @@ function PrevisionResult({
   regions: string[];
   saison: string;
 }) {
-  // Mock: moyenne des rendements des régions sélectionnées
+  // Mock: average yield of selected regions
   const avgRendement = regions.length > 0
     ? Math.round(regions.reduce((sum, r) => sum + (REGION_STATS[r]?.rendement_riz ?? 60), 0) / regions.length)
     : 65;
@@ -196,39 +196,39 @@ function PrevisionResult({
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
         <Zap size={16} color="#4DFF91" />
         <span style={{ fontSize: 14, fontWeight: 700, color: '#4DFF91' }}>
-          Prévision générée
+          Forecast generated
         </span>
         <span style={{
           marginLeft: 'auto', fontSize: 11, color: 'rgba(255,255,255,0.40)',
           background: 'rgba(255,255,255,0.05)', padding: '3px 10px', borderRadius: 99,
         }}>
-          {saison === 'saison_pluie' ? '🌧 Saison pluies' : saison === 'saison_seche' ? '☀️ Saison sèche' : '🔄 Contre-saison'}
+          {saison === 'saison_pluie' ? '🌧 Rainy season' : saison === 'saison_seche' ? '☀️ Dry season' : '🔄 Off-season'}
         </span>
       </div>
 
-      {/* Métriques principales */}
+      {/* Key metrics */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
         <MetricBox
-          label="Rendement estimé"
+          label="Estimated yield"
           value={`${avgRendement} q/ha`}
           color="#10b981"
           icon={<TrendingUp size={14} />}
         />
         <MetricBox
-          label="Score sécurité"
+          label="Security score"
           value={`${avgScore}/100`}
           color={scoreColor}
           icon={<BarChart3 size={14} />}
         />
         <MetricBox
-          label="Régions analysées"
+          label="Regions analyzed"
           value={regions.length.toString()}
           color="#a78bfa"
           icon={<MapPin size={14} />}
         />
       </div>
 
-      {/* Tags cultures + régions */}
+      {/* Crop + region tags */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
         {cultures.map(c => {
           const cult = CULTURES.find(x => x.id === c);
@@ -255,7 +255,7 @@ function PrevisionResult({
         ))}
         {regions.length > 4 && (
           <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.40)', alignSelf: 'center' }}>
-            +{regions.length - 4} régions
+            +{regions.length - 4} regions
           </span>
         )}
       </div>
@@ -264,7 +264,7 @@ function PrevisionResult({
         marginTop: 16, fontSize: 11, color: '#475569', lineHeight: 1.6,
         borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 12,
       }}>
-        ⚠️ Données simulées. Connectez le modèle ML pour des prévisions réelles.
+        ⚠️ Simulated data. Connect the ML model for real forecasts.
       </div>
     </motion.div>
   );
@@ -288,7 +288,7 @@ function MetricBox({ label, value, color, icon }: { label: string; value: string
   );
 }
 
-// ── PAGE PRINCIPALE ────────────────────────────────────────────────────────────
+// ── MAIN PAGE ────────────────────────────────────────────────────────────────
 export function PrevisionPage() {
   const [selectedCultures, setSelectedCultures] = useState<string[]>(['riz']);
   const [selectedRegions, setSelectedRegions]   = useState<string[]>([]);
@@ -321,17 +321,17 @@ export function PrevisionPage() {
           fontSize: 28, fontWeight: 700, color: 'var(--text-primary)',
           fontFamily: 'var(--font-display)', letterSpacing: '-0.5px',
         }}>
-          Prévisions agricoles
+          Agricultural forecasts
         </h2>
         <p style={{ color: 'var(--text-muted)', marginTop: 4, fontSize: 14 }}>
-          Sélectionnez une culture et une ou plusieurs régions pour obtenir une prévision de rendement.
+          Select a crop and one or more regions to get a yield forecast.
         </p>
       </div>
 
       <div style={{ padding: '24px 40px 48px', position: 'relative', zIndex: 1, maxWidth: 860 }}>
 
-        {/* ── Étape 1 : Culture ─────────────────────────────────────── */}
-        <Section step={1} title="Quelle culture prévoyez-vous ?" icon={<Sprout size={16} />}>
+        {/* ── Step 1: Crop ─────────────────────────────────────── */}
+        <Section step={1} title="What crop are you planning?" icon={<Sprout size={16} />}>
           <motion.div
             layout
             className="flex flex-wrap gap-2"
@@ -348,8 +348,8 @@ export function PrevisionPage() {
           </motion.div>
         </Section>
 
-        {/* ── Étape 2 : Saison ──────────────────────────────────────── */}
-        <Section step={2} title="Quelle saison ?" icon={<TrendingUp size={16} />}>
+        {/* ── Step 2: Season ──────────────────────────────────────── */}
+        <Section step={2} title="Which season?" icon={<TrendingUp size={16} />}>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             {SAISONS.map(s => (
               <motion.button
@@ -372,13 +372,13 @@ export function PrevisionPage() {
           </div>
         </Section>
 
-        {/* ── Étape 3 : Régions ─────────────────────────────────────── */}
-        <Section step={3} title="Quelle(s) région(s) ?" icon={<MapPin size={16} />}>
+        {/* ── Step 3: Regions ─────────────────────────────────────── */}
+        <Section step={3} title="Which region(s)?" icon={<MapPin size={16} />}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.40)' }}>
               {selectedRegions.length === 0
-                ? 'Aucune sélection'
-                : `${selectedRegions.length} région${selectedRegions.length > 1 ? 's' : ''} sélectionnée${selectedRegions.length > 1 ? 's' : ''}`}
+                ? 'No selection'
+                : `${selectedRegions.length} region${selectedRegions.length > 1 ? 's' : ''} selected`}
             </span>
             {selectedRegions.length > 0 && (
               <button
@@ -389,7 +389,7 @@ export function PrevisionPage() {
                   fontFamily: 'system-ui',
                 }}
               >
-                Tout effacer
+                Clear all
               </button>
             )}
           </div>
@@ -409,7 +409,7 @@ export function PrevisionPage() {
           </motion.div>
         </Section>
 
-        {/* ── Bouton Prédire ────────────────────────────────────────── */}
+        {/* ── Predict Button ────────────────────────────────────────── */}
         <motion.button
           onClick={() => canPredict && setShowResult(true)}
           whileHover={canPredict ? { scale: 1.02, boxShadow: '0 0 30px rgba(34,211,238,0.3)' } : {}}
@@ -431,10 +431,10 @@ export function PrevisionPage() {
           }}
         >
           <Zap size={16} />
-          {canPredict ? 'Générer la prévision' : 'Sélectionnez une culture et une région'}
+          {canPredict ? 'Generate forecast' : 'Select a crop and a region'}
         </motion.button>
 
-        {/* ── Résultat ──────────────────────────────────────────────── */}
+        {/* ── Result ──────────────────────────────────────────────── */}
         <AnimatePresence>
           {showResult && canPredict && (
             <PrevisionResult

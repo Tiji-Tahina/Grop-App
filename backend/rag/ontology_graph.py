@@ -1,12 +1,12 @@
 """
-Chargeur d'ontologie CropGPT — singleton rdflib.
+CropGPT ontology loader — rdflib singleton.
 
-Fournit :
-  - get_domain_keywords()      → dict {lang: [labels]}  pour la validation domaine
+Provides:
+  - get_domain_keywords()      → dict {lang: [labels]}  for domain validation
   - get_class_tag(label)       → context_tag  (varieties, water_management, …)
-  - get_related_concepts(label)→ list de labels liés  (pour expansion FAISS)
-  - get_pedigree(label)        → dict pedigree  (parents, génération, code)
-  - get_facts_block(label)     → str  prêt à injecter dans le contexte LLM
+  - get_related_concepts(label)→ list of related labels  (for FAISS expansion)
+  - get_pedigree(label)        → dict pedigree  (parents, generation, code)
+  - get_facts_block(label)     → str  ready to inject into the LLM context
 """
 
 import logging
@@ -21,7 +21,7 @@ GEN  = "http://example.org/gen/"
 RDFS = "http://www.w3.org/2000/01/rdf-schema#"
 SKOS = "http://www.w3.org/2004/02/skos/core#"
 
-# ── Mappage classe OWL → context_tag RAG ───────────────────────────────────────
+# ── OWL class → RAG context_tag mapping ───────────────────────────────────────
 _CLASS_TO_TAG = {
     f"{AGRI}Rice":            "varieties",
     f"{AGRI}CropVariety":     "varieties",
@@ -56,7 +56,7 @@ _CLASS_TO_TAG = {
 _graph = None
 
 def _load_graph():
-    """Charge tous les .ttl du dossier ontology/ dans un seul Graph rdflib."""
+    """Load all .ttl files from the ontology/ directory into a single rdflib Graph."""
     global _graph
     if _graph is not None:
         return _graph
@@ -69,22 +69,22 @@ def _load_graph():
         ttl_files = sorted(ontology_dir.glob("*.ttl"))
 
         if not ttl_files:
-            logger.warning("Aucun fichier .ttl trouvé dans %s", ontology_dir)
+            logger.warning("No .ttl files found in %s", ontology_dir)
             _graph = g
             return _graph
 
         for ttl in ttl_files:
             try:
                 g.parse(str(ttl), format="turtle")
-                logger.debug("Ontologie chargée : %s", ttl.name)
+                logger.debug("Ontology loaded: %s", ttl.name)
             except Exception as e:
-                logger.warning("Erreur chargement %s : %s", ttl.name, e)
+                logger.warning("Error loading %s: %s", ttl.name, e)
 
-        logger.info("Graphe ontologique : %d triplets depuis %d fichiers", len(g), len(ttl_files))
+        logger.info("Ontology graph: %d triples from %d files", len(g), len(ttl_files))
         _graph = g
 
     except ImportError:
-        logger.error("rdflib non installé — pip install rdflib")
+        logger.error("rdflib not installed — pip install rdflib")
         _graph = None
 
     return _graph
@@ -94,14 +94,14 @@ def get_graph():
     return _load_graph()
 
 
-# ── Requêtes utilitaires ───────────────────────────────────────────────────────
+# ── Utility queries ───────────────────────────────────────────────────────────
 
 @lru_cache(maxsize=1)
 def get_domain_keywords() -> dict:
     """
-    Retourne tous les labels agricoles du graphe, par langue.
-    Format : {"fr": [...], "en": [...], "mg": [...]}
-    Remplace le dict AGRICULTURAL_KEYWORDS hardcodé dans ontology.py.
+    Return all agricultural labels from the graph, by language.
+    Format: {"fr": [...], "en": [...], "mg": [...]}
+    Replaces the hardcoded AGRICULTURAL_KEYWORDS dict in ontology.py.
     """
     g = get_graph()
     result = {"fr": [], "en": [], "mg": []}
@@ -120,7 +120,7 @@ def get_domain_keywords() -> dict:
                     result[o.language].append(txt)
 
     logger.debug(
-        "Keywords ontologie : fr=%d en=%d mg=%d",
+        "Ontology keywords: fr=%d en=%d mg=%d",
         len(result["fr"]), len(result["en"]), len(result["mg"])
     )
     return result
@@ -128,10 +128,10 @@ def get_domain_keywords() -> dict:
 
 def _find_individual(label: str):
     """
-    Cherche un individu (URI) dans le graphe dont un label correspond
-    à la chaîne donnée. Deux passes :
-    1. Match exact (insensible à la casse)
-    2. Match partiel : le label du graphe contient le terme cherché
+    Find an individual (URI) in the graph whose label matches
+    the given string. Two passes:
+    1. Exact match (case-insensitive)
+    2. Partial match: graph label starts with the search term
     """
     g = get_graph()
     if g is None:
@@ -146,10 +146,10 @@ def _find_individual(label: str):
     for s, p, o in g:
         if p in (RDFS_NS.label, SKOS_NS.prefLabel) and isinstance(o, Literal):
             graph_label = str(o).strip().lower()
-            # Passe 1 : exact
+            # Pass 1: exact
             if graph_label == label_lower:
                 return s
-            # Passe 2 : le label du graphe commence par le terme cherché
+            # Pass 2: graph label starts with the search term
             if partial_match is None and graph_label.startswith(label_lower + ' '):
                 partial_match = s
 
@@ -158,8 +158,8 @@ def _find_individual(label: str):
 
 def get_class_tag(label: str) -> str | None:
     """
-    Retourne le context_tag RAG correspondant à l'entité nommée `label`.
-    Ex : "Makalioka" → "varieties", "irrigation" → "water_management"
+    Return the RAG context_tag for the named entity `label`.
+    E.g.: "Makalioka" → "varieties", "irrigation" → "water_management"
     """
     g = get_graph()
     if g is None:
@@ -180,11 +180,11 @@ def get_class_tag(label: str) -> str | None:
 
 def get_related_concepts(label: str) -> list[str]:
     """
-    Retourne les labels des concepts liés à `label` dans le graphe :
-    - classes parentes (rdfs:subClassOf)
-    - individus de même type
-    - pratiques associées (gen:isHybridOf siblings)
-    Utilisé pour enrichir la requête FAISS.
+    Return labels of concepts related to `label` in the graph:
+    - parent classes (rdfs:subClassOf)
+    - individuals of the same type
+    - associated practices (gen:isHybridOf siblings)
+    Used to enrich the FAISS query.
     """
     g = get_graph()
     if g is None:
@@ -199,28 +199,28 @@ def get_related_concepts(label: str) -> list[str]:
 
     related_uris = set()
 
-    # Types directs de l'individu (pas les super-classes pour éviter les remontées)
+    # Direct types of the individual (not super-classes to avoid climbing up)
     direct_types = set()
     for _, _, cls in g.triples((uri, RDF_NS.type, None)):
-        # Ignorer les classes très génériques (owl:Thing, owl:NamedIndividual)
+        # Skip very generic classes (owl:Thing, owl:NamedIndividual)
         cls_str = str(cls)
         if 'owl#' in cls_str or 'rdf-syntax' in cls_str:
             continue
         direct_types.add(cls)
         related_uris.add(cls)
 
-    # Parents hybrides
+    # Hybrid parents
     is_hybrid_of = URIRef(f"{GEN}isHybridOf")
     for _, _, parent in g.triples((uri, is_hybrid_of, None)):
         related_uris.add(parent)
 
-    # Individus du même type direct uniquement (pas des super-classes)
+    # Individuals of the same direct type only (not super-classes)
     for cls in direct_types:
         for sibling, _, _ in g.triples((None, RDF_NS.type, cls)):
             if sibling != uri:
                 related_uris.add(sibling)
 
-    # Collecter les labels
+    # Collect labels
     labels = []
     for u in related_uris:
         for _, p, o in g.triples((u, None, None)):
@@ -229,12 +229,12 @@ def get_related_concepts(label: str) -> list[str]:
                 if txt and txt.lower() != label.lower() and txt not in labels:
                     labels.append(txt)
 
-    return labels[:20]  # limite raisonnable
+    return labels[:20]  # reasonable limit
 
 
 def get_pedigree(label: str) -> dict:
     """
-    Retourne les informations de pedigree pour une variété ou race.
+    Return pedigree information for a variety or breed.
     {
       "found": bool,
       "label": str,
@@ -274,7 +274,7 @@ def get_pedigree(label: str) -> dict:
 
     result["is_hybrid"] = len(result["parents"]) > 0
 
-    # Génération
+    # Generation
     gen_prop = URIRef(f"{GEN}hasGenerationNumber")
     for _, _, val in g.triples((uri, gen_prop, None)):
         try:
@@ -282,20 +282,20 @@ def get_pedigree(label: str) -> dict:
         except (ValueError, TypeError):
             pass
 
-    # Code pedigree
+    # Pedigree code
     code_prop = URIRef(f"{GEN}hasPedigreeCode")
     for _, _, val in g.triples((uri, code_prop, None)):
         result["pedigree_code"] = str(val)
 
-    # Date d'enregistrement
+    # Registration date
     date_prop = URIRef(f"{GEN}hasRegistrationDate")
     for _, _, val in g.triples((uri, date_prop, None)):
         result["registration_date"] = str(val)
 
-    # Développé par
+    # Bred by
     bred_prop = URIRef(f"{GEN}bredBy")
     for _, _, agent_uri in g.triples((uri, bred_prop, None)):
-        # Extraire le nom depuis l'URI ex: .../agents/FOFIFA → FOFIFA
+        # Extract name from URI, e.g.: .../agents/FOFIFA → FOFIFA
         result["bred_by"] = str(agent_uri).split("/")[-1]
 
     return result
@@ -303,9 +303,9 @@ def get_pedigree(label: str) -> dict:
 
 def get_facts_block(label: str) -> str:
     """
-    Retourne un bloc de texte structuré prêt à être injecté dans le contexte LLM.
-    Combine pedigree + classe + définition.
-    Retourne "" si rien trouvé.
+    Return a structured text block ready to be injected into the LLM context.
+    Combines pedigree + class + definition.
+    Returns "" if nothing found.
     """
     g = get_graph()
     if g is None:
@@ -318,12 +318,12 @@ def get_facts_block(label: str) -> str:
     if uri is None:
         return ""
 
-    lines = [f"[Faits ontologiques — {label}]"]
+    lines = [f"[Ontological facts — {label}]"]
 
-    # Définition
+    # Definition
     for _, p, o in g.triples((uri, SKOS_NS.definition, None)):
         if isinstance(o, Literal) and o.language == "fr":
-            lines.append(f"Définition : {o}")
+            lines.append(f"Definition: {o}")
             break
 
     # Classes
@@ -333,25 +333,25 @@ def get_facts_block(label: str) -> str:
             if isinstance(cl, Literal) and cl.language == "fr":
                 class_labels.append(str(cl))
     if class_labels:
-        lines.append(f"Catégorie : {', '.join(class_labels)}")
+        lines.append(f"Category: {', '.join(class_labels)}")
 
     # Pedigree
     pedigree = get_pedigree(label)
     if pedigree["found"]:
         if pedigree["parents"]:
-            lines.append(f"Parents : {', '.join(pedigree['parents'])}")
+            lines.append(f"Parents: {', '.join(pedigree['parents'])}")
         if pedigree["generation"] is not None:
-            lines.append(f"Génération : F{pedigree['generation']}")
+            lines.append(f"Generation: F{pedigree['generation']}")
         if pedigree["pedigree_code"]:
-            lines.append(f"Code pedigree : {pedigree['pedigree_code']}")
+            lines.append(f"Pedigree code: {pedigree['pedigree_code']}")
         if pedigree["registration_date"]:
-            lines.append(f"Enregistrement : {pedigree['registration_date']}")
+            lines.append(f"Registration: {pedigree['registration_date']}")
         if pedigree["bred_by"]:
-            lines.append(f"Développé par : {pedigree['bred_by']}")
+            lines.append(f"Bred by: {pedigree['bred_by']}")
 
-    # Concepts liés
+    # Related concepts
     related = get_related_concepts(label)
     if related:
-        lines.append(f"Concepts liés : {', '.join(related[:5])}")
+        lines.append(f"Related concepts: {', '.join(related[:5])}")
 
     return "\n".join(lines) if len(lines) > 1 else ""

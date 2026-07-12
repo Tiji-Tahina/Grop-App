@@ -1,7 +1,7 @@
 /**
  * Build-time generator for Madagascar SVG paths.
  *
- * Reads GADM 4.1 GeoJSON for Madagascar (level 2 = 22 régions, level 3 = 110
+ * Reads GADM 4.1 GeoJSON for Madagascar (level 2 = 22 regions, level 3 = 110
  * districts), simplifies + projects via d3-geo, and emits a single JSON file
  * consumed by Madagascar2DMap.jsx at runtime.
  *
@@ -167,7 +167,7 @@ function main() {
   const projection = geoMercator().fitSize([WIDTH, HEIGHT], adm2);
   const pathGen = geoPath(projection);
 
-  // ─── Régions ──────────────────────────────────────────────────────────────
+  // ─── Regions ──────────────────────────────────────────────────────────────
   const regions = {};
   let unknownRegions = 0;
   for (const f of adm2.features) {
@@ -201,7 +201,7 @@ function main() {
     };
   }
 
-  // ─── Districts (groupés par région) ───────────────────────────────────────
+  // ─── Districts (grouped by region) ───────────────────────────────────────
   const districts = {};
   let unknownDistrictRegions = 0;
   for (const f of adm3.features) {
@@ -249,9 +249,9 @@ function main() {
   fs.writeFileSync(OUT_PATH, JSON.stringify(out));
 
   const sizeKB = (fs.statSync(OUT_PATH).size / 1024).toFixed(1);
-  console.log(`[madagascar-paths] OK — ${out.meta.regionCount} régions, ${out.meta.districtCount} districts → ${OUT_PATH} (${sizeKB} kB)`);
+  console.log(`[madagascar-paths] OK — ${out.meta.regionCount} regions, ${out.meta.districtCount} districts → ${OUT_PATH} (${sizeKB} kB)`);
   if (unknownRegions || unknownDistrictRegions) {
-    console.warn(`[madagascar-paths] WARN — ${unknownRegions} régions and ${unknownDistrictRegions} district-parent regions unmapped`);
+    console.warn(`[madagascar-paths] WARN — ${unknownRegions} regions and ${unknownDistrictRegions} district-parent regions unmapped`);
   }
 }
 

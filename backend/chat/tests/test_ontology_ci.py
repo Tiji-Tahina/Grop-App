@@ -1,47 +1,47 @@
-"""Tests pytest de l'ontologie RDF — version CI de test_ontology.py.
+"""Pytest tests for the RDF ontology — CI version of test_ontology.py.
 
-Ces tests vérifient le graphe RDF, les keywords domaine, le mapping
-classe→tag et le système de pedigree des variétés de riz.
+These tests verify the RDF graph, domain keywords, class→tag mapping,
+and the rice variety pedigree system.
 """
 import pytest
 
 
 class TestOntologyGraph:
     def test_graph_loads(self):
-        """Le graphe RDF doit se charger et contenir plus de 1000 triplets."""
+        """The RDF graph must load and contain more than 1000 triples."""
         from rag.ontology_graph import get_graph
         g = get_graph()
         assert g is not None
-        assert len(g) > 1000, f"Seulement {len(g)} triplets — graphe incomplet ?"
+        assert len(g) > 1000, f"Only {len(g)} triples — incomplete graph?"
 
     def test_domain_keywords_french_present(self):
-        """Les keywords français doivent être présents et suffisamment nombreux."""
+        """French keywords must be present and sufficiently numerous."""
         from rag.ontology_graph import get_domain_keywords
         kw = get_domain_keywords()
         assert 'fr' in kw
-        assert len(kw['fr']) > 50, f"Seulement {len(kw['fr'])} keywords FR"
+        assert len(kw['fr']) > 50, f"Only {len(kw['fr'])} FR keywords"
 
     def test_domain_keywords_malagasy_present(self):
-        """Les keywords malgaches doivent être présents."""
+        """Malagasy keywords must be present."""
         from rag.ontology_graph import get_domain_keywords
         kw = get_domain_keywords()
         assert 'mg' in kw
-        assert len(kw['mg']) > 20, f"Seulement {len(kw['mg'])} keywords MG"
+        assert len(kw['mg']) > 20, f"Only {len(kw['mg'])} MG keywords"
 
     def test_domain_keywords_english_present(self):
-        """Les keywords anglais doivent être présents."""
+        """English keywords must be present."""
         from rag.ontology_graph import get_domain_keywords
         kw = get_domain_keywords()
         assert 'en' in kw
-        assert len(kw['en']) > 50, f"Seulement {len(kw['en'])} keywords EN"
+        assert len(kw['en']) > 50, f"Only {len(kw['en'])} EN keywords"
 
     @pytest.mark.parametrize("word", ["riz", "irrigation", "sol", "variété"])
     def test_expected_french_keywords(self, word):
-        """Des mots agricoles fondamentaux doivent apparaître dans les keywords FR."""
+        """Fundamental agricultural words must appear in FR keywords."""
         from rag.ontology_graph import get_domain_keywords
         kw = get_domain_keywords()
         found = any(word in label for label in kw.get('fr', []))
-        assert found, f"Mot '{word}' absent des keywords FR"
+        assert found, f"Word '{word}' missing from FR keywords"
 
     @pytest.mark.parametrize("label,expected_tag", [
         ("Bemasoha Rice Hybrid", "varieties"),
@@ -49,47 +49,47 @@ class TestOntologyGraph:
         ("Makalioka Rice Variety", "varieties"),
     ])
     def test_class_tag_mapping(self, label, expected_tag):
-        """Les classes variétales doivent être mappées au tag 'varieties'."""
+        """Varietal classes must be mapped to the 'varieties' tag."""
         from rag.ontology_graph import get_class_tag
         tag = get_class_tag(label)
-        assert tag == expected_tag, f"'{label}' → tag={tag}, attendu {expected_tag}"
+        assert tag == expected_tag, f"'{label}' → tag={tag}, expected {expected_tag}"
 
     def test_pedigree_makalioka_found(self):
-        """La variété Makalioka doit être trouvée dans le graphe."""
+        """The Makalioka variety must be found in the graph."""
         from rag.ontology_graph import get_pedigree
         p = get_pedigree("Makalioka Rice Variety")
         assert p['found'] is True
         assert bool(p['pedigree_code'])
 
     def test_pedigree_bemasoha_is_hybrid_f1(self):
-        """Bemasoha doit être un hybride F1 avec 2 parents développé par FOFIFA."""
+        """Bemasoha must be an F1 hybrid with 2 parents bred by FOFIFA."""
         from rag.ontology_graph import get_pedigree
         p = get_pedigree("Bemasoha Rice Hybrid")
         assert p['is_hybrid'] is True
-        assert len(p['parents']) == 2, f"Attendu 2 parents, obtenu {len(p['parents'])}"
-        assert p['generation'] == 1, f"Attendu F1, obtenu F{p['generation']}"
+        assert len(p['parents']) == 2, f"Expected 2 parents, got {len(p['parents'])}"
+        assert p['generation'] == 1, f"Expected F1, got F{p['generation']}"
         assert p['bred_by'] == 'FOFIFA'
 
     def test_pedigree_fiaramanitra_is_f2(self):
-        """Fiaramanitra doit être un hybride F2."""
+        """Fiaramanitra must be an F2 hybrid."""
         from rag.ontology_graph import get_pedigree
         p = get_pedigree("Fiaramanitra Rice Hybrid")
-        assert p['generation'] == 2, f"Attendu F2, obtenu F{p['generation']}"
+        assert p['generation'] == 2, f"Expected F2, got F{p['generation']}"
 
     def test_pedigree_unknown_entity_returns_not_found(self):
-        """Une entité inconnue doit retourner found=False sans exception."""
+        """An unknown entity must return found=False without raising an exception."""
         from rag.ontology_graph import get_pedigree
         p = get_pedigree("VariétéInexistante123")
         assert p['found'] is False
 
     def test_related_concepts_not_empty(self):
-        """get_related_concepts doit retourner des concepts pour une variété connue."""
+        """get_related_concepts must return concepts for a known variety."""
         from rag.ontology_graph import get_related_concepts
         related = get_related_concepts("Makalioka Rice Variety")
-        assert len(related) > 0, "Aucun concept lié trouvé pour Makalioka"
+        assert len(related) > 0, "No related concepts found for Makalioka"
 
     def test_facts_block_contains_fofifa(self):
-        """Le bloc de faits pour Bemasoha doit mentionner FOFIFA et les parents."""
+        """The facts block for Bemasoha must mention FOFIFA and the parents."""
         from rag.ontology_graph import get_facts_block
         facts = get_facts_block("Bemasoha Rice Hybrid")
         assert len(facts) > 50

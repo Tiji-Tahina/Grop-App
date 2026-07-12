@@ -7,7 +7,7 @@ on:
     branches: [develop]
 
 jobs:
-  # ─── 1. Lint (gate rapide) ────────────────────────────────────────────────
+  # ─── 1. Lint (fast gate) ────────────────────────────────────────────────
   lint:
     name: Lint — flake8 + ESLint
     runs-on: ubuntu-latest
@@ -42,9 +42,9 @@ jobs:
       - name: ESLint
         run: npm run lint
 
-  # ─── 2. Tests unitaires (sans DB) ────────────────────────────────────────
+  # ─── 2. Unit tests (no DB) ────────────────────────────────────────
   unit-tests:
-    name: Unit Tests — pipeline, prédictions, ontologie
+    name: Unit Tests — pipeline, predictions, ontology
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -72,9 +72,9 @@ jobs:
             predictions/tests/test_predictions.py \
             -v --tb=short
 
-  # ─── 3. Tests d'intégration (avec Postgres) ──────────────────────────────
+  # ─── 3. Integration tests (with Postgres) ──────────────────────────────
   integration-tests:
-    name: Integration Tests — API, modèles DB
+    name: Integration Tests — API, DB models
     runs-on: ubuntu-latest
     needs: lint
 
@@ -136,9 +136,9 @@ jobs:
           file: backend/coverage.xml
           flags: backend
 
-  # ─── 4. Tests RAG (FAISS + pipeline retrieval) ───────────────────────────
+  # ─── 4. RAG tests (FAISS + retrieval pipeline) ───────────────────────────
   rag-tests:
-    name: RAG Tests — retrieval, confiance, contexte
+    name: RAG Tests — retrieval, confidence, context
     runs-on: ubuntu-latest
     needs: lint
 
@@ -205,7 +205,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (valide la syntaxe et les imports)
+      - name: Build (validates syntax and imports)
         run: npm run build
         env:
           VITE_API_BASE_URL: http://localhost:8000

@@ -26,21 +26,21 @@ const BIOME_IMAGES = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
-// BIOME PALETTE — alignée sur le design system "AGRI-NEXUS Nature Edition"
-// (cf. src/index.css : --bg-deep, --primary-500, --agri-*, --ai-*)
+// BIOME PALETTE — aligned with "AGRI-NEXUS Nature Edition" design system
+// (see src/index.css : --bg-deep, --primary-500, --agri-*, --ai-*)
 // ─────────────────────────────────────────────────────────────────────────────
 const BIOME_COLORS = {
-  rainforest: '#1F4A3D',   // forêt humide profonde
-  tropical:   '#3A7A5A',   // tropical médium
-  highland:   '#6A9B52',   // hauts plateaux — sage agri-500
-  transition: '#8FAF6E',   // transition olive clair
-  mangrove:   '#4F8B7B',   // mangrove teal-vert
-  savanna:    '#C17F3A',   // savane — amber-earth ai-500
-  spiny:      '#A06530',   // forêt épineuse — amber foncé
-  dry:        '#D4944A',   // zone sèche — amber clair
+  rainforest: '#1F4A3D',   // deep humid forest
+  tropical:   '#3A7A5A',   // medium tropical
+  highland:   '#6A9B52',   // highlands — sage agri-500
+  transition: '#8FAF6E',   // light olive transition
+  mangrove:   '#4F8B7B',   // teal-green mangrove
+  savanna:    '#C17F3A',   // savanna — amber-earth ai-500
+  spiny:      '#A06530',   // spiny forest — dark amber
+  dry:        '#D4944A',   // dry zone — light amber
 };
 
-// Mapping région (par region_id slug) → biome
+// Mapping region (by region_id slug) → biome
 const REGION_BIOME = {
   'diana':                'tropical',
   'sava':                 'rainforest',
@@ -517,7 +517,7 @@ function DistrictTooltip({ position, name, onClose }) {
 }
 
 /* ============================================================
-   Public component — drop-in for the carte 3D page
+   Public component — drop-in for the 3D map page
    ============================================================ */
 export default function MadagascarMap3D({ activeId, onPick }) {
   const [bounds, setBounds] = useState(null);

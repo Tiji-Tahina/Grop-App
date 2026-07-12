@@ -1,4 +1,4 @@
-"""Tests unitaires du pipeline chat (ne nécessitent pas de DB)."""
+"""Unit tests for the chat pipeline (no DB required)."""
 import pytest
 from chat.pipeline import normalizer, ontology
 

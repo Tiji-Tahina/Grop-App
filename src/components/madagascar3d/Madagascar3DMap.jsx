@@ -7,7 +7,7 @@
  *    a thin solidified Z extrusion, and beveled edges (no more jagged
  *    triangulation showing through).
  *  • Hover: region's foreground brightens with vivid emerald emissive + lifts
- *    a hair on Y → "ça pop" sans sortir du cadre.
+ *    a hair on Y → "pop" without leaving the frame.
  *  • Selected: warm amber emissive + others dim to 0.25 opacity. Subtle bloom
  *    glow makes the selected region feel like the only thing in the scene.
  *  • Districts appear stacked just above their parent region with HSL-rainbow
@@ -48,21 +48,21 @@ const COLOR_SELECTED = new THREE.Color('#FF9A3C');   // warm amber
 const COLOR_OFF      = new THREE.Color('#000000');
 
 // ─────────────────────────────────────────────────────────────────────────────
-// BIOME PALETTE — alignée sur le design system "AGRI-NEXUS Nature Edition"
-// (cf. src/index.css : --bg-deep, --primary-500, --agri-*, --ai-*)
+// BIOME PALETTE — aligned with "AGRI-NEXUS Nature Edition" design system
+// (see src/index.css : --bg-deep, --primary-500, --agri-*, --ai-*)
 // ─────────────────────────────────────────────────────────────────────────────
 const BIOME_COLORS = {
-  rainforest: '#1F4A3D',   // forêt humide profonde
-  tropical:   '#3A7A5A',   // tropical médium
-  highland:   '#6A9B52',   // hauts plateaux — sage agri-500
-  transition: '#8FAF6E',   // transition olive clair
-  mangrove:   '#4F8B7B',   // mangrove teal-vert
-  savanna:    '#C17F3A',   // savane — amber-earth ai-500
-  spiny:      '#A06530',   // forêt épineuse — amber foncé
-  dry:        '#D4944A',   // zone sèche — amber clair
+  rainforest: '#1F4A3D',   // deep humid forest
+  tropical:   '#3A7A5A',   // medium tropical
+  highland:   '#6A9B52',   // highlands — sage agri-500
+  transition: '#8FAF6E',   // light olive transition
+  mangrove:   '#4F8B7B',   // teal-green mangrove
+  savanna:    '#C17F3A',   // savanna — amber-earth ai-500
+  spiny:      '#A06530',   // spiny forest — dark amber
+  dry:        '#D4944A',   // dry zone — light amber
 };
 
-// Mapping région → biome (extrait de madagascarGraphData.js)
+// Mapping region → biome (from madagascarGraphData.js)
 const REGION_BIOME = {
   'Diana':                'tropical',
   'Sava':                 'rainforest',
@@ -88,7 +88,7 @@ const REGION_BIOME = {
   'Anosy':                'dry',
 };
 
-// Helper : couleur THREE pour une région donnée (avec fallback sage)
+// Helper: THREE color for a given region (with sage fallback)
 const colorForRegion = (regionName) => {
   const biome = REGION_BIOME[regionName] || 'highland';
   return new THREE.Color(BIOME_COLORS[biome] || '#7FB069');
@@ -181,8 +181,8 @@ function ADM1Model({
         mat.transparent = true;
         mat.opacity = 1.0;
         // ── Override base color from biome palette (design system) ──
-        // Le GLB embarque un sage neutre #7FB069 ; on remplace par la
-        // couleur du biome pour rester cohérent avec le thème nature.
+        // The GLB ships a neutral sage #7FB069; we replace it with the
+        // biome color to stay consistent with the nature theme.
         mat.color.copy(colorForRegion(m.name));
         mat.roughness = 0.65;
         mat.metalness = 0.0;
@@ -232,7 +232,7 @@ function ADM1Model({
       mat.needsUpdate = true;
     });
 
-    // Lift hovered region a hair on Y → "ça pop" feeling
+    // Lift hovered region a hair on Y → "pop" feeling
     Object.entries(baseYRef.current).forEach(([name, y]) => {
       const mesh = meshes.find((m) => m.name === name);
       if (!mesh) return;
@@ -288,14 +288,14 @@ function ADM2Districts({ parentRegion, onDistrictHover, modelOffset }) {
 
   useEffect(() => {
     matsRef.current = {};
-    // Couleur du biome parent — partagée par tous les districts de la région
+    // Parent biome color — shared by all districts of the region
     const parentBiomeColor = colorForRegion(parentRegion);
     const hsl = { h: 0, s: 0, l: 0 };
     parentBiomeColor.getHSL(hsl);
 
     districts.forEach((d, i) => {
-      // Subtile variation de luminosité (±10%) pour distinguer les districts
-      // adjacents tout en restant dans la teinte du biome parent.
+      // Subtle brightness variation (±10%) to distinguish adjacent
+      // districts while staying within the parent biome tint.
       const lightVar = ((i % 5) - 2) * 0.05;
       const districtColor = new THREE.Color().setHSL(
         hsl.h,
@@ -503,7 +503,7 @@ function Scene({ selectedRegion, hoveredRegion, setSelectedRegion, setHoveredReg
             color: '#4DFF91', fontSize: 14, fontFamily: 'system-ui',
             background: 'rgba(3,10,24,0.92)', padding: '14px 24px', borderRadius: 10,
             border: '1px solid rgba(34,211,238,0.25)', backdropFilter: 'blur(10px)',
-          }}>⏳ Chargement…</div>
+          }}>⏳ Loading…</div>
         </Html>
       }>
         {/* Sandtable plinth */}
@@ -645,7 +645,7 @@ export default function Madagascar3DMap() {
           fontFamily: "'Inter',system-ui",
         }}
       >
-        <NavButton onClick={handlePrev} title="Région précédente (←)">
+        <NavButton onClick={handlePrev} title="Previous region (←)">
           <ChevronLeft size={16} strokeWidth={2.2} />
           <span style={{ fontSize: 10, opacity: 0.7, letterSpacing: '0.06em' }}>{prevRegion}</span>
         </NavButton>
@@ -660,7 +660,7 @@ export default function Madagascar3DMap() {
             fontSize: 9, letterSpacing: '0.18em', color: '#4DFF91',
             fontWeight: 700, textTransform: 'uppercase', marginBottom: 2,
           }}>
-            {selectedRegion ? `Région ${currentIdx + 1} / 22` : 'Vue Globale'}
+            {selectedRegion ? `Region ${currentIdx + 1} / 22` : 'Overview'}
           </span>
           <span style={{
             fontSize: 14, fontWeight: 800, color: '#fff', letterSpacing: '-0.01em',
@@ -669,14 +669,14 @@ export default function Madagascar3DMap() {
           </span>
         </div>
 
-        <NavButton onClick={handleNext} title="Région suivante (→)">
+        <NavButton onClick={handleNext} title="Next region (→)">
           <span style={{ fontSize: 10, opacity: 0.7, letterSpacing: '0.06em' }}>{nextRegion}</span>
           <ChevronRight size={16} strokeWidth={2.2} />
         </NavButton>
 
         <button
           onClick={handleOverview}
-          title="Vue globale (Esc)"
+          title="Overview (Esc)"
           style={{
             marginLeft: 4,
             background: selectedRegion ? 'rgba(34,211,238,0.12)' : 'rgba(34,211,238,0.25)',
@@ -707,7 +707,7 @@ export default function Madagascar3DMap() {
         fontSize: 10, fontFamily: "'Inter',system-ui", zIndex: 10,
         letterSpacing: '0.06em',
       }}>
-        <kbd style={kbdStyle}>←</kbd> <kbd style={kbdStyle}>→</kbd> naviguer · <kbd style={kbdStyle}>Esc</kbd> vue globale
+        <kbd style={kbdStyle}>←</kbd> <kbd style={kbdStyle}>→</kbd> navigate · <kbd style={kbdStyle}>Esc</kbd> overview
       </div>
     </div>
   );

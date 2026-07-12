@@ -24,10 +24,10 @@ _CLICKHOUSE_TYPES = {
 
 class OLAPEngine:
     """
-    Moteur de requête centralisé pour transformer des demandes JSON 
-    en requêtes SQL ClickHouse sécurisées.
+    Centralized query engine for transforming JSON requests
+    into secured ClickHouse SQL queries.
     """
-    
+
     def __init__(self):
         self.host = os.getenv('CH_HOST')
         self.port = int(os.getenv('CH_PORT', 8443))
@@ -37,10 +37,10 @@ class OLAPEngine:
 
     def get_client(self):
         if not self._client:
-            # Timeouts indispensables : sans eux, un CH injoignable bloque
-            # le pipeline chat indéfiniment (le user voit "loading" sans fin).
-            # connect_timeout : ouverture TCP/TLS. send_receive_timeout : durée
-            # max d'une requête une fois connecté.
+            # Essential timeouts: without them, an unreachable ClickHouse blocks
+            # the chat pipeline indefinitely (user sees "loading" forever).
+            # connect_timeout: TCP/TLS connection opening.
+            # send_receive_timeout: max duration of a query once connected.
             self._client = clickhouse_connect.get_client(
                 host=self.host,
                 port=self.port,
@@ -74,7 +74,7 @@ class OLAPEngine:
 
     def execute_query(self, params):
         """
-        Génère et exécute la requête SQL basée sur les paramètres.
+        Generate and execute a SQL query based on the parameters.
         params: {
             'operation': 'slice' | 'dice' | 'drill-down' | 'roll-up',
             'filters': {'culture': 'Riz', 'annee': 2024},
@@ -132,5 +132,5 @@ class OLAPEngine:
             "data": result.result_rows,
         }
 
-# Instance unique (Singleton)
+# Singleton instance
 engine = OLAPEngine()

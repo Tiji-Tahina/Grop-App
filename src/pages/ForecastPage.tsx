@@ -139,7 +139,7 @@ export function ForecastPage() {
               margin: 0, marginBottom: 10,
             }}
           >
-            Prévisions · Madagascar
+            Forecasts · Madagascar
           </p>
           <h1
             style={{
@@ -153,7 +153,7 @@ export function ForecastPage() {
               marginBottom: 14,
             }}
           >
-            Prévision <span style={{ color: 'rgba(255,255,255,0.30)', fontWeight: 400 }}>agricole</span>
+            Agricultural <span style={{ color: 'rgba(255,255,255,0.30)', fontWeight: 400 }}>Forecast</span>
           </h1>
           <p
             style={{
@@ -166,7 +166,7 @@ export function ForecastPage() {
               fontFamily: 'var(--font-body)',
             }}
           >
-            Détaillez votre parcelle et votre culture — l'IA génère une prévision adaptée à Madagascar.
+            Describe your field and crop — the AI generates a forecast tailored to Madagascar.
           </p>
 
           {/* Coverage indicator — biolum dot + count */}
@@ -186,7 +186,7 @@ export function ForecastPage() {
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
-              {filled} / {totalFields} sections renseignées
+              {filled} / {totalFields} sections filled
             </span>
           </div>
         </div>
@@ -198,39 +198,39 @@ export function ForecastPage() {
             <Accordion type="multiple" className="w-full mb-8">
 
               <AccordionItem value="parcelle" className="py-2">
-                <AccordionTrigger>Ma parcelle / Ma zone</AccordionTrigger>
+                <AccordionTrigger>My field / My area</AccordionTrigger>
                 <AccordionContent>
                   <div>
-                    <Section title="Région">
+                    <Section title="Region">
                       <select
                         value={region}
                         onChange={e => setRegion(e.target.value)}
                         style={flatInput}
                       >
-                        <option value="">Sélectionner une région…</option>
+                        <option value="">Select a region...</option>
                         {REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
                       </select>
                     </Section>
 
                     <Section title="Altitude">
-                      {['Basse altitude (< 400m)','Moyenne altitude (400–800m)','Haute altitude (> 800m)'].map(v => (
+                      {['Low altitude (< 400m)','Medium altitude (400–800m)','High altitude (> 800m)'].map(v => (
                         <Checkbox key={v} label={v} checked={altitude === v} onChange={() => setAltitude(altitude === v ? '' : v)} />
                       ))}
                     </Section>
 
-                    <Section title="Type de sol">
-                      {['Sol alluvial','Sol argileux','Sol rouge des hautes terres','Sol volcanique','Sol sableux','Autre'].map(v => (
+                    <Section title="Soil type">
+                      {['Alluvial soil','Clay soil','Highland red soil','Volcanic soil','Sandy soil','Other'].map(v => (
                         <Checkbox key={v} label={v} checked={soilType.includes(v)} onChange={() => toggle(soilType, v, setSoilType)} />
                       ))}
                     </Section>
 
-                    <Section title="Mode de culture">
-                      {['Irrigué','Pluvial (pluie seulement)','Bas-fond'].map(v => (
+                    <Section title="Farming mode">
+                      {['Irrigated','Rainfed (rain only)','Lowland'].map(v => (
                         <Checkbox key={v} label={v} checked={cultureMode.includes(v)} onChange={() => toggle(cultureMode, v, setCultureMode)} />
                       ))}
                     </Section>
 
-                    <Section title="Superficie (ha)">
+                    <Section title="Area (ha)">
                       <input
                         type="number"
                         value={superficie}
@@ -244,16 +244,16 @@ export function ForecastPage() {
               </AccordionItem>
 
               <AccordionItem value="culture" className="py-2">
-                <AccordionTrigger>Culture et variété</AccordionTrigger>
+                <AccordionTrigger>Crop and variety</AccordionTrigger>
                 <AccordionContent>
                   <div>
-                    <Section title="Culture concernée">
+                    <Section title="Target crop">
                       {['Riz','Café (Arabica / Robusta)','Vanille','Manioc','Maïs','Girofle','Litchi'].map(v => (
                         <Checkbox key={v} label={v} checked={culture.includes(v)} onChange={() => toggle(culture, v, setCulture)} />
                       ))}
                     </Section>
 
-                    <Section title="Variété">
+                    <Section title="Variety">
                       <input
                         type="text"
                         value={variete}
@@ -263,8 +263,8 @@ export function ForecastPage() {
                       />
                     </Section>
 
-                    <Section title="Âge des plants (café / vanille)">
-                      {['Jeunes (< 3 ans)','Adultes (3–15 ans)','Vieux (> 15 ans)'].map(v => (
+                    <Section title="Plant age (coffee / vanilla)">
+                      {['Young (< 3 years)','Mature (3–15 years)','Old (> 15 years)'].map(v => (
                         <Checkbox key={v} label={v} checked={agePlants === v} onChange={() => setAgePlants(agePlants === v ? '' : v)} />
                       ))}
                     </Section>
@@ -273,23 +273,23 @@ export function ForecastPage() {
               </AccordionItem>
 
               <AccordionItem value="meteo" className="py-2">
-                <AccordionTrigger>Conditions et météo</AccordionTrigger>
+                <AccordionTrigger>Conditions and weather</AccordionTrigger>
                 <AccordionContent>
                   <div>
-                    <Section title="Saison actuelle">
-                      {['Saison des pluies','Saison sèche','Période de semis','Période de récolte'].map(v => (
+                    <Section title="Current season">
+                      {['Rainy season','Dry season','Planting period','Harvest period'].map(v => (
                         <Checkbox key={v} label={v} checked={saison.includes(v)} onChange={() => toggle(saison, v, setSaison)} />
                       ))}
                     </Section>
 
-                    <Section title="Prévisions météo (4–8 semaines)">
-                      {['Pluie abondante attendue','Pluie normale','Pluie faible / Sécheresse','Risque de cyclone / fortes pluies'].map(v => (
+                    <Section title="Weather forecast (4–8 weeks)">
+                      {['Heavy rain expected','Normal rain','Light rain / Drought','Risk of cyclone / heavy rain'].map(v => (
                         <Checkbox key={v} label={v} checked={meteo.includes(v)} onChange={() => toggle(meteo, v, setMeteo)} />
                       ))}
                     </Section>
 
-                    <Section title="Problèmes observés">
-                      {["Attaques de maladies (pyriculariose, RYMV, rouille…)","Attaques d'insectes","Manque d'eau","Excès d'eau / inondation","Carence en nutriments"].map(v => (
+                    <Section title="Observed issues">
+                      {["Disease attacks (blast, RYMV, rust…)","Insect attacks","Water shortage","Waterlogging / flooding","Nutrient deficiency"].map(v => (
                         <Checkbox key={v} label={v} checked={problemes.includes(v)} onChange={() => toggle(problemes, v, setProblemes)} />
                       ))}
                     </Section>
@@ -298,10 +298,10 @@ export function ForecastPage() {
               </AccordionItem>
 
               <AccordionItem value="objectifs" className="py-2">
-                <AccordionTrigger>Objectifs (optionnel)</AccordionTrigger>
+                <AccordionTrigger>Objectives (optional)</AccordionTrigger>
                 <AccordionContent>
                   <div>
-                    {["Maximiser le rendement","Réduire le risque de maladie","Adapter au changement climatique","Améliorer la qualité pour l'export","Minimiser les coûts (intrants)"].map(v => (
+                    {["Maximize yield","Reduce disease risk","Adapt to climate change","Improve export quality","Minimize input costs"].map(v => (
                       <Checkbox key={v} label={v} checked={objectifs.includes(v)} onChange={() => toggle(objectifs, v, setObjectifs)} />
                     ))}
                   </div>
@@ -335,12 +335,12 @@ export function ForecastPage() {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ animation: 'rotate-ring 0.8s linear infinite' }}>
                       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="50 100" strokeLinecap="round" />
                     </svg>
-                    Génération en cours
+                    Generating forecast
                   </>
                 ) : (
                   <>
                     <Sparkles size={14} strokeWidth={2.5} />
-                    Générer la prévision
+                    Generate forecast
                   </>
                 )}
               </span>

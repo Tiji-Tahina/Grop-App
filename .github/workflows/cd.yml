@@ -1,8 +1,8 @@
 name: CD
 
-# Build de validation à chaque push sur main.
-# Le déploiement réel est géré par Render (auto-deploy GitHub via Blueprint)
-# et Netlify (auto-deploy GitHub via Site connecté).
+# Validation build on every push to main.
+# Actual deployment is managed by Render (auto-deploy GitHub via Blueprint)
+# and Netlify (auto-deploy GitHub via connected site).
 
 on:
   push:
@@ -23,8 +23,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Render rebuild lui-même l'image depuis le repo via webhook → pas besoin
-      # de pousser sur un registry. On valide juste que le Dockerfile build correctement.
+      # Render rebuilds the image itself from the repo via webhook → no need
+      # to push to a registry. We just validate that the Dockerfile builds correctly.
       - name: Build backend image (validate Dockerfile)
         uses: docker/build-push-action@v5
         with:
@@ -47,8 +47,8 @@ jobs:
           node-version: "20"
           cache: npm
 
-      # --legacy-peer-deps : react-simple-maps@3 déclare peer react ≤ 18,
-      # le projet utilise react@19. Même flag que netlify.toml (cohérent).
+      # --legacy-peer-deps: react-simple-maps@3 declares peer react ≤ 18,
+      # the project uses react@19. Same flag as netlify.toml (consistent).
       - name: Install & Build
         run: npm ci --legacy-peer-deps && npm run build
         env:

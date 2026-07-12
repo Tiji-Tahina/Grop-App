@@ -22,7 +22,7 @@ def auth_client(user):
 @pytest.mark.django_db
 class TestChatView:
     @patch('chat.pipeline.llm.generate', return_value={
-        'reply': 'Le riz pousse bien avec le SRI.',
+        'reply': 'Rice grows well with SRI.',
         'thinking': '', 'input_tokens': 10, 'output_tokens': 20,
         'latency_ms': 500, 'provider': 'colab-ngrok', 'model': 'colab-llm',
     })
@@ -32,7 +32,7 @@ class TestChatView:
         data = response.json()
         assert 'conversation_id' in data
         assert 'reply' in data
-        assert data['reply'] == 'Le riz pousse bien avec le SRI.'
+        assert data['reply'] == 'Rice grows well with SRI.'
 
     def test_chat_requires_auth(self):
         client = APIClient()
@@ -40,7 +40,7 @@ class TestChatView:
         assert response.status_code == 401
 
     @patch('chat.pipeline.llm.generate', return_value={
-        'reply': 'Réponse.', 'thinking': '', 'input_tokens': 5, 'output_tokens': 5,
+        'reply': 'Response.', 'thinking': '', 'input_tokens': 5, 'output_tokens': 5,
         'latency_ms': 100, 'provider': 'colab-ngrok', 'model': 'colab-llm',
     })
     def test_off_topic_guardrail(self, mock_llm, auth_client):

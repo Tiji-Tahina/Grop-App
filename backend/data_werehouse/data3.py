@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons, Button
 
 # ==========================================
-# 1. DONNÉES ET ÉTAT
+# 1. DATA AND STATE
 # ==========================================
 labels_init = {
     "age": ["18-25", "25-35", "35-45", "45-55", "55-65"],
     "niv": ["SD", "SB", "AB"],
-    "sit": ["Marié", "Non Marié"]
+    "sit": ["Married", "Unmarried"]
 }
 
 data_m = np.array([[(3,2,0,5), (2,2,1,5), (0,3,2,5)], [(3,1,1,5), (2,1,2,5), (1,2,2,5)], [(1,3,1,5), (1,3,1,5), (0,2,3,5)], [(1,2,2,5), (1,1,3,5), (0,3,2,5)], [(1,2,2,5), (1,2,2,5), (0,2,3,5)]])
@@ -20,11 +20,11 @@ visibility = {k: [True] * len(v) for k, v in labels_init.items()}
 selection = {k: [False] * len(v) for k, v in labels_init.items()}
 
 # ==========================================
-# 2. MOTEUR OLAP RENFORCÉ
+# 2. ENHANCED OLAP ENGINE
 # ==========================================
 
 def get_current_view():
-    # On filtre les groupes du 'state' : un groupe n'est visible que si AU MOINS une unité est visible
+    # Filter groups in 'state': a group is visible only if AT LEAST ONE unit is visible
     idx_sit = [g for g in state["sit"] if any(visibility["sit"][u] for u in g)]
     idx_age = [g for g in state["age"] if any(visibility["age"][u] for u in g)]
     idx_niv = [g for g in state["niv"] if any(visibility["niv"][u] for u in g)]
@@ -33,7 +33,7 @@ def get_current_view():
         return np.zeros((0,0,0,4)), [], [], []
 
     view_cube = np.zeros((len(idx_sit), len(idx_age), len(idx_niv), 4))
-    
+
     def make_label(dim, groups):
         lbls = []
         for g in groups:
@@ -47,21 +47,21 @@ def get_current_view():
     for i, gs in enumerate(idx_sit):
         for j, ga in enumerate(idx_age):
             for k, gn in enumerate(idx_niv):
-                # Somme uniquement sur les intersections VISIBLES
+                # Sum only over VISIBLE intersections
                 v_s = [u for u in gs if visibility["sit"][u]]
                 v_a = [u for u in ga if visibility["age"][u]]
                 v_n = [u for u in gn if visibility["niv"][u]]
                 if v_s and v_a and v_n:
                     view_cube[i,j,k] = np.sum(cube_master[np.ix_(v_s, v_a, v_n)], axis=(0,1,2))
-                
+
     return view_cube, make_label("age", idx_age), make_label("niv", idx_niv), make_label("sit", idx_sit)
 
 # ==========================================
-# 3. ACTIONS CORRIGÉES
+# 3. CORRECTED ACTIONS
 # ==========================================
 
 def handle_slice(event):
-    """SLICE : Isole une tranche unique sur l'axe sélectionné."""
+    """SLICE: Isolate a single slice on the selected axis."""
     for dim in ["age", "niv", "sit"]:
         indices = [i for i, val in enumerate(selection[dim]) if val]
         if len(indices) == 1:
@@ -70,10 +70,10 @@ def handle_slice(event):
     update_plot()
 
 def handle_dice(event):
-    """DICE : Filtre strictement selon toutes les cases cochées."""
+    """DICE: Filter strictly based on all checked boxes."""
     for dim in ["age", "niv", "sit"]:
         indices = [i for i, val in enumerate(selection[dim]) if val]
-        if indices: # Si on a coché quelque chose sur cet axe
+        if indices:  # If something is checked on this axis
             for i in range(len(visibility[dim])):
                 visibility[dim][i] = (i in indices)
     update_plot()
@@ -106,7 +106,7 @@ def handle_reset(event):
     update_plot()
 
 # ==========================================
-# 4. INTERFACE GRAPHIQUE
+# 4. GRAPHICAL INTERFACE
 # ==========================================
 
 fig = plt.figure(figsize=(14, 9), facecolor='#050505')
@@ -117,8 +117,8 @@ def update_plot(event=None):
     ax.clear()
     ax.set_facecolor('#050505')
     cube, t_age, t_niv, t_sit = get_current_view()
-    
-    # On garde les limites fixes pour la cohérence spatiale
+
+    # Keep fixed limits for spatial consistency
     ax.set_xlim(0, 5); ax.set_ylim(0, 5); ax.set_zlim(0, 2)
 
     if cube.size > 0:
@@ -127,19 +127,19 @@ def update_plot(event=None):
                 for n in range(cube.shape[2]):
                     v = cube[s, a, n]
                     txt = f"{int(v[0])},{int(v[1])}\n{int(v[2])},{int(v[3])}"
-                    # Positionnement relatif aux labels pour éviter les chevauchements
+                    # Position relative to labels to avoid overlaps
                     ax.bar3d(n, a, s, 0.7, 0.7, 0.2, color=(0,0,0,0), edgecolor='#00FFCC', linewidth=0.7)
                     ax.text(n+0.35, a+0.35, s+0.1, txt, color='white', fontsize=8, ha='center', fontweight='bold')
 
         ax.set_xticks(np.arange(len(t_niv)) + 0.35); ax.set_xticklabels(t_niv, color='#00FFCC', fontsize=8)
         ax.set_yticks(np.arange(len(t_age)) + 0.35); ax.set_yticklabels(t_age, color='#00FFCC', fontsize=8)
         ax.set_zticks(np.arange(len(t_sit)) + 0.1); ax.set_zticklabels(t_sit, color='#00FFCC', fontsize=8)
-    
+
     ax.tick_params(colors='white')
-    ax.set_title("PROTOTYPE OLAP M2 - ANALYSE DES DONNÉES", color='white', pad=15)
+    ax.set_title("OLAP PROTOTYPE M2 - DATA ANALYSIS", color='white', pad=15)
     fig.canvas.draw_idle()
 
-# --- CONSTRUCTION DES MENUS DE SÉLECTION ---
+# --- SELECTION MENU CONSTRUCTION ---
 def create_chk(pos, dim):
     ax_m = plt.axes(pos, facecolor='#111111')
     c = CheckButtons(ax_m, labels_init[dim], selection[dim])
@@ -154,12 +154,12 @@ c_age = create_chk([0.02, 0.78, 0.18, 0.18], "age")
 c_niv = create_chk([0.02, 0.65, 0.18, 0.10], "niv")
 c_sit = create_chk([0.02, 0.55, 0.18, 0.08], "sit")
 
-# --- BOUTONS D'OPÉRATIONS ---
+# --- OPERATION BUTTONS ---
 btns_cfg = [
-    ('SLICE (1 Valeur)', '#004466', handle_slice, 0.45),
-    ('DICE (Sélection)', '#006688', handle_dice, 0.37),
-    ('FUSIONNER (-)', '#660000', handle_rollup, 0.29),
-    ('DÉVELOPPER (+)', '#006600', handle_drill, 0.21),
+    ('SLICE (1 Value)', '#004466', handle_slice, 0.45),
+    ('DICE (Selection)', '#006688', handle_dice, 0.37),
+    ('MERGE (-)', '#660000', handle_rollup, 0.29),
+    ('EXPAND (+)', '#006600', handle_drill, 0.21),
     ('RESET', '#333333', handle_reset, 0.13)
 ]
 

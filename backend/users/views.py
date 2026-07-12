@@ -73,17 +73,17 @@ class UpdateProfileView(APIView):
         if new_password:
             if not current_password:
                 return Response(
-                    {'error': 'Le mot de passe actuel est requis.'},
+                    {'error': 'The current password is required.'},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             if not user.check_password(current_password):
                 return Response(
-                    {'error': 'Mot de passe actuel incorrect.'},
+                    {'error': 'Current password is incorrect.'},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             if len(new_password) < 8:
                 return Response(
-                    {'error': 'Le nouveau mot de passe doit contenir au moins 8 caractères.'},
+                    {'error': 'The new password must contain at least 8 characters.'},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             user.set_password(new_password)

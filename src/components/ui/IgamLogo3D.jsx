@@ -4,7 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, Environment, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 
-// ── Modèle 3D chargé + animé ──────────────────────────────────────────────────
+// ── 3D model loaded + animated ──────────────────────────────────────────────────
 function LogoModel({ hovered, autoRotate = true, rotationSpeed = 0.007 }) {
   const { scene }      = useGLTF('/models/igam_logo.glb');
   const groupRef       = useRef();
@@ -12,7 +12,7 @@ function LogoModel({ hovered, autoRotate = true, rotationSpeed = 0.007 }) {
   const centeredRef    = useRef(false);
   const targetScale    = useRef(1);
 
-  // Centrage du modèle sur son bounding box
+  // Center model on its bounding box
   useEffect(() => {
     if (!groupRef.current || centeredRef.current) return;
     const box    = new THREE.Box3().setFromObject(groupRef.current);
@@ -24,24 +24,24 @@ function LogoModel({ hovered, autoRotate = true, rotationSpeed = 0.007 }) {
   useFrame((state) => {
     if (!groupRef.current) return;
 
-    // Rotation Y continue
+    // Continuous Y rotation
     if (autoRotate) {
       groupRef.current.rotation.y += hovered ? rotationSpeed * 3.5 : rotationSpeed;
     }
 
-    // Flottement doux (sin wave)
+    // Gentle float (sin wave)
     groupRef.current.position.y =
       Math.sin(state.clock.elapsedTime * 0.7) * 0.06 +
       (centeredRef.current ? 0 : 0);
 
-    // Légère oscillation X sur hover
+    // Slight X oscillation on hover
     if (hovered) {
       groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.9) * 0.06;
     } else {
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0, 0.06);
     }
 
-    // Scale doux au hover
+    // Smooth scale on hover
     targetScale.current = hovered ? 1.08 : 1.0;
     groupRef.current.scale.setScalar(
       THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale.current, 0.08)
@@ -55,7 +55,7 @@ function LogoModel({ hovered, autoRotate = true, rotationSpeed = 0.007 }) {
   );
 }
 
-// ── Fallback spinner SVG pendant le chargement ────────────────────────────────
+// ── Fallback spinner SVG while loading ────────────────────────────────
 function LoadingSpinner({ size }) {
   return (
     <div style={{
@@ -73,16 +73,16 @@ function LoadingSpinner({ size }) {
   );
 }
 
-// ── Composant principal exporté ───────────────────────────────────────────────
+// ── Main exported component ───────────────────────────────────────────────
 /**
- * @param {number}  size        — largeur/hauteur du canvas en px (défaut: 120)
- * @param {boolean} shadows     — afficher les ombres au sol (désactiver pour sidebar)
- * @param {boolean} interactive — activer hover + clic
- * @param {string}  className   — classes CSS additionnelles
- * @param {object}  style       — styles inline additionnels
- * @param {function} onClick    — callback click
- * @param {number}  cameraZ     — distance caméra (auto-calculé si 0)
- * @param {number}  rotationSpeed — vitesse rotation (défaut: 0.007)
+ * @param {number}  size        — canvas width/height in px (default: 120)
+ * @param {boolean} shadows     — show ground shadows (disable for sidebar)
+ * @param {boolean} interactive — enable hover + click
+ * @param {string}  className   — additional CSS classes
+ * @param {object}  style       — additional inline styles
+ * @param {function} onClick    — click callback
+ * @param {number}  cameraZ     — camera distance (auto-calculated if 0)
+ * @param {number}  rotationSpeed — rotation speed (default: 0.007)
  */
 export default function IgamLogo3D({
   size          = 120,
@@ -96,7 +96,7 @@ export default function IgamLogo3D({
 }) {
   const [hovered, setHovered] = useState(false);
 
-  // Calculer la distance caméra en fonction de la taille
+  // Calculate camera distance based on size
   const camZ = cameraZ || (size < 60 ? 8 : size < 150 ? 6 : 4.5);
 
   return (
@@ -115,7 +115,7 @@ export default function IgamLogo3D({
         ...style,
       }}
     >
-      {/* Glow anneau au hover */}
+      {/* Ring glow on hover */}
       {interactive && (
         <div style={{
           position: 'absolute', inset: 0,
@@ -141,14 +141,14 @@ export default function IgamLogo3D({
         shadows={shadows}
         dpr={[1, 2]}
       >
-        {/* Éclairage */}
+        {/* Lighting */}
         <ambientLight intensity={0.5} />
         <directionalLight position={[3, 5, 3]}  intensity={1.4} color="#ffffff" />
         <directionalLight position={[-2, 2, -2]} intensity={0.5} color="#4DFF91" />
         <pointLight        position={[0, 3, 2]}  intensity={0.6} color="#10b981" />
         <pointLight        position={[0, -2, 2]} intensity={0.3} color="#6366f1" />
 
-        {/* Environnement HDR pour les reflets métalliques */}
+        {/* HDR environment for metallic reflections */}
         <Environment preset="city" />
 
         <Suspense fallback={null}>
@@ -158,7 +158,7 @@ export default function IgamLogo3D({
             rotationSpeed={rotationSpeed}
           />
 
-          {/* Ombre au sol (seulement en grande taille) */}
+          {/* Ground shadow (only at large sizes) */}
           {shadows && (
             <ContactShadows
               position={[0, -1.5, 0]}

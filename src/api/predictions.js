@@ -12,7 +12,7 @@ predictAPI.interceptors.request.use((config) => {
 });
 
 /**
- * Lance une prédiction de rendement pour une culture.
+ * Launches a yield prediction for a crop.
  * @param {object} params
  * @param {number} params.crop_id
  * @param {boolean} params.irrigation
@@ -29,7 +29,7 @@ export async function predictYield(params) {
 }
 
 /**
- * Récupère l'historique des prédictions.
+ * Retrieves prediction history.
  */
 export async function getPredictions() {
   const response = await predictAPI.get('/history/');
@@ -37,7 +37,7 @@ export async function getPredictions() {
 }
 
 /**
- * Récupère une prédiction spécifique.
+ * Retrieves a specific prediction.
  * @param {number} id
  */
 export async function getPrediction(id) {

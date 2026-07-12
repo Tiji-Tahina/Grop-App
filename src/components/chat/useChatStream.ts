@@ -4,35 +4,35 @@ import { decodeMapActionPayload, type MapAction } from '@/types/mapAction';
 import { useMapActionBus } from '@/contexts/MapActionContext';
 
 /**
- * Décode les sentinels SSE posés par le backend (`` → `\n`, `` → `|`).
- * Sans ce décodage, le markdown sortirait sur une seule ligne et les tableaux
- * seraient tronqués au premier pipe.
+ * Decodes SSE sentinels placed by the backend (`\n` → `\n`, `|` → `|`).
+ * Without this decoding, markdown would render on a single line and tables
+ * would be truncated at the first pipe.
  */
 function decodeSseToken(s: string): string {
   return s.replace(//g, '\n').replace(//g, '|');
 }
 
 /**
- * Reinsere les sauts de ligne Markdown manquants.
+ * Reinserts missing Markdown line breaks.
  *
- * Le LLM Colab streame le texte SANS aucun \n (ex : "MadagascarLe dernier..."
- * au lieu de "Madagascar\nLe dernier..."). On detecte les marqueurs Markdown
- * usuels et on force des sauts de ligne devant pour que ReactMarkdown rende
- * correctement les titres, listes et tableaux.
+ * The Colab LLM streams text WITHOUT any \n (e.g., "MadagascarThe last..."
+ * instead of "Madagascar\nThe last..."). We detect common Markdown markers
+ * and force line breaks before them so ReactMarkdown renders
+ * headings, lists, and tables correctly.
  *
- * Applique progressivement sur fullText a chaque token recu.
+ * Applied progressively on fullText with each token received.
  */
-// Section titles que le LLM Colab pose souvent SANS marqueur # alors qu'elles
-// devraient en avoir. On les promeut en h2 si on les detecte collees au texte.
+// Section titles that the Colab LLM often places WITHOUT # markers when they
+// should have them. We promote them to h2 if detected adjacent to text.
 const SECTION_NAMES = [
-  'Récapitulation', 'Recapitulation',
-  'Récapitulatif', 'Recapitulatif',
+  'Summary', 'Summary',
+  'Recap', 'Recap',
   'Conclusion',
-  'Notes? supplémentaires', 'Notes? supplementaires',
-  'Résumé( complet)?', 'Resume( complet)?',
-  'Synthèse', 'Synthese',
-  'Pour aller plus loin',
-  'En résumé', 'En resume',
+  'Additional notes', 'Additional notes',
+  'Summary( complete)?', 'Summary( complete)?',
+  'Synthesis', 'Synthesis',
+  'For further reading',
+  'In summary', 'In summary',
 ];
 const SECTION_RE = new RegExp(
   `([^\\n#])(${SECTION_NAMES.join('|')})(?=[A-ZÀ-ÖØ-Þ*\\-\\s])`,
@@ -41,33 +41,33 @@ const SECTION_RE = new RegExp(
 
 function reformatMarkdown(text: string): string {
   return text
-    // ## / ### / etc en milieu de texte → ajoute deux sauts de ligne
+    // ## / ### / etc in mid-text → add two line breaks
     .replace(/([^\n])(##+ )/g, '$1\n\n$2')
-    // - X (tiret + majuscule) en milieu de texte → debut de liste
+    // - X (dash + capital) in mid-text → start of list
     .replace(/([^\n])(- [A-ZÀ-ÖØ-Þ])/g, '$1\n$2')
-    // * X (asterisque + majuscule) en milieu de texte → debut de liste
+    // * X (asterisk + capital) in mid-text → start of list
     .replace(/([^\n*])(\* [A-ZÀ-ÖØ-Þ])/g, '$1\n$2')
-    // | --- (separateur table) en milieu → coupe avant (pattern non ambigu)
+    // | --- (table separator) in mid-text → break before (unambiguous pattern)
     .replace(/([^\n])(\|[\s-]*-+[\s-]*\|)/g, '$1\n$2')
     // > ** (blockquote)
     .replace(/([^\n])(> \*\*)/g, '$1\n\n$2')
-    // > Note (blockquote sans gras)
+    // > Note (blockquote without bold)
     .replace(/([^\n])(> [A-ZÀ-ÖØ-Þ])/g, '$1\n\n$2')
-    // Section titles connues (Récapitulation, Conclusion, Notes...) sans #
-    // → promues en h2 avec \n\n devant ET derriere (separation propre du
-    // paragraphe qui suit, sans risque de couper un titre legitime).
+    // Known section titles (Summary, Conclusion, Notes...) without #
+    // → promoted to h2 with \n\n before AND after (clean separation from
+    // the following paragraph, no risk of cutting a legitimate title).
     .replace(SECTION_RE, '$1\n\n## $2\n\n')
-    // Max 2 sauts de ligne consecutifs
+    // Max 2 consecutive line breaks
     .replace(/\n{3,}/g, '\n\n');
 }
 
 /**
- * Extrait les "(Source : XXX)" / "(Sources : X, Y)" du texte LLM,
- * les renvoie en liste ChatSource et nettoie le markdown.
+ * Extracts "(Source: XXX)" / "(Sources: X, Y)" from LLM text,
+ * returns them as a ChatSource list and cleans up the markdown.
  *
- * Le LLM glisse souvent les sources en bout de phrase ; le composant
- * AgriSources existe deja pour les afficher proprement en bas du message.
- * On les remonte de la prose vers la structure pour deduplication.
+ * The LLM often slips sources at the end of sentences; the AgriSources
+ * component already exists to display them cleanly at the bottom of the message.
+ * We move them from prose to the structure for deduplication.
  */
 const SOURCE_RE = /\(Sources?\s*:\s*([^)]+)\)/gi;
 
@@ -93,7 +93,7 @@ function extractSourcesFromText(
         });
       return '';
     })
-    // nettoyage cosmetique : espaces avant ponctuation, doublons d'espaces
+    // Cosmetic cleanup: spaces before punctuation, duplicate spaces
     .replace(/[ \t]+([.,;:!?])/g, '$1')
     .replace(/[ \t]{2,}/g, ' ')
     .trim();
@@ -118,14 +118,14 @@ export interface ChatMessage {
   isOffTopic: boolean;
   isError: boolean;
   streamingTime: number;
-  /** MapAction emis par le backend pour ce message (null si question non geospatiale). */
+  /** MapAction emitted by the backend for this message (null if not a geospatial question). */
   mapAction: MapAction | null;
 }
 
 export function useChatStream() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
-  /** Dernier MapAction recu (toutes conversations confondues), pour piloter la carte. */
+  /** Last MapAction received (across all conversations), to control the map. */
   const [lastMapAction, setLastMapAction] = useState<MapAction | null>(null);
   const mapActionBus = useMapActionBus();
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -188,7 +188,7 @@ export function useChatStream() {
         setMessages(prev =>
           prev.map(m =>
             m.id === assistantId
-              ? { ...m, text: `Erreur ${response.status}`, isStreaming: false }
+              ? { ...m, text: `Error ${response.status}`, isStreaming: false }
               : m
           )
         );
@@ -238,13 +238,13 @@ export function useChatStream() {
               )
             );
           } else if (parts[0].startsWith('map_action:')) {
-            // Format SSE : map_action:BASE64_JSON|elapsed|progress
-            // Le JSON contient `:` et potentiellement `|`/`\n`, donc base64 cote backend.
+            // SSE format: map_action:BASE64_JSON|elapsed|progress
+            // The JSON contains `:` and potentially `|`/`\n`, so base64-encoded on the backend.
             const b64 = parts[0].slice('map_action:'.length);
             const payload = decodeMapActionPayload(b64);
             if (payload) {
               setLastMapAction(payload);
-              mapActionBus.publish(payload);  // propagation cross-page (carte 3D)
+              mapActionBus.publish(payload);  // cross-page propagation (3D map)
               setMessages(prev =>
                 prev.map(m =>
                   m.id === assistantId ? { ...m, mapAction: payload } : m
@@ -260,13 +260,13 @@ export function useChatStream() {
               )
             );
           } else if (parts[0].startsWith('token:')) {
-            // Décode les sentinels (\n et | echappes par le backend)
+            // Decode sentinels (\n and | escaped by the backend)
             const tokenPart = decodeSseToken(parts[0].replace('token:', ''));
             const time = parseFloat(parts[parts.length - 2]) || 0;
             if (tokenPart) {
               fullText += tokenPart;
-              // Reformatage progressif : le LLM Colab oublie les \n,
-              // on les remet devant les marqueurs Markdown.
+              // Progressive reformatting: the Colab LLM forgets \n,
+              // we reinsert them before Markdown markers.
               const formatted = reformatMarkdown(fullText);
               setMessages(prev =>
                 prev.map(m =>
@@ -284,20 +284,20 @@ export function useChatStream() {
                 const { cleanText, newSources } = extractSourcesFromText(
                   fullText, m.sources
                 );
-                // Reformat final : sources extraites PUIS sauts de ligne réinsérés
+                // Final reformat: sources extracted THEN line breaks reinserted
                 const formatted = reformatMarkdown(cleanText);
                 return {
                   ...m,
-                  text: formatted || 'Réponse vide.',
+                  text: formatted || 'Empty response.',
                   sources: [...m.sources, ...newSources],
                   isStreaming: false,
                 };
               })
             );
           } else if (parts[0] === 'error') {
-            // Format SSE : error|elapsed|0|MESSAGE — le message peut contenir des |
-            // donc on rejoint tous les parts à partir de l'index 3.
-            const errorMessage = parts.slice(3).join('|') || parts[1] || 'Erreur inconnue';
+            // SSE format: error|elapsed|0|MESSAGE — the message may contain |
+            // so we join all parts starting from index 3.
+            const errorMessage = parts.slice(3).join('|') || parts[1] || 'Unknown error';
             setIsStreaming(false);
             setMessages(prev =>
               prev.map(m =>
@@ -314,7 +314,7 @@ export function useChatStream() {
         setMessages(prev =>
           prev.map(m =>
             m.id === assistantId
-              ? { ...m, text: m.text + '\n\n[Génération arrêtée]', isStreaming: false }
+              ? { ...m, text: m.text + '\n\n[Generation stopped]', isStreaming: false }
               : m
           )
         );
@@ -322,7 +322,7 @@ export function useChatStream() {
         setMessages(prev =>
           prev.map(m =>
             m.id === assistantId
-              ? { ...m, text: 'Erreur de connexion.', isStreaming: false }
+              ? { ...m, text: 'Connection error.', isStreaming: false }
               : m
           )
         );

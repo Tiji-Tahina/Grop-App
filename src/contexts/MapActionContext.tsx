@@ -1,15 +1,15 @@
 /**
- * MapActionContext — bus pub/sub pour propager le dernier MapAction du chat
- * vers la page Carte 3D, qui vivent sur des routes différentes du même layout.
+ * MapActionContext — pub/sub bus to propagate the last chat MapAction
+ * to the 3D Map page, which live on different routes of the same layout.
  *
- * Pourquoi un context et pas du prop-drilling :
- *   - `AgriculturalChat` (page chat) et `RegionalNavigation` (page carte) ne sont
- *     jamais montés en même temps (switch via `currentPage` dans App.jsx).
- *   - Le context survit aux changements de page car il vit au niveau MainLayout.
+ * Why a context instead of prop-drilling:
+ *   - `AgriculturalChat` (chat page) and `RegionalNavigation` (map page) are
+ *     never mounted at the same time (switch via `currentPage` in App.jsx).
+ *   - The context survives page changes because it lives at the MainLayout level.
  *
- * Pourquoi pas d'auto-switch sur publish :
- *   - Switcher de page démonte AgriculturalChat → annule la requête SSE en cours.
- *   - À la place, on expose `goToMap()` qu'un bouton appelle après la fin du stream.
+ * Why no auto-switch on publish:
+ *   - Switching pages unmounts AgriculturalChat → cancels the ongoing SSE request.
+ *   - Instead, we expose `goToMap()` which a button calls after the stream ends.
  */
 import React, {
   createContext,
@@ -21,11 +21,11 @@ import React, {
 import type { MapAction } from '@/types/mapAction';
 
 interface MapActionBus {
-  /** Dernier MapAction publié par le chat (null tant qu'aucune question géospatiale). */
+  /** Last MapAction published by the chat (null until a geospatial question). */
   lastAction: MapAction | null;
-  /** Appelé par useChatStream à chaque event SSE map_action. */
+  /** Called by useChatStream on each SSE map_action event. */
   publish: (a: MapAction) => void;
-  /** Bascule l'app sur la page Carte 3D. Implémenté par MainLayout. */
+  /** Switches the app to the 3D Map page. Implemented by MainLayout. */
   goToMap: () => void;
 }
 
@@ -55,17 +55,17 @@ export function MapActionProvider({
 }
 
 /**
- * Récupère le bus. Retourne un bus inerte si aucun Provider n'est monté
- * (permet aux composants d'utiliser useMapActionBus sans crasher en isolation).
+ * Gets the bus. Returns an inert bus if no Provider is mounted
+ * (allows components to use useMapActionBus without crashing in isolation).
  */
 export function useMapActionBus(): MapActionBus {
   return useContext(Ctx) ?? NOOP_BUS;
 }
 
 /**
- * Le warehouse OLAP utilise « haute-matsiatra » (slug agronomique du backend).
- * Le SVG GADM 4.1 du front utilise « matsiatra-ambony ».
- * Normalisation à appliquer avant tout setSelectedId.
+ * The OLAP warehouse uses "haute-matsiatra" (backend agronomic slug).
+ * The front-end GADM 4.1 SVG uses "matsiatra-ambony".
+ * Normalization to apply before any setSelectedId.
  */
 const SLUG_BACK_TO_FRONT: Record<string, string> = {
   'haute-matsiatra': 'matsiatra-ambony',

@@ -1,16 +1,16 @@
-# render.yaml — Infrastructure as Code pour Render
-# Doc : https://render.com/docs/blueprint-spec
+# render.yaml — Infrastructure as Code for Render
+# Doc: https://render.com/docs/blueprint-spec
 #
-# Service défini :
-#   grop-app-backend-staging   Web Service Docker — environnement de démo unique
+# Service definition:
+#   grop-app-backend-staging   Docker Web Service — single demo environment
 #
-# Base de données :
+# Database:
 #   grop-app-db-staging        PostgreSQL free tier
 #
-# Le frontend (React/Vite) est déployé sur Netlify via netlify.toml.
+# The frontend (React/Vite) is deployed on Netlify via netlify.toml.
 #
-# ⚠️  Les valeurs sync: false signifient que les envVars ne sont pas
-#      écrasées à chaque déploiement — les modifier dans le dashboard Render.
+# ⚠️  sync: false values mean envVars are not
+#      overwritten on each deployment — edit them in the Render dashboard.
 
 databases:
   - name: grop-app-db-staging
@@ -41,11 +41,11 @@ services:
       - key: CORS_ALLOWED_ORIGINS
         sync: false   # ex : https://cropmg.netlify.app
       - key: COLAB_LLM_URL
-        sync: false   # ngrok URL — change à chaque relance Colab
-      # ── ClickHouse Cloud (data warehouse OLAP) ─────────────────────────
-      # Consommé par OLAPEngine pour /api/predictions/analytics/
-      # ET par data_werehouse.ch_facts pour enrichir le chat avec des
-      # chiffres factuels (rendement, production, prix par région/année).
+        sync: false   # ngrok URL — changes on each Colab restart
+      # ── ClickHouse Cloud (OLAP data warehouse) ─────────────────────────
+      # Consumed by OLAPEngine for /api/predictions/analytics/
+      # AND by data_werehouse.ch_facts to enrich the chat with
+      # factual figures (yield, production, price per region/year).
       - key: CH_HOST
         sync: false   # ex : j78t3xodco.eu-central-1.aws.clickhouse.cloud
       - key: CH_PORT

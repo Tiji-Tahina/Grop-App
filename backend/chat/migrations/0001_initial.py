@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             name='Conversation',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(default='Nouvelle conversation', max_length=200)),
+                ('title', models.CharField(default='New conversation', max_length=200)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='conversations', to=settings.AUTH_USER_MODEL)),
@@ -31,10 +31,10 @@ class Migration(migrations.Migration):
             name='Message',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('role', models.CharField(choices=[('user', 'Utilisateur'), ('assistant', 'Assistant')], max_length=20)),
+                ('role', models.CharField(choices=[('user', 'User'), ('assistant', 'Assistant')], max_length=20)),
                 ('content', models.TextField()),
-                ('sources', models.JSONField(default=list, help_text='Sources RAG citées dans la réponse')),
-                ('pipeline_meta', models.JSONField(default=dict, help_text='Métadonnées du pipeline (ontologie, rag_score, latence…)')),
+                ('sources', models.JSONField(default=list, help_text='RAG sources cited in the response')),
+                ('pipeline_meta', models.JSONField(default=dict, help_text='Pipeline metadata (ontology, rag_score, latency...)')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('conversation', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='messages', to='chat.conversation')),
             ],

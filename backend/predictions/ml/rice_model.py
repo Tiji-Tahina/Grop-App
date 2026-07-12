@@ -1,29 +1,29 @@
 """
-Modèle de prédiction de rendement pour la riziculture malgache.
+Yield prediction model for Malagasy rice cultivation.
 
-Features d'entrée :
-- region         : région Madagascar (one-hot encodé)
-- altitude_m     : altitude en mètres
-- area_hectares  : surface
-- soil_type      : type de sol (one-hot)
-- irrigation     : culture irriguée ou pluviale (bool)
-- sri_method     : utilisation de la méthode SRI (bool)
-- rainfall_mm    : pluviométrie annuelle (mm)
-- temp_avg_c     : température moyenne (°C)
-- n_fertilizer   : azote appliqué (kg/ha)
-- p_fertilizer   : phosphore appliqué (kg/ha)
+Input features:
+- region         : Madagascar region (one-hot encoded)
+- altitude_m     : altitude in meters
+- area_hectares  : area
+- soil_type      : soil type (one-hot)
+- irrigation     : irrigated or rainfed crop (bool)
+- sri_method     : use of SRI method (bool)
+- rainfall_mm    : annual rainfall (mm)
+- temp_avg_c     : average temperature (°C)
+- n_fertilizer   : nitrogen applied (kg/ha)
+- p_fertilizer   : phosphorus applied (kg/ha)
 
-Sortie : rendement prédit en kg/ha
+Output: predicted yield in kg/ha
 
-En l'absence de données d'entraînement réelles, ce module retourne
-des estimations basées sur des règles expertes calibrées sur les
-statistiques FOFIFA/FAO pour Madagascar.
+In the absence of real training data, this module returns
+estimates based on expert rules calibrated on
+FOFIFA/FAO statistics for Madagascar.
 """
 import logging
 
 logger = logging.getLogger(__name__)
 
-# Moyennes de rendement par région/système (kg/ha) — source : MAEP/FAO 2022
+# Average yield by region/system (kg/ha) — source: MAEP/FAO 2022
 BASELINE_YIELDS = {
     'irrigated': {
         'analamanga': 3800, 'vakinankaratra': 3500, 'alaotra_mangoro': 4200,
@@ -35,7 +35,7 @@ BASELINE_YIELDS = {
     },
 }
 
-# Multiplicateurs selon le type de sol
+# Soil type multipliers
 SOIL_MULTIPLIERS = {
     'alluvial': 1.15,
     'volcanic': 1.10,
@@ -45,17 +45,17 @@ SOIL_MULTIPLIERS = {
     'sandy': 0.80,
 }
 
-# Multiplicateur SRI
-SRI_MULTIPLIER = 1.60  # Gain moyen documenté avec SRI à Madagascar
+# SRI multiplier
+SRI_MULTIPLIER = 1.60  # Average documented gain with SRI in Madagascar
 
 
 def predict(features: dict) -> dict:
     """
-    Retourne une prédiction de rendement riz basée sur des règles expertes.
-    À remplacer par un modèle XGBoost entraîné dès que les données sont disponibles.
+    Returns a rice yield prediction based on expert rules.
+    To be replaced by an XGBoost model once data is available.
 
     Args:
-        features: dict avec les clés décrites en en-tête de module
+        features: dict with keys described in module header
 
     Returns:
         dict { predicted_yield_kg_ha, confidence_score, feature_importance, recommendation }
@@ -67,35 +67,35 @@ def predict(features: dict) -> dict:
     rainfall_mm = features.get('rainfall_mm', 1200)
     n_fertilizer = features.get('n_fertilizer', 0)
 
-    # 1. Rendement de base selon région et système d'irrigation
+    # 1. Base yield by region and irrigation system
     system = 'irrigated' if irrigation else 'rainfed'
     baselines = BASELINE_YIELDS[system]
     base_yield = baselines.get(region, baselines['default'])
 
-    # 2. Ajustement sol
+    # 2. Soil adjustment
     soil_mult = SOIL_MULTIPLIERS.get(soil_type, 1.0)
     yield_estimate = base_yield * soil_mult
 
-    # 3. Ajustement SRI
+    # 3. SRI adjustment
     if sri_method:
         yield_estimate *= SRI_MULTIPLIER
 
-    # 4. Ajustement pluviométrie (pour culture pluviale)
+    # 4. Rainfall adjustment (for rainfed crops)
     if not irrigation:
         if rainfall_mm < 800:
             yield_estimate *= 0.75
         elif rainfall_mm > 1500:
             yield_estimate *= 1.05
 
-    # 5. Ajustement fertilisation azotée
+    # 5. Nitrogen fertilization adjustment
     if n_fertilizer > 0:
-        n_bonus = min(n_fertilizer / 100, 0.30)  # Max +30% pour N
+        n_bonus = min(n_fertilizer / 100, 0.30)  # Max +30% for N
         yield_estimate *= (1 + n_bonus)
 
-    # Score de confiance (modèle expert = confiance modérée)
-    confidence = 0.65 if not sri_method else 0.60  # SRI = plus de variabilité
+    # Confidence score (expert model = moderate confidence)
+    confidence = 0.65 if not sri_method else 0.60  # SRI = more variability
 
-    # Feature importance simplifiée
+    # Simplified feature importance
     feature_importance = {
         'irrigation_system': 0.35,
         'region': 0.20,
@@ -105,7 +105,7 @@ def predict(features: dict) -> dict:
         'n_fertilizer': 0.08,
     }
 
-    # Recommandations automatiques
+    # Automatic recommendations
     recommendations = _generate_recommendations(features, yield_estimate)
 
     return {
@@ -113,7 +113,7 @@ def predict(features: dict) -> dict:
         'confidence_score': confidence,
         'feature_importance': feature_importance,
         'recommendation': recommendations,
-        'model_type': 'expert_rules',  # Sera 'xgboost' après entraînement
+        'model_type': 'expert_rules',  # Will be 'xgboost' after training
     }
 
 
@@ -122,32 +122,32 @@ def _generate_recommendations(features: dict, yield_estimate: float) -> str:
 
     if not features.get('irrigation') and features.get('rainfall_mm', 1200) < 1000:
         tips.append(
-            "Pluviométrie insuffisante détectée. Envisagez un système d'irrigation "
-            "d'appoint pour sécuriser la culture."
+            "Insufficient rainfall detected. Consider supplementary irrigation "
+            "to secure the crop."
         )
 
     if not features.get('sri_method'):
         tips.append(
-            "L'adoption de la méthode SRI (Système de Riziculture Intensive) "
-            "peut augmenter le rendement de 40-80% avec moins d'eau et de semences."
+            "Adopting the SRI method (System of Rice Intensification) "
+            "can increase yield by 40-80% with less water and seeds."
         )
 
     if features.get('soil_type') == 'laterite':
         tips.append(
-            "Sol latéritique : apportez du compost organique (5-10 t/ha) pour améliorer "
-            "la rétention d'eau et la fertilité."
+            "Laterite soil: add organic compost (5-10 t/ha) to improve "
+            "water retention and fertility."
         )
 
     if features.get('n_fertilizer', 0) < 30:
         tips.append(
-            "La fertilisation azotée est faible. Une application de 60-90 kg N/ha en "
-            "fractionné (tallage + initiation paniculaire) est recommandée."
+            "Nitrogen fertilization is low. An application of 60-90 kg N/ha in "
+            "split doses (tillering + panicle initiation) is recommended."
         )
 
     if yield_estimate < 2000:
         tips.append(
-            "Rendement prédit faible. Consultez un technicien MAEP local pour un "
-            "diagnostic terrain et l'accès aux variétés améliorées FOFIFA."
+            "Low predicted yield. Consult a local MAEP technician for a "
+            "field diagnosis and access to improved FOFIFA varieties."
         )
 
-    return '\n'.join(f"• {t}" for t in tips) if tips else "Conditions favorables détectées."
+    return '\n'.join(f"• {t}" for t in tips) if tips else "Favorable conditions detected."

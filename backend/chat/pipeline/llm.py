@@ -1,5 +1,5 @@
 """
-Étape 4 du pipeline : appel au LLM hébergé sur Google Colab via HTTP (FastAPI + ngrok).
+Step 4 of the pipeline: calling the LLM hosted on Google Colab via HTTP (FastAPI + ngrok).
 """
 
 import logging
@@ -20,8 +20,8 @@ TOP_P = 0.9
 TOP_K = 50
 REPETITION_PENALTY = 1.1
 
-# Timeout HTTP (le modèle Colab peut être lent à répondre)
-REQUEST_TIMEOUT = 120  # secondes
+# HTTP timeout (the Colab model may be slow to respond)
+REQUEST_TIMEOUT = 120  # seconds
 
 SYSTEM_PROMPT = """Tu es CropGPT, un assistant agricole expert specialise en agriculture malgache.
 Tu reponds UNIQUEMENT aux questions agricoles (cultures, sols, maladies, rendements, irrigation, varietes, meteo, prix agricoles).
@@ -119,8 +119,8 @@ _STOP_SEQUENCES = [
     "Human:", "User :", "Machine Learning",
 ]
 
-# Caracteres Unicode box-drawing que Qwen2 utilise parfois pour les tableaux,
-# au lieu du pipe ASCII | que Markdown attend. On les remappe a la volee.
+# Unicode box-drawing characters that Qwen2 sometimes uses for tables,
+# instead of the ASCII pipe | that Markdown expects. Remapped on the fly.
 _BOX_DRAWING_TO_ASCII = str.maketrans({
     "│": "|", "┃": "|", "║": "|",
     "─": "-", "━": "-", "═": "-",
@@ -130,26 +130,26 @@ _BOX_DRAWING_TO_ASCII = str.maketrans({
 
 
 def _clean_token(text: str) -> str:
-    """Normalise les caracteres parasites au fil du stream (cheap, par token)."""
+    """Normalizes stray characters during streaming (cheap, per token)."""
     if not text:
         return text
     return text.translate(_BOX_DRAWING_TO_ASCII)
 
 
-# ─── Appel HTTP vers Colab ────────────────────────────────────────────────────
+# ─── HTTP call to Colab ────────────────────────────────────────────────────
 
 
 def _parse_sse_line(line: str):
     """
-    Parse une ligne SSE du Colab au format pipe-délimité.
-    Formats possibles :
+    Parses an SSE line from Colab in pipe-delimited format.
+    Possible formats:
       data: start|0|0
       data: token:TEXT|ELAPSED|PROGRESS
       data: thinking:TEXT|ELAPSED|PROGRESS
       data: end|ELAPSED|100
       data: offtopic:MESSAGE|ELAPSED|100
       data: error|0|0|MESSAGE
-    Retourne (type, text, progress) ou None si ligne ignorable.
+    Returns (type, text, progress) or None if line is ignorable.
     """
     if not line.startswith("data:"):
         return None
@@ -166,7 +166,7 @@ def _parse_sse_line(line: str):
     # error
     if payload.startswith("error|"):
         parts = payload.split("|", 3)
-        msg = parts[3] if len(parts) > 3 else "Erreur inconnue"
+        msg = parts[3] if len(parts) > 3 else "Unknown error"
         return ("error", msg, 100)
 
     # offtopic
@@ -179,7 +179,7 @@ def _parse_sse_line(line: str):
     for prefix in ("token:", "thinking:"):
         if payload.startswith(prefix):
             rest = payload[len(prefix):]
-            # Séparer TEXT|ELAPSED|PROGRESS — le texte peut contenir des |
+            # Split TEXT|ELAPSED|PROGRESS — the text may contain |
             parts = rest.rsplit("|", 2)
             text = parts[0] if parts else rest
             progress = int(parts[2]) if len(parts) == 3 and parts[2].isdigit() else 0
@@ -191,16 +191,16 @@ def _parse_sse_line(line: str):
 
 def _call_colab_blocking(payload: dict) -> str:
     """
-    Appelle /generate/rag_stream et collecte tous les tokens → texte complet.
-    Utilisé par generate() pour un appel non-streaming.
+    Calls /generate/rag_stream and collects all tokens → full text.
+    Used by generate() for non-streaming calls.
 
-    Payload attendu (Option B1) :
+    Expected payload (Option B1):
       {question, ontology_facts, ch_facts, context_tags, matched_keywords,
        max_new_tokens, temperature}
-    Le RAG (embed + FAISS) est exécuté côté Colab.
+    RAG (embed + FAISS) is executed on the Colab side.
     """
     if not COLAB_LLM_URL:
-        raise ValueError("COLAB_LLM_URL non défini. Ajoutez-le dans le fichier .env.")
+        raise ValueError("COLAB_LLM_URL not defined. Add it to the .env file.")
 
     full_text = []
     with requests.post(
@@ -228,7 +228,7 @@ def _call_colab_blocking(payload: dict) -> str:
 
 
 def _post_process(text: str) -> str:
-    """Nettoie la réponse : coupe aux stop sequences et retire les artefacts."""
+    """Cleans the response: truncates at stop sequences and removes artifacts."""
     import re
 
     for seq in _STOP_SEQUENCES:
@@ -249,19 +249,19 @@ def _post_process(text: str) -> str:
             lines.append(line)
     text = "\n".join(lines)
 
-    # Supprimer les blocs de caractères CJK parasites
+    # Remove stray CJK character blocks
     text = re.sub(r'[\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]+', '', text)
 
     return text.strip()
 
 
-# ─── Interface publique ───────────────────────────────────────────────────────
+# ─── Public interface ───────────────────────────────────────────────────────
 
 
 def get_model_info() -> dict:
-    """Retourne les infos sur le modèle Colab (appel GET /info si disponible)."""
+    """Returns info about the Colab model (calls GET /info if available)."""
     if not COLAB_LLM_URL:
-        return {"error": "COLAB_LLM_URL non défini"}
+        return {"error": "COLAB_LLM_URL not defined"}
     try:
         resp = requests.get(f"{COLAB_LLM_URL}/info", timeout=10)
         if resp.ok:
@@ -277,28 +277,28 @@ def get_model_info() -> dict:
 
 def stream_generate(payload: dict):
     """
-    Generator qui yield chaque token via /generate/rag_stream (SSE) du Colab.
+    Generator that yields each token via /generate/rag_stream (SSE) from Colab.
 
-    Le RAG (embed + FAISS) tourne maintenant dans Colab (Option B1).
-    Render envoie un payload structuré, Colab construit le prompt augmenté
-    en interne avec son vector_store local.
+    RAG (embed + FAISS) now runs inside Colab (Option B1).
+    Render sends a structured payload, Colab builds the augmented prompt
+    internally with its local vector_store.
 
-    Payload attendu :
+    Expected payload:
       {question, ontology_facts, ch_facts, context_tags, matched_keywords,
        history?, max_new_tokens?, temperature?}
 
-    Format SSE Colab : data: token:TEXT|ELAPSED|PROGRESS
+    Colab SSE format: data: token:TEXT|ELAPSED|PROGRESS
 
-    Yields :
-      {"token": str, "done": bool, "progress": int}  → token normal
-      {"error": str, "done": True, "progress": 100}  → erreur (LLM offline, timeout, etc.)
+    Yields:
+      {"token": str, "done": bool, "progress": int}  → normal token
+      {"error": str, "done": True, "progress": 100}  → error (LLM offline, timeout, etc.)
     """
     if not COLAB_LLM_URL:
         yield {
             "error": (
-                "Le modèle LLM n'est pas connecté. "
-                "L'administrateur doit définir COLAB_LLM_URL dans les variables "
-                "d'environnement Render avec l'URL ngrok du notebook Colab."
+                "The LLM model is not connected. "
+                "The administrator must set COLAB_LLM_URL in the Render "
+                "environment variables with the Colab notebook ngrok URL."
             ),
             "done": True,
             "progress": 100,
@@ -333,34 +333,34 @@ def stream_generate(payload: dict):
                     yield {"token": "", "done": True, "progress": 100}
                     return
                 elif kind == "error":
-                    yield {"error": f"Erreur Colab : {text}", "done": True, "progress": 100}
+                    yield {"error": f"Colab error: {text}", "done": True, "progress": 100}
                     return
-                # "start" et "thinking" ignorés (le frontend Django gère ses propres étapes)
+                # "start" and "thinking" ignored (Django frontend manages its own stages)
 
     except requests.exceptions.ConnectionError as e:
-        logger.error("Connexion Colab impossible: %s", e)
+        logger.error("Colab connection failed: %s", e)
         yield {
             "error": (
-                "Impossible de joindre le modèle LLM. "
-                "Vérifiez que le notebook Colab est en cours d'exécution et que "
-                "l'URL ngrok est à jour dans Render."
+                "Unable to reach the LLM model. "
+                "Check that the Colab notebook is running and that "
+                "the ngrok URL is up to date in Render."
             ),
             "done": True,
             "progress": 100,
         }
         return
     except requests.exceptions.Timeout as e:
-        logger.error("Timeout Colab: %s", e)
+        logger.error("Colab timeout: %s", e)
         yield {
-            "error": "Le modèle LLM met trop de temps à répondre (timeout). Réessayez.",
+            "error": "The LLM model is taking too long to respond (timeout). Please try again.",
             "done": True,
             "progress": 100,
         }
         return
     except Exception as e:
-        logger.error("Erreur stream Colab: %s", e)
+        logger.error("Colab stream error: %s", e)
         yield {
-            "error": f"Erreur de connexion au modèle : {e}",
+            "error": f"Model connection error: {e}",
             "done": True,
             "progress": 100,
         }
@@ -371,10 +371,10 @@ def stream_generate(payload: dict):
 
 def generate(pipeline_data: dict, history: list = None) -> dict:
     """
-    Génère une réponse via le LLM Colab. Retourne reply, tokens, latence.
+    Generates a response via the Colab LLM. Returns reply, tokens, latency.
 
-    Option B1 : le RAG (embed + FAISS) tourne dans Colab.
-    Render envoie : question, ontology_facts, ch_facts, context_tags,
+    Option B1: RAG (embed + FAISS) runs in Colab.
+    Render sends: question, ontology_facts, ch_facts, context_tags,
     matched_keywords, system_prompt, history.
     """
     if history is None:
@@ -404,9 +404,9 @@ def generate(pipeline_data: dict, history: list = None) -> dict:
         }
 
     except Exception as e:
-        logger.error("Erreur LLM Colab: %s", e)
+        logger.error("Colab LLM error: %s", e)
         return {
-            "reply": "Désolé, le modèle Colab est injoignable. Vérifiez que le notebook est actif et que l'URL ngrok est à jour.",
+            "reply": "Sorry, the Colab model is unreachable. Check that the notebook is active and that the ngrok URL is up to date.",
             "thinking": "",
             "input_tokens": 0,
             "output_tokens": 0,
@@ -415,24 +415,24 @@ def generate(pipeline_data: dict, history: list = None) -> dict:
         }
 
 
-# ─── Payload builder pour Colab (Option B1) ──────────────────────────────────
+# ─── Payload builder for Colab (Option B1) ──────────────────────────────────
 
 
 def build_colab_payload(
     pipeline_data: dict, history: list, system_prompt: str | None = None
 ) -> dict:
     """
-    Construit le payload JSON envoyé à /generate/rag_stream.
+    Builds the JSON payload sent to /generate/rag_stream.
 
-    Le RAG (embed + FAISS) tourne côté Colab. Render fournit :
-    - le system prompt (source de vérité du format de réponse)
-    - la question normalisée + l'historique conversation
-    - les faits ontologiques (relations entre concepts du graphe rdflib)
-    - les chiffres factuels ClickHouse (rendements, prix, production)
-    - les context_tags + matched_keywords pour aider le re-ranking RAG côté Colab
+    RAG (embed + FAISS) runs on the Colab side. Render provides:
+    - the system prompt (source of truth for response format)
+    - the normalized question + conversation history
+    - ontological facts (relations between concepts from the rdflib graph)
+    - factual ClickHouse figures (yields, prices, production)
+    - context_tags + matched_keywords to help RAG re-ranking on Colab
 
-    `system_prompt` override : passé par `intent.run_intent` en slow-path pour
-    injecter les instructions <map_action>. None → SYSTEM_PROMPT standard.
+    `system_prompt` override: passed by `intent.run_intent` in slow-path to
+    inject <map_action> instructions. None → standard SYSTEM_PROMPT.
     """
     return {
         "system_prompt": system_prompt if system_prompt is not None else SYSTEM_PROMPT,
@@ -454,20 +454,20 @@ def build_prompt(
     user_message: str, rag_context: str, history: list, confidence_level: str = "high"
 ) -> str:
     """
-    DEPRECATED — conservé pour compatibilité avec d'anciens tests.
-    Le prompt est désormais construit côté Colab via build_colab_payload().
+    DEPRECATED — kept for backward compatibility with older tests.
+    The prompt is now built on the Colab side via build_colab_payload().
     """
     return user_message
 
 
-# ─── Stubs (plus nécessaires, conservés pour compatibilité) ──────────────────
+# ─── Stubs (no longer needed, kept for compatibility) ──────────────────
 
 
 def clear_cache():
-    """No-op : le modèle tourne sur Colab, pas en local."""
+    """No-op: the model runs on Colab, not locally."""
     pass
 
 
 def reload_model():
-    """No-op : le modèle tourne sur Colab, pas en local."""
-    return {"status": "Modèle hébergé sur Colab — pas de rechargement local possible."}
+    """No-op: the model runs on Colab, not locally."""
+    return {"status": "Model hosted on Colab — local reload not possible."}

@@ -1,8 +1,8 @@
-"""Tests du LLM hébergé sur Google Colab.
+"""Tests for the LLM hosted on Google Colab.
 
-Ces tests sont SKIPÉS automatiquement si COLAB_LLM_URL n'est pas défini
-(ex : en CI sans secret configuré). Ils nécessitent que le notebook Colab
-soit actif et que l'URL ngrok soit à jour dans .env.
+These tests are automatically SKIPPED if COLAB_LLM_URL is not set
+(e.g. in CI without a configured secret). They require that the Colab
+notebook is active and the ngrok URL is up to date in .env.
 """
 import os
 import pytest
@@ -10,14 +10,14 @@ import pytest
 COLAB_URL = os.environ.get("COLAB_LLM_URL", "").rstrip("/")
 colab_required = pytest.mark.skipif(
     not COLAB_URL,
-    reason="COLAB_LLM_URL non défini — notebook Colab inactif ou secret manquant"
+    reason="COLAB_LLM_URL not set — Colab notebook inactive or secret missing"
 )
 
 
 @colab_required
 class TestColabLLMHealth:
     def test_health_endpoint_returns_ok(self):
-        """GET /health doit retourner status=ok et le device CUDA."""
+        """GET /health must return status=ok and the CUDA device."""
         import requests
         resp = requests.get(f"{COLAB_URL}/health", timeout=10)
         assert resp.status_code == 200
@@ -26,7 +26,7 @@ class TestColabLLMHealth:
         assert 'device' in data
 
     def test_health_response_has_model_info(self):
-        """Le health check doit indiquer le chemin du modèle."""
+        """The health check must report the model path."""
         import requests
         resp = requests.get(f"{COLAB_URL}/health", timeout=10)
         assert resp.status_code == 200
@@ -37,7 +37,7 @@ class TestColabLLMHealth:
 @colab_required
 class TestColabLLMGenerate:
     def test_blocking_generate_returns_text(self):
-        """_call_colab_blocking doit retourner du texte non vide."""
+        """_call_colab_blocking must return non-empty text."""
         import django
         if not os.environ.get('DJANGO_SETTINGS_MODULE'):
             os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings.development'
@@ -45,10 +45,10 @@ class TestColabLLMGenerate:
         from chat.pipeline.llm import _call_colab_blocking
         result = _call_colab_blocking("Bonjour, donne-moi un conseil pour le riz.")
         assert isinstance(result, str)
-        assert len(result) > 10, f"Réponse trop courte : '{result}'"
+        assert len(result) > 10, f"Response too short: '{result}'"
 
     def test_stream_yields_at_least_one_token(self):
-        """stream_generate doit yielder au moins un token avant done=True."""
+        """stream_generate must yield at least one token before done=True."""
         import django
         if not os.environ.get('DJANGO_SETTINGS_MODULE'):
             os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings.development'
@@ -60,10 +60,10 @@ class TestColabLLMGenerate:
                 tokens.append(chunk['token'])
             if chunk.get('done'):
                 break
-        assert len(tokens) > 0, "Aucun token reçu du stream Colab"
+        assert len(tokens) > 0, "No token received from Colab stream"
 
     def test_generate_full_pipeline(self):
-        """generate() doit retourner un dict complet avec reply non vide."""
+        """generate() must return a complete dict with non-empty reply."""
         import django
         if not os.environ.get('DJANGO_SETTINGS_MODULE'):
             os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings.development'
@@ -80,7 +80,7 @@ class TestColabLLMGenerate:
         assert result['latency_ms'] > 0
 
     def test_generate_rejects_without_colab_url(self, monkeypatch):
-        """Sans COLAB_LLM_URL, generate() doit retourner un message d'erreur propre."""
+        """Without COLAB_LLM_URL, generate() must return a clean error message."""
         import django
         if not os.environ.get('DJANGO_SETTINGS_MODULE'):
             os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings.development'

@@ -1,6 +1,6 @@
-// GeoJSON des 22 régions de Madagascar — coordonnées WGS84 réelles
-// Latitudes négatives (hémisphère sud), longitudes ~43-51°E
-// Compatible Leaflet (App.jsx) ET D3 (cartographie.jsx)
+// GeoJSON of Madagascar's 22 regions — real WGS84 coordinates
+// Negative latitudes (southern hemisphere), longitudes ~43-51°E
+// Compatible with Leaflet (App.jsx) AND D3 (cartographie.jsx)
 
 export const MADAGASCAR_GEOJSON = {
   type: "FeatureCollection",
